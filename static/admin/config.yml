@@ -1,5 +1,7 @@
 backend:
-  name: test-repo
+  name: github
+  repo: news-catalyst/tiny-news-demo
+  
 
 media_folder: static/assets
 public_folder: /assets
