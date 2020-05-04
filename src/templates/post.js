@@ -2,7 +2,7 @@ import React from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/Layout"
 import { parseISO, formatRelative } from 'date-fns'
-import "../styles.scss"
+import "../pages/styles.scss"
 
 
 export default function Post({ data }) {
