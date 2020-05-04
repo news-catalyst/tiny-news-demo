@@ -15,14 +15,17 @@
     "token": "gatsby-source-google-docs-token"
   },
   "dependencies": {
+    "bulma": "^0.8.2",
     "gatsby": "^2.21.7",
     "gatsby-plugin-netlify-cms": "^4.3.0",
+    "gatsby-plugin-sass": "^2.3.0",
     "gatsby-plugin-sharp": "^2.6.0",
     "gatsby-remark-images": "^3.3.0",
     "gatsby-source-filesystem": "^2.3.0",
     "gatsby-source-google-docs": "^2.0.0-beta.6",
     "gatsby-transformer-remark": "^2.8.4",
     "netlify-cms-app": "^2.12.11",
+    "node-sass": "^4.14.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
