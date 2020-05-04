@@ -1,6 +1,6 @@
 import React from "react"
 import { graphql } from "gatsby"
-import Layout from "../components/Layout"
+import Layout from "../../components/Layout"
 
 export default function HomePage({ data }) {
   console.log(data)
@@ -8,7 +8,7 @@ export default function HomePage({ data }) {
   return(
     <Layout>
       <h1>tiny news co</h1>
-      <p>here are the latest pages:</p>
+      <p>here are the latest articles:</p>
 
       <div>
         <ul>
@@ -23,12 +23,12 @@ export default function HomePage({ data }) {
 
 export const query = graphql`
   query {
-    allGoogleDocs {
-        nodes {
-            document {
-              name
-              path
-            }
+    allGoogleDocs(filter: {document: {path: {regex: "/articles/"}}}) {
+      nodes {
+        document {
+          name
+          path
         }
+      }
     }
   }`
