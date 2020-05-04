@@ -7,7 +7,7 @@ export default function HomePage({ data }) {
 
   return(
     <Layout>
-      <h1>tiny news co</h1>
+      <h1 className="title is-1">tiny news co</h1>
       <p>here are the latest pages:</p>
 
       <div>
