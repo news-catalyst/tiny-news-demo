@@ -2,6 +2,7 @@ import React from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/Layout"
 import { parseISO, formatRelative } from 'date-fns'
+import "../styles.scss"
 
 
 export default function Post({ data }) {
