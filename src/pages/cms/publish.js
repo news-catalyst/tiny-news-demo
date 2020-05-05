@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { Link, graphql } from 'gatsby'
 import Layout from "../../components/Layout"
 import "../styles.scss"
 
@@ -26,8 +27,31 @@ export default function Publish({ data }) {
         <div className="message">{message}</div>
       }
       <div>
-        <a className="button" href="#" onClick={handlePublish}>Publish</a>
+        <a className="button" onClick={handlePublish}>Publish</a>
+      </div>
+
+      <div>
+        <ul>
+          {data.allGoogleDocs.nodes.map(({ document }, index) => (
+            <li key={index}>
+              <Link to={`/cms/edit/${document.id}`}>{document.name}</Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </Layout>
   )
 }
+
+export const query = graphql`
+  query {
+    allGoogleDocs(filter: {document: {path: {regex: "/articles/"}}}) {
+      nodes {
+        document {
+          id
+          name
+          path
+        }
+      }
+    }
+  }`
