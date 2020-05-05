@@ -58,5 +58,24 @@ module.exports = {
       },
       `gatsby-plugin-sharp`,
       `gatsby-plugin-sass`,
+      {
+        resolve: `gatsby-plugin-google-gapi`,
+        options: {
+          apiKey: process.env.GATSBY_TINY_CMS_API_KEY,
+          clientId: process.env.GATSBY_TINY_CMS_CLIENT_ID,
+          discoveryURLs: [
+            // These are the discovery docs for various Google APIs.
+            // This can be empty.
+            // Find more here: https://developers.google.com/discovery
+            // This one is for the Google Drive v3 api.
+            "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
+          ],
+          // The permission scopes your app needs.
+          // For auth only, this can be empty.
+          // Find more here: https://developers.google.com/identity/protocols/oauth2/scopes
+          // scopes: ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.metadata",],
+        },
+      },
+
     ]
 }
