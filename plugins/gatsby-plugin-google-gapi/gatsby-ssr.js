@@ -31,6 +31,24 @@ export const onRenderBody = (
         dangerouslySetInnerHTML={{
           __html: `
             function __plugin_google_gapi_init() {
+              function handleAuthClick(event) {
+                console.log("auth clicked, signing in...");
+                gapi.auth2.getAuthInstance().signIn();
+              }
+              function updateSigninStatus(isSignedIn) {
+                var authorizeButton = document.getElementById('authorize_button');
+                var signoutButton = document.getElementById('signout_button');
+
+                console.log(authorizeButton);
+                if (isSignedIn) {
+                  authorizeButton.style.display = 'none';
+                  signoutButton.style.display = 'block';
+                  console.log("you are signed in, phew");
+                } else {
+                  authorizeButton.style.display = 'block';
+                  signoutButton.style.display = 'none';
+                }
+              }
               function __plugin_google_gapi_auth_initClient() {
                 let discoveryURLs = [
                   '${discoveryURLs.join(",\n                ")}'
@@ -54,12 +72,18 @@ export const onRenderBody = (
                   console.log('Client initialized...')
                   __plugin_google_gapi_initialized.client = true
                   __plugin_google_gapi_initialized.auth2 = true
+                  gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+                  let signedInStatus = gapi.auth2.getAuthInstance().isSignedIn.get();
+                  console.log("signed in status: ", signedInStatus);
+                  updateSigninStatus(signedInStatus);
+                  var authorizeButton = document.getElementById('authorize_button');
+                  authorizeButton.onclick = handleAuthClick;
                 }).catch((error) => {
                   console.log(error)
                 })
               }
 
-              console.debug("Intializing GAPI lib...")
+              console.debug("Initializing CUSTOM GAPI lib...")
               gapi.load('auth2:client', {
                 callback: __plugin_google_gapi_auth_initClient,
                 onerror: () => {console.error("gapi.load failed")},

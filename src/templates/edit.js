@@ -4,7 +4,7 @@ import Layout from "../components/Layout"
 import "../pages/styles.scss"
 // import {useAuthStatus} from 'gatsby-plugin-google-gapi'
 
-export default function EditMetadata({ data }) {
+export default function EditMetadata({ pageContext, data }) {
   console.log(data);
   let doc = data.googleDocs.document;
 
@@ -24,7 +24,7 @@ export default function EditMetadata({ data }) {
     newData.tags = splitTags;
     console.log(JSON.stringify(newData));
 
-    var path = `/drive/v3/files/1sS_XoaLa10ejaM7Y9tHL5L2Z-LNyvs-TFfgIIgw-mDA`;
+    var path = `/drive/v3/files/${pageContext.id}`;
     window.gapi.client.request({'path': path, 'method': 'PATCH', 'body': JSON.stringify(newData)})
      .then(function(response) {
        // Handle response
@@ -39,6 +39,9 @@ export default function EditMetadata({ data }) {
     <Layout>
       <h1 className="title is-1">Edit Metadata</h1>
       <h3 className="title is-3">{doc.name}</h3>
+
+      <button id="authorize_button">Authorize</button>
+      <button id="signout_button">Signout</button>
 
       <form onSubmit={updateGoogleDoc}>
         <div className="field">
