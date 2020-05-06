@@ -16,10 +16,9 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     `
   ).then(result => {
       result.data.allGoogleDocs.nodes.forEach(({document}, index) => {
-        let usablePath = document.path.replace(/\/ready/, ``)
-        console.log("creating page for google doc at ", usablePath)
+        console.log("creating page for google doc at ", document.path)
         actions.createPage({
-            path: usablePath,
+            path: document.path,
             component: path.resolve(`./src/templates/post.js`),
         })
         let cmsEditPath = `/cms/edit/${document.id}`

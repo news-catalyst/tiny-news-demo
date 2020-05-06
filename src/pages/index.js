@@ -24,7 +24,7 @@ export default function HomePage({ data }) {
 
 export const query = graphql`
   query {
-    allGoogleDocs {
+    allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}) {
         nodes {
             document {
               name

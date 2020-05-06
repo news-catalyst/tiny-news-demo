@@ -42,7 +42,7 @@ module.exports = {
             // To fetch only documents to specific folders
             // folders Ids can be found in Google Drive URLs
             // https://drive.google.com/drive/folders/FOLDER_ID
-            folders: ["1vcB48rZgA0o6oukMpzT6tMI9Bay5l7sq"],
+            folders: ["1lcfhd58_0D6-uP0Dwb0a_-Yri2L0h-6K"],
             // You could need to fetch additional documents fields to your nodes
             // All available options: https://developers.google.com/drive/api/v3/reference/files#resource
             // fields: ["ownedByMe", "shared"],
