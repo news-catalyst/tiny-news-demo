@@ -1,20 +1,50 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { graphql } from 'gatsby'
 import Layout from "../components/Layout"
 import "../pages/styles.scss"
-// import {useAuthStatus} from 'gatsby-plugin-google-gapi'
 
 export default function EditMetadata({ pageContext, data }) {
   console.log(data);
   let doc = data.googleDocs.document;
+  let path = `/drive/v3/files/${pageContext.id}?fields=description`;
 
-  const [values, setValues] = useState({author: doc.author, tags: doc.tags.join(', ')})
-  // const { authed, userFirstName } = useAuthStatus()
+  const [values, setValues] = useState({author: '', tags: ''})
+
+  useEffect(() => {
+    refreshForm();
+  }, [])
 
   const handleInputChange = e => {
-    const {name, value} = e.target
+    const {name, value} = e.target;
+    console.log("handling input change for name -> value: ", name, value);
     setValues({...values, [name]: value})
 }
+
+  function refreshForm() {
+    window.gapi.client.request({'path': path, 'method': 'GET'})
+      .then(function(response) {
+        console.log("output from GET doc: ", response);
+        let desc = JSON.parse(response.result.description);
+        console.log(desc);
+
+        let author = values.author;
+        let tagsStr = values.tags;
+        if (desc.author) {
+          author = desc.author;
+        }
+        if (desc.tags) {
+          tagsStr = desc.tags.join(', ');
+        }
+        let newValues = {
+          author: author,
+          tags: tagsStr
+        }
+        setValues(newValues);
+
+      }, function(reason) {
+        console.log("error from GET doc: ", reason);
+      })
+  }
 
   function updateGoogleDoc(e) {
     e.preventDefault();
@@ -22,13 +52,15 @@ export default function EditMetadata({ pageContext, data }) {
     let newData = {}
     newData.author = values.author;
     newData.tags = splitTags;
-    console.log(JSON.stringify(newData));
 
-    var path = `/drive/v3/files/${pageContext.id}`;
-    window.gapi.client.request({'path': path, 'method': 'PATCH', 'body': JSON.stringify(newData)})
+    let bodyForGoogle = { 
+      description: JSON.stringify(newData)
+    }
+    window.gapi.client.request({'path': path, 'method': 'PATCH', 'body': JSON.stringify(bodyForGoogle)})
      .then(function(response) {
        // Handle response
-       console.log("success: ", response);
+      console.log("success: ", response);
+      refreshForm();
      }, function(reason) {
        // Handle error
        console.log("error: ", reason);
