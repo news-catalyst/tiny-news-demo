@@ -39,7 +39,6 @@ export const onRenderBody = (
                 var authorizeButton = document.getElementById('authorize_button');
                 var signoutButton = document.getElementById('signout_button');
 
-                console.log(authorizeButton);
                 if (isSignedIn) {
                   authorizeButton.style.display = 'none';
                   signoutButton.style.display = 'block';

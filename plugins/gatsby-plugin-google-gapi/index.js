@@ -40,6 +40,7 @@ function metaAuthStatusListener(status) {
 })()
 
 export function registerAuthStatusListener(handler) {
+  console.log("gatsby-plugin gapi logoutUser")
   authStatusListeners.add(handler)
 }
 
@@ -48,6 +49,7 @@ export function useAuthStatus() {
   const [userFirstName, setUserFirstName] = useState(null)
 
   useEffect(() => {
+    console.log("gatsby-plugin-google-gapi useEffect called")
     let handle = setTimeout(function f() {
       console.groupCollapsed("Trying to register auth status listener.")
       if (!initDone) {
@@ -104,6 +106,7 @@ export function useAuthStatus() {
 }
 
 export function loginUser() {
+  console.log("gatsby-plugin gapi loginUser")
   if (!initDone) {
     console.debug(
       "Can't login yet since GAPI for Gatsby isn't yet initialized..."
@@ -114,6 +117,7 @@ export function loginUser() {
 }
 
 export function logoutUser() {
+  console.log("gatsby-plugin gapi logoutUser")
   if (!initDone) {
     console.debug(
       "Can't login yet since GAPI for Gatsby isn't yet initialized..."

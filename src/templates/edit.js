@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react"
-import { graphql } from 'gatsby'
+import React, { useState } from "react"
+import { Link, graphql } from 'gatsby'
 import Layout from "../components/Layout"
 import "../pages/styles.scss"
 
-export default function EditMetadata({ pageContext, data }) {
-  console.log(data);
+export default function EditMetadata({ data, pageContext }) {
   let doc = data.googleDocs.document;
   let path = `/drive/v3/files/${pageContext.id}?fields=description`;
 
   const [values, setValues] = useState({author: '', tags: ''})
-
-  useEffect(() => {
-    refreshForm();
-  }, [])
+  const [message, setMessage] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [errors, setErrors] = useState(false);
 
   const handleInputChange = e => {
     const {name, value} = e.target;
-    console.log("handling input change for name -> value: ", name, value);
     setValues({...values, [name]: value})
-}
+  }
 
-  function refreshForm() {
+  // calls google drive API to GET document metadata (description)
+  // I'm having trouble making this happen after the google api is loaded :(
+  // which is why I've resorted to adding an onClick to a button for now
+  const refreshForm = () => {
     window.gapi.client.request({'path': path, 'method': 'GET'})
       .then(function(response) {
         console.log("output from GET doc: ", response);
@@ -40,12 +40,21 @@ export default function EditMetadata({ pageContext, data }) {
           tags: tagsStr
         }
         setValues(newValues);
+        setErrors(false);
+        setSuccess(true);
+        setMessage("Successfully loaded metadata from Google Docs")
 
       }, function(reason) {
         console.log("error from GET doc: ", reason);
+        setErrors(true);
+        setSuccess(false);
+        setMessage(reason);
       })
   }
 
+  // Makes a PATCH request to google drive files API that sets the description field
+  // currently includes author and tags, but this could be expanded to a bigger set 
+  // or possibly allow for arbitrary fields
   function updateGoogleDoc(e) {
     e.preventDefault();
     let splitTags = values.tags.split(', ')
@@ -60,21 +69,56 @@ export default function EditMetadata({ pageContext, data }) {
      .then(function(response) {
        // Handle response
       console.log("success: ", response);
-      refreshForm();
+      setErrors(false);
+      setSuccess(true);
+      setMessage("Successfully updated metadata.")
+      // refreshForm();
      }, function(reason) {
        // Handle error
-       console.log("error: ", reason);
+        console.log("error: ", reason);
+        setErrors(true);
+        setSuccess(false);
+        setMessage(reason);
      });
   }
 
   return(
     <Layout>
-      <h1 className="title is-1">Edit Metadata</h1>
-      <h3 className="title is-3">{doc.name}</h3>
+      <h1 className="title is-1">tinycms metadata editor</h1>
 
-      <button id="authorize_button">Authorize</button>
-      <button id="signout_button">Signout</button>
+      <section className="section">
+        <div className="columns">
+          <div className="column">
+            <button className="button is-primary" id="refresh" onClick={refreshForm}>Refresh</button>
+          </div>
+          <div className="column">
+            <button className="button" id="authorize_button">Authorize</button>
+          </div>
+          <div className="column">
+            <button className="button" id="signout_button">Signout</button>
+          </div>
+        </div>
+      </section>
 
+      <h3 className="title is-4">{doc.name}</h3>
+      {success &&
+      <div className="message is-success">
+          <div class="message-header">
+            Success
+          </div>
+          <div class="message-body">
+            {message}
+          </div>
+      </div>}
+      {errors &&
+      <div className="message is-danger">
+          <div class="message-header">
+            Error
+          </div>
+          <div class="message-body">
+            {message}
+          </div>
+      </div>}
       <form onSubmit={updateGoogleDoc}>
         <div className="field">
           <label className="label">Author</label>
@@ -94,6 +138,9 @@ export default function EditMetadata({ pageContext, data }) {
           </div>
         </div>
       </form>
+      <section className="section">
+        <Link to="/cms/publish">Back to list</Link>
+      </section>
     </Layout>
   )
 }
