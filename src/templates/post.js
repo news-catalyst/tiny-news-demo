@@ -8,6 +8,7 @@ import "../pages/styles.scss"
 export default function Post({ data }) {
   console.log(data);
   let doc = data.googleDocs.document;
+  let articleHtml = data.googleDocs.childMarkdownRemark.html;
   //2020-05-03T22:22:14.981Z
   let parsedDate = parseISO(doc.createdTime)
 
@@ -15,19 +16,16 @@ export default function Post({ data }) {
     <Layout>
       <h1 className="title is-1">{doc.name}</h1>
       <h3 className="subtitle">By {doc.author}</h3>
-      <p>
-        Published {formatRelative(parsedDate, new Date())}
-      </p>
+      <h4 className="subtitle is-4">Published {formatRelative(parsedDate, new Date())}</h4>
 
-      <section className="section">
-        <div
-          dangerouslySetInnerHTML={{__html: doc.html}}
-        />
-      </section>
+      <div
+        dangerouslySetInnerHTML={{__html: articleHtml}}
+      />
+
       <footer className="footer">
         <div className="content has-text-centered">
-          {doc.tags.map(({ tag }, index) => (
-            <span key={tag} className="tag">{tag}</span>
+          {doc.tags.map((tag, index) => (
+            <span key={`${tag}-${index}`} className="tag">{tag}</span>
           ))}
         </div>
       </footer>
