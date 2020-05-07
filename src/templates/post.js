@@ -14,24 +14,26 @@ export default function Post({ data }) {
 
   return (
     <div>
-    <Layout>
-      <h1 className="title is-1">{doc.name}</h1>
-      <h3 className="subtitle">By {doc.author}</h3>
-      <h4 className="subtitle is-4">Published {formatRelative(parsedDate, new Date())}</h4>
+      <Layout>
+        <h1 className="title is-1">{doc.name}</h1>
+        <h3 className="subtitle">By {doc.author}</h3>
+        <h4 className="subtitle is-4">Published {formatRelative(parsedDate, new Date())}</h4>
 
-      <div
-        dangerouslySetInnerHTML={{__html: articleHtml}}
-      />
+        <div
+          dangerouslySetInnerHTML={{__html: articleHtml}}
+        />
 
-      <section className="section">
-        <div className="container">
-          {doc.tags.map((tag, index) => (
-            <span key={`${tag}-${index}`} className="tag">{tag}</span>
-          ))}
-        </div>
-      </section>
+        <section className="section">
+          <div className="container">
+            <div className="tags">
+              {doc.tags.map((tag, index) => (
+                <span key={`${tag}-${index}`} className="tag">{tag}</span>
+              ))}
+            </div>
+          </div>
+        </section>
 
-    </Layout>
+      </Layout>
       <footer className="footer">
         <div className="content has-text-centered">
           <p>
@@ -39,7 +41,7 @@ export default function Post({ data }) {
           </p>
         </div>
       </footer>
-      </div>
+    </div>
   )
 }
 
