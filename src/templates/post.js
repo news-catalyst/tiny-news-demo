@@ -13,6 +13,7 @@ export default function Post({ data }) {
   let parsedDate = parseISO(doc.createdTime)
 
   return (
+    <div>
     <Layout>
       <h1 className="title is-1">{doc.name}</h1>
       <h3 className="subtitle">By {doc.author}</h3>
@@ -22,14 +23,23 @@ export default function Post({ data }) {
         dangerouslySetInnerHTML={{__html: articleHtml}}
       />
 
-      <footer className="footer">
-        <div className="content has-text-centered">
+      <section className="section">
+        <div className="container">
           {doc.tags.map((tag, index) => (
             <span key={`${tag}-${index}`} className="tag">{tag}</span>
           ))}
         </div>
-      </footer>
+      </section>
+
     </Layout>
+      <footer className="footer">
+        <div className="content has-text-centered">
+          <p>
+            <strong>tinynewsco.org</strong> by <a href="https://newscatalyst.org">News Catalyst</a>. 
+          </p>
+        </div>
+      </footer>
+      </div>
   )
 }
 
