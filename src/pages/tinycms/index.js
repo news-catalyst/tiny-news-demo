@@ -45,7 +45,7 @@ export default function Publish({ data }) {
 
 export const query = graphql`
   query {
-    allGoogleDocs(filter: {document: {path: {regex: "/articles/"}}}) {
+    allGoogleDocs {
       nodes {
         document {
           id
