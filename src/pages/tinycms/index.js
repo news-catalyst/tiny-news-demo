@@ -34,7 +34,7 @@ export default function Publish({ data }) {
         <ul>
           {data.allGoogleDocs.nodes.map(({ document }, index) => (
             <li key={index}>
-              <Link to={`/cms/edit/${document.id}`}>{document.name}</Link>
+              <Link to={`/tinycms/edit?id=${document.id}`}>{document.name}</Link>
             </li>
           ))}
         </ul>
@@ -45,7 +45,7 @@ export default function Publish({ data }) {
 
 export const query = graphql`
   query {
-    allGoogleDocs(filter: {document: {path: {regex: "/articles/"}}}) {
+    allGoogleDocs {
       nodes {
         document {
           id

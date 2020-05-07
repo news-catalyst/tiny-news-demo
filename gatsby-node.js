@@ -21,16 +21,21 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             path: document.path,
             component: path.resolve(`./src/templates/post.js`),
         })
-        let cmsEditPath = `/cms/edit/${document.id}`
-        console.log("creating cms edit page for google doc at ", cmsEditPath)
-        actions.createPage({
-            path: cmsEditPath,
-            component: path.resolve(`./src/templates/edit.js`),
-            context: {
-                id: document.id
-            }
-        })
       })
   })
 
 }
+exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+    if (stage === "build-html") {
+      actions.setWebpackConfig({
+        module: {
+          rules: [
+            {
+              test: /gapi-script/,
+              use: loaders.null(),
+            },
+          ],
+        },
+      })
+    }
+  }
