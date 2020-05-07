@@ -34,7 +34,7 @@ export default function Publish({ data }) {
         <ul>
           {data.allGoogleDocs.nodes.map(({ document }, index) => (
             <li key={index}>
-              <Link to={`/cms/tinyedit?id=${document.id}`}>{document.name}</Link>
+              <Link to={`/tinycms/edit?id=${document.id}`}>{document.name}</Link>
             </li>
           ))}
         </ul>
