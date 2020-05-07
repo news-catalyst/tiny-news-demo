@@ -17,6 +17,7 @@ class GoogleLogin extends Component {
           message: '',
           name: '',
           errors: false,
+          docLoaded: false,
           success: false,
           user: null
         }
@@ -66,6 +67,7 @@ class GoogleLogin extends Component {
 
     async componentDidMount() {
 
+      console.log("this.state.docLoaded: ", this.state.docLoaded)
         let location = window.location;
         const parsed = queryString.parse(location.search);
         console.log("updating state with document id: ", parsed.id)
@@ -104,6 +106,7 @@ class GoogleLogin extends Component {
             // STORE doc name at top-level react state
             // I'm doing this to avoid potentially storing it unnecessarily in the doc description
             this.updateDocName(docName);
+            this.updateDocLoaded(true);
           })
         });
 
@@ -113,6 +116,8 @@ class GoogleLogin extends Component {
         } else {
             this.attachSignin(document.getElementById('customBtn'), auth2);
         }
+
+      console.log("this.state.docLoaded 2: ", this.state.docLoaded)
     }
     async componentDidUpdate() {
       // TODO I'm not 100% sure on why or if this step is necessary
@@ -134,6 +139,13 @@ class GoogleLogin extends Component {
     updateDocId = (docId) => {
       this.setState({
         id: docId
+      })
+    }
+
+    // UPDATE state with document loaded status
+    updateDocLoaded = (docLoaded) => {
+      this.setState({
+        docLoaded: docLoaded
       })
     }
 
@@ -182,7 +194,7 @@ class GoogleLogin extends Component {
     }
 
     render() {
-        if(this.state.doc) {
+        if(this.state.docLoaded) {
             return (
               <div>
                 <nav className="navbar" role="navigation" aria-label="main navigation">
