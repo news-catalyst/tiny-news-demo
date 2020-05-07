@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { Link, graphql } from 'gatsby'
+
 import Layout from "../components/Layout"
 import "../pages/styles.scss"
 
