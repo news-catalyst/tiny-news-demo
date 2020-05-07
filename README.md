@@ -37,10 +37,14 @@ A demo of integrating Gatsby with Netlify CMS and Google Docs.
 
     Your site is now running at `http://localhost:8000`!
 
-    The Netlify CMS is available at `http://localhost:8000/admin/`.
-
     _Note: You'll also see a second link: _`http://localhost:8000/___graphql`_. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby tutorial](https://www.gatsbyjs.org/tutorial/part-five/#introducing-graphiql)._
+
+    There is also a tinycms at `http://localhost:8000/tinycms`!
 
 ## ❓What else?
 
-This is an active repo, and this README is changing as I make progress. More tk.
+    Public-facing pages (like `http://localhost:8000`, `http://localhost:8000/articles/your-title-here`) are served by gatsby based on data in graphQL.
+
+    This data is imported into graphQL from Google Drive.
+
+    The tinycms loads and updates data directly in Google Drive via Google APIs. If you make changes either in Google Drive or in tinycms and are wondering why you can't see them in the web pages, you probably need to restart the server (`gatsby develop`).
