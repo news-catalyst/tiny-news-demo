@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { gapi, loadAuth2 } from 'gapi-script'
+import { gapi, loadAuth2 } from 'gapi-script' 
 import queryString from 'query-string';
 import Layout from "../components/Layout"
 import "../pages/styles.scss"
@@ -8,10 +8,8 @@ class GoogleLogin extends Component {
     constructor(props) {
         super(props);
 
-        const parsed = queryString.parse(document.location.search);
-
         this.state = {
-          id: parsed.id,
+          id: '',
           doc: {
             author: '',
             tags: ['']
@@ -23,7 +21,7 @@ class GoogleLogin extends Component {
           user: null
         }
 
-        console.log(this.state);
+        console.log("tinycms starting state: ", this.state);
         this.handleChangeAuthor = this.handleChangeAuthor.bind(this);
         this.handleChangeTags = this.handleChangeTags.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -44,8 +42,13 @@ class GoogleLogin extends Component {
 
       let path = `/drive/v3/files/${this.state.id}?fields=description`;
 
+      let docData = this.state.doc;
+
+      if (typeof(docData.tags) === "string") {
+        docData.tags = docData.tags.split(',')
+      }
       let bodyForGoogle = { 
-        description: JSON.stringify(this.state.doc)
+        description: JSON.stringify(docData)
       }
 
       // UPDATE document metadata in gapi via PATCH request, stores data in doc description field
@@ -62,6 +65,12 @@ class GoogleLogin extends Component {
     }
 
     async componentDidMount() {
+
+        let location = window.location;
+        const parsed = queryString.parse(location.search);
+        console.log("updating state with document id: ", parsed.id)
+        this.updateDocId(parsed.id);
+
         let scopes = "https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.metadata";
         let auth2 = await loadAuth2(process.env.GATSBY_TINY_CMS_CLIENT_ID, scopes);
         let docId = this.state.id;
@@ -115,8 +124,16 @@ class GoogleLogin extends Component {
 
     // UPDATE state with document metadata
     updateDocData = (docData) => {
+      console.log("tinycms updated doc data: ", docData);
       this.setState({
         doc: docData
+      })
+    }
+
+    // UPDATE state with document id
+    updateDocId = (docId) => {
+      this.setState({
+        id: docId
       })
     }
 
@@ -214,19 +231,19 @@ class GoogleLogin extends Component {
 
                   {this.state.success &&
                   <div className="message is-success">
-                      <div class="message-header">
+                      <div className="message-header">
                         Success
                       </div>
-                      <div class="message-body">
+                      <div className="message-body">
                         {this.state.message}
                       </div>
                   </div>}
                   {this.state.errors &&
                   <div className="message is-danger">
-                      <div class="message-header">
+                      <div className="message-header">
                         Error
                       </div>
-                      <div class="message-body">
+                      <div className="message-body">
                         {this.state.message}
                       </div>
                   </div>}
