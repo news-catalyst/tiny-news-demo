@@ -1,5 +1,7 @@
 import React from "react"
 import { graphql } from "gatsby"
+import ArticleFooter from "../components/ArticleFooter"
+import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
 import "./styles.scss"
 
@@ -7,18 +9,22 @@ export default function HomePage({ data }) {
   console.log(data)
 
   return(
-    <Layout>
-      <h1 className="title is-1">tiny news co</h1>
-      <p>here are the latest pages:</p>
+    <div>
+      <ArticleNav />
+      <Layout>
+        <h1 className="title is-1">tiny news co</h1>
+        <p>here are the latest pages:</p>
 
-      <div>
-        <ul>
-        {data.allGoogleDocs.nodes.map(({ document }, index) => (
-          <li key={index}><a href={document.path}>{document.name}</a></li>
-        ))}
-        </ul>
-      </div>
-    </Layout>
+        <div>
+          <ul>
+          {data.allGoogleDocs.nodes.map(({ document }, index) => (
+            <li key={index}><a href={document.path}>{document.name}</a></li>
+          ))}
+          </ul>
+        </div>
+      </Layout>
+      <ArticleFooter />
+    </div>
   )
 }
 
