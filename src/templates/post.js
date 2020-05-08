@@ -19,13 +19,24 @@ export default function Post({ data }) {
       <ArticleNav />
 
       <Layout>
-        <h1 className="title is-1">{doc.name}</h1>
-        <h3 className="subtitle">By {doc.author}</h3>
-        <h4 className="subtitle is-4">Published {formatRelative(parsedDate, new Date())}</h4>
+        <section className="hero is-bold">
+          <div className="hero-body">
+            <div className="container">
+              <h1 className="title">
+                {doc.name}
+              </h1>
+              <h2 className="subtitle">
+                By {doc.author} | Published {formatRelative(parsedDate, new Date())} 
+              </h2>
+            </div>
+          </div>
+        </section>
 
-        <div
-          dangerouslySetInnerHTML={{__html: articleHtml}}
-        />
+        <section className="section">
+              <div
+                dangerouslySetInnerHTML={{__html: articleHtml}}
+              />
+        </section>
 
         <section className="section">
           <div className="container">
