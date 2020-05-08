@@ -33,9 +33,12 @@ export default function Post({ data }) {
         </section>
 
         <section className="section">
+          <div className="content">
+
               <div
                 dangerouslySetInnerHTML={{__html: articleHtml}}
               />
+          </div>
         </section>
 
         <section className="section">
