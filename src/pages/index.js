@@ -76,7 +76,7 @@ export default function HomePage({ data }) {
 
 export const query = graphql`
   query {
-    allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}) {
+    allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}, sort: {fields: document___name}) {
         nodes {
             document {
               name
