@@ -45,7 +45,7 @@ export default function Publish({ data }) {
 
 export const query = graphql`
   query {
-    allGoogleDocs {
+    allGoogleDocs(sort: {fields: document___name}) {
       nodes {
         document {
           id
