@@ -57,7 +57,14 @@ class GoogleLogin extends Component {
       .then((response) => {
         // Handle response
         console.log("success: ", response);
-        this.updateMessaging({success: true, errors: false, message: "Successfully updated document data."})
+        this.updateMessaging({success: true, errors: false, message: "Successfully updated document data. The site is now republishing..."})
+        fetch('https://api.netlify.com/build_hooks/5eaf81776d3a2da2a6e11fac', {
+          method: 'post'
+        }).then(function(response) {
+          return response;
+        }).then(function(data) {
+          console.log(data);
+        });
       }, (reason) => {
         // Handle error
         console.log("error: ", reason);
@@ -238,8 +245,8 @@ class GoogleLogin extends Component {
                 </nav>
 
               <Layout>
-                <h1 className="title is-1">metadata editor</h1>
-                <h3 className="title is-4">{this.state.name}</h3>
+                  <h1 className="title is-1">metadata editor</h1>
+                  <h3 className="title is-4">{this.state.name}</h3>
 
                   {this.state.success &&
                   <div className="message is-success">
