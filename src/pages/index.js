@@ -12,8 +12,8 @@ export default function HomePage({ data }) {
     <div>
       <ArticleNav />
       <Layout>
-        <h1 className="title is-1">tiny news co</h1>
-        <p>here are the latest pages:</p>
+        <h1 className="title is-1">Homepage for tiny news co</h1>
+        <p>here are the latest articles:</p>
 
         <div>
           <ul>

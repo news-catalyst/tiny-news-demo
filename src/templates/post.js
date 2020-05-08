@@ -1,5 +1,5 @@
 import React from "react"
-import { graphql } from "gatsby"
+import { Link, graphql } from "gatsby"
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
@@ -31,7 +31,7 @@ export default function Post({ data }) {
           <div className="container">
             <div className="tags">
               {doc.tags.map((tag, index) => (
-                <span key={`${tag}-${index}`} className="tag">{tag}</span>
+                <Link to={`/topics/${tag}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
               ))}
             </div>
           </div>
