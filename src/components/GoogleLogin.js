@@ -84,38 +84,7 @@ class GoogleLogin extends Component {
         let auth2 = await loadAuth2(process.env.GATSBY_TINY_CMS_CLIENT_ID, scopes);
         let docId = this.state.id;
 
-        // LOAD Google Drive API client libraries
-        gapi.load('client', () => {
-          let scopes = "https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.metadata";
-
-          // INITIALISE Google Drive API Client
-          gapi.client.init({
-            'apiKey': process.env.GATSBY_TINY_CMS_API_KEY,
-            'clientId': process.env.GATSBY_TINY_CMS_CLIENT_ID,
-            'scope': scopes,
-          }).then(function() {
-            console.log('client initialized')
-
-            // BUILD path to document data endpoint for gapi requests
-            let path = `/drive/v3/files/${docId}?fields=description,name`;
-
-            // GET document metadata from Google Drive
-            return gapi.client.request({
-              'path': path,
-              'method': 'GET'
-            })
-          }).then(response => {
-            // PARSE description JSON for document metadata
-            let docName = response.result.name;
-            let doc = JSON.parse(response.result.description);
-            // STORE doc metadata in react state
-            this.updateDocData(doc);
-            // STORE doc name at top-level react state
-            // I'm doing this to avoid potentially storing it unnecessarily in the doc description
-            this.updateDocName(docName);
-            this.updateDocLoaded(true);
-          })
-        });
+        this.loadGoogleDoc(docId)
 
         // MANAGE oauth2 session
         if (auth2.isSignedIn.get()) {
@@ -127,6 +96,7 @@ class GoogleLogin extends Component {
       console.log("this.state.docLoaded 2: ", this.state.docLoaded)
     }
     async componentDidUpdate() {
+      console.log("componentDidUpdate")
       // TODO I'm not 100% sure on why or if this step is necessary
       if(!this.state.user) {
           let auth2 = await loadAuth2(process.env.GATSBY_TINY_CMS_CLIENT_ID, '')
@@ -172,9 +142,44 @@ class GoogleLogin extends Component {
       })
     }
 
+    loadGoogleDoc(docId) {
+        // LOAD Google Drive API client libraries
+        gapi.load('client', () => {
+          let scopes = "https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.metadata";
+
+          // INITIALISE Google Drive API Client
+          gapi.client.init({
+            'apiKey': process.env.GATSBY_TINY_CMS_API_KEY,
+            'clientId': process.env.GATSBY_TINY_CMS_CLIENT_ID,
+            'scope': scopes,
+          }).then(function() {
+            console.log('client initialized')
+
+            // BUILD path to document data endpoint for gapi requests
+            let path = `/drive/v3/files/${docId}?fields=description,name`;
+
+            // GET document metadata from Google Drive
+            return gapi.client.request({
+              'path': path,
+              'method': 'GET'
+            })
+          }).then(response => {
+            // PARSE description JSON for document metadata
+            let docName = response.result.name;
+            let doc = JSON.parse(response.result.description);
+            // STORE doc metadata in react state
+            this.updateDocData(doc);
+            // STORE doc name at top-level react state
+            // I'm doing this to avoid potentially storing it unnecessarily in the doc description
+            this.updateDocName(docName);
+            this.updateDocLoaded(true);
+          })
+        });
+    }
     // UPDATE state with google oauth2 session user
     updateUser(currentUser) {
       let name = currentUser.getBasicProfile().getName()
+      console.log("updateUser")
       this.setState({
         user: {
             name: name,
@@ -183,9 +188,12 @@ class GoogleLogin extends Component {
     }
 
     attachSignin(element, auth2) {
+      console.log("attachSignin")
       auth2.attachClickHandler(element, {},
           (googleUser) => {
+              console.log("attachSignin attached click handler for googleUser", googleUser)
               this.updateUser(googleUser);
+              this.loadGoogleDoc(this.state.id);
           }, (error) => {
               console.log(JSON.stringify(error))
           });
@@ -201,7 +209,7 @@ class GoogleLogin extends Component {
     }
 
     render() {
-        if(this.state.docLoaded) {
+        if(this.state.user) {
             return (
               <div>
                 <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -267,26 +275,28 @@ class GoogleLogin extends Component {
                       </div>
                   </div>}
 
-                <section className="section">
+                { this.state.docLoaded && 
+                  <section className="section">
 
-                  <form onSubmit={this.handleSubmit}>
-                    <div className="field">
-                      <label className="label">Author</label>
-                      <div className="control">
-                        <input name="author" className="input" type="text" value={this.state.doc.author || ''} onChange={this.handleChangeAuthor} />
+                    <form onSubmit={this.handleSubmit}>
+                      <div className="field">
+                        <label className="label">Author</label>
+                        <div className="control">
+                          <input name="author" className="input" type="text" value={this.state.doc.author || ''} onChange={this.handleChangeAuthor} />
+                        </div>
                       </div>
-                    </div>
-                    <div className="field">
-                      <label className="label">Tags</label>
-                      <div className="control">
-                        <input name="tags" className="input" type="text" value={this.state.doc.tags || ''} onChange={this.handleChangeTags} />
+                      <div className="field">
+                        <label className="label">Tags</label>
+                        <div className="control">
+                          <input name="tags" className="input" type="text" value={this.state.doc.tags || ''} onChange={this.handleChangeTags} />
+                        </div>
                       </div>
-                    </div>
-                    <div className="control">
-                      <input className="button is-primary" type="submit" value="Save" />
-                    </div>
-                  </form>
-                </section>
+                      <div className="control">
+                        <input className="button is-primary" type="submit" value="Save" />
+                      </div>
+                    </form>
+                  </section>
+                }
               </Layout>
             </div>
           );
