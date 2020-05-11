@@ -16,7 +16,7 @@ export default function HomePage({ data }) {
   })
   tags = _.uniq(tags).sort();
   const tagLinks = tags.map(tag => (
-    <Link to={`/topics/${tag}`} className="panel-block is-active">
+    <Link key={tag} to={`/topics/${tag}`} className="panel-block is-active">
       {_.startCase(tag)}
     </Link>
   ));
