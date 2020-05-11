@@ -10,10 +10,7 @@ class GoogleLogin extends Component {
 
         this.state = {
           id: '',
-          doc: {
-            author: '',
-            tags: ['']
-          },
+          doc: { },
           message: '',
           name: '',
           errors: false,
@@ -23,18 +20,18 @@ class GoogleLogin extends Component {
         }
 
         console.log("tinycms starting state: ", this.state);
-        this.handleChangeAuthor = this.handleChangeAuthor.bind(this);
-        this.handleChangeTags = this.handleChangeTags.bind(this);
+        this.handleChangeDoc = this.handleChangeDoc.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleChangeAuthor(event) {
+
+    handleChangeDoc(event) {
       let data = this.state.doc;
-      data.author = event.target.value;
-      this.setState({doc: data});
-    }
-    handleChangeTags(event) {
-      let data = this.state.doc;
-      data.tags = event.target.value;
+      for (const key in data) {
+        if (key === event.target.name) {
+          data[key] = event.target.value;
+        }
+      }
+      console.log("new data: ", data)
       this.setState({doc: data});
     }
 
@@ -210,6 +207,19 @@ class GoogleLogin extends Component {
 
     render() {
         if(this.state.user) {
+        let formFields = [];
+        if (this.state.docLoaded) {
+          for (const key in this.state.doc) {
+            formFields.push(
+            <div key={`field-${key}`} className="field">
+              <label className="label">{key}</label>
+              <div className="control">
+                <input name={key} className="input" type="text" value={this.state.doc[key] || ''} onChange={this.handleChangeDoc} />
+              </div>
+            </div>
+            )
+          }
+        }
             return (
               <div>
                 <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -279,18 +289,7 @@ class GoogleLogin extends Component {
                   <section className="section">
 
                     <form onSubmit={this.handleSubmit}>
-                      <div className="field">
-                        <label className="label">Author</label>
-                        <div className="control">
-                          <input name="author" className="input" type="text" value={this.state.doc.author || ''} onChange={this.handleChangeAuthor} />
-                        </div>
-                      </div>
-                      <div className="field">
-                        <label className="label">Tags</label>
-                        <div className="control">
-                          <input name="tags" className="input" type="text" value={this.state.doc.tags || ''} onChange={this.handleChangeTags} />
-                        </div>
-                      </div>
+                      {formFields}
                       <div className="control">
                         <input className="button is-primary" type="submit" value="Save" />
                       </div>
