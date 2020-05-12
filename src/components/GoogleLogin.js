@@ -212,17 +212,16 @@ class GoogleLogin extends Component {
     addFieldToForm = () => {
       let docData = this.state.doc;
       let field = this.state.newField;
-      console.log(field);
       docData[field] = "";
-      console.log(docData);
       this.updateDocData(docData);
       this.setState({newField: ''})
     }
 
-    handleRemoveField = idx => () => {
-      this.setState({
-        fields: this.state.fields.filter((f, fidx) => idx !== fidx)
-      });
+    removeFieldFromForm = fieldName => e => {
+      e.preventDefault();
+      let docData = this.state.doc;
+      delete docData[fieldName];
+      this.updateDocData(docData);
     }
 
     // LOGOUT of google drive oauth2 session
@@ -240,10 +239,21 @@ class GoogleLogin extends Component {
           if (this.state.docLoaded) {
             for (const key in this.state.doc) {
               formFields.push(
-              <div key={`field-${key}`} className="field">
-                <label className="label">{key}</label>
-                <div className="control">
-                  <input name={key} className="input" type="text" value={this.state.doc[key] || ''} onChange={this.handleChangeDoc} />
+              <div key={`field-${key}`} className="field is-horizontal">
+                <div className="field-label is-normal">
+                  <label className="label">{key}</label>
+                </div>
+                <div className="field-body">
+                  <div className="field">
+                    <div className="control">
+                      <input name={key} className="input" type="text" value={this.state.doc[key] || ''} onChange={this.handleChangeDoc} />
+                    </div>
+                  </div>
+                  <div className="field">
+                    <div className="control">
+                      <button className="button" onClick={this.removeFieldFromForm(key)}>-</button>
+                    </div>
+                  </div>
                 </div>
               </div>
               )
@@ -320,16 +330,25 @@ class GoogleLogin extends Component {
                     <form onSubmit={this.handleSubmit}>
                       {formFields}
 
-                      <div className="field has-addons">
-                        <div className="control">
-                          <input className="input" type="text" placeholder="field name" value={this.state.newField} onChange={this.handleNewFieldChange} />
+                      <hr/>
+                      <div className="field is-horizontal">
+                        <div className="field-label is-normal">
+                          <label className="label">New field</label>
                         </div>
-                        <div className="control">
-                          <a className="button is-info" onClick={this.addFieldToForm}>
-                            Add
-                          </a>
+                        <div className="field-body">
+                          <div className="field has-addons">
+                            <div className="control">
+                              <input className="input" type="text" placeholder="field name" value={this.state.newField} onChange={this.handleNewFieldChange} />
+                            </div>
+                            <div className="control">
+                              <a className="button is-info" onClick={this.addFieldToForm}>
+                                Add
+                              </a>
+                            </div>
+                          </div>
                         </div>
                       </div>
+                      <hr/>
 
                       <div className="control">
                         <input className="button is-primary" type="submit" value="Save" />
