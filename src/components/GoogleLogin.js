@@ -11,6 +11,7 @@ class GoogleLogin extends Component {
         this.state = {
           id: '',
           doc: { },
+          newField: '',
           message: '',
           name: '',
           errors: false,
@@ -71,7 +72,6 @@ class GoogleLogin extends Component {
 
     async componentDidMount() {
 
-      console.log("this.state.docLoaded: ", this.state.docLoaded)
         let location = window.location;
         const parsed = queryString.parse(location.search);
         console.log("updating state with document id: ", parsed.id)
@@ -90,7 +90,6 @@ class GoogleLogin extends Component {
             this.attachSignin(document.getElementById('customBtn'), auth2);
         }
 
-      console.log("this.state.docLoaded 2: ", this.state.docLoaded)
     }
     async componentDidUpdate() {
       console.log("componentDidUpdate")
@@ -196,6 +195,36 @@ class GoogleLogin extends Component {
           });
     }
 
+    handleFieldNameChange = idx => evt => {
+      const newFields = this.state.fields.map((field, fidx) => {
+        if (idx !== fidx) return field;
+        return { ...field, name: evt.target.value };
+      });
+  
+      this.setState({ fields: newFields });
+    };
+
+    handleNewFieldChange = evt => {
+      console.log("handleNewFieldChange")
+      this.setState({ newField: evt.target.value });
+    };
+
+    addFieldToForm = () => {
+      let docData = this.state.doc;
+      let field = this.state.newField;
+      console.log(field);
+      docData[field] = "";
+      console.log(docData);
+      this.updateDocData(docData);
+      this.setState({newField: ''})
+    }
+
+    handleRemoveField = idx => () => {
+      this.setState({
+        fields: this.state.fields.filter((f, fidx) => idx !== fidx)
+      });
+    }
+
     // LOGOUT of google drive oauth2 session
     signOut = () => {
         let auth2 = gapi.auth2.getAuthInstance();
@@ -207,19 +236,19 @@ class GoogleLogin extends Component {
 
     render() {
         if(this.state.user) {
-        let formFields = [];
-        if (this.state.docLoaded) {
-          for (const key in this.state.doc) {
-            formFields.push(
-            <div key={`field-${key}`} className="field">
-              <label className="label">{key}</label>
-              <div className="control">
-                <input name={key} className="input" type="text" value={this.state.doc[key] || ''} onChange={this.handleChangeDoc} />
+          let formFields = [];
+          if (this.state.docLoaded) {
+            for (const key in this.state.doc) {
+              formFields.push(
+              <div key={`field-${key}`} className="field">
+                <label className="label">{key}</label>
+                <div className="control">
+                  <input name={key} className="input" type="text" value={this.state.doc[key] || ''} onChange={this.handleChangeDoc} />
+                </div>
               </div>
-            </div>
-            )
+              )
+            }
           }
-        }
             return (
               <div>
                 <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -290,6 +319,18 @@ class GoogleLogin extends Component {
 
                     <form onSubmit={this.handleSubmit}>
                       {formFields}
+
+                      <div className="field has-addons">
+                        <div className="control">
+                          <input className="input" type="text" placeholder="field name" value={this.state.newField} onChange={this.handleNewFieldChange} />
+                        </div>
+                        <div className="control">
+                          <a className="button is-info" onClick={this.addFieldToForm}>
+                            Add
+                          </a>
+                        </div>
+                      </div>
+
                       <div className="control">
                         <input className="button is-primary" type="submit" value="Save" />
                       </div>
