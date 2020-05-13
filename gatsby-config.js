@@ -10,6 +10,9 @@ module.exports = {
     title: `the tiny news collective`,
     siteUrl: `http://www.tinynewsco.org`,
     description: `a local news initiative`,
+    footerTitle: `tinynewsco.org`,
+    footerBylineName: `News Catalyst`,
+    footerBylineLink: `https://newscatalyst.org`
   },
 
   /* Your site config here */

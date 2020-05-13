@@ -24,7 +24,7 @@ export default function HomePage({ data }) {
 
   return(
     <div>
-      <ArticleNav name={data.site.siteMetadata.shortName} link={data.site.siteMetadata.siteUrl} />
+      <ArticleNav metadata={data.site.siteMetadata} />
       <Layout>
         <section className="hero is-primary is-bold">
           <div className="hero-body">
@@ -69,7 +69,7 @@ export default function HomePage({ data }) {
         <div>
         </div>
       </Layout>
-      <ArticleFooter />
+      <ArticleFooter metadata={data.site.siteMetadata} />
     </div>
   )
 }
@@ -82,6 +82,9 @@ export const query = graphql`
         shortName
         description
         siteUrl
+        footerTitle
+        footerBylineName
+        footerBylineLink
       }
     }
 
