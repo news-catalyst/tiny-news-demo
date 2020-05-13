@@ -24,16 +24,16 @@ export default function HomePage({ data }) {
 
   return(
     <div>
-      <ArticleNav />
+      <ArticleNav name={data.site.siteMetadata.shortName} link={data.site.siteMetadata.siteUrl} />
       <Layout>
         <section className="hero is-primary is-bold">
           <div className="hero-body">
             <div className="container">
               <h1 className="title">
-                the tiny news collective
+                {data.site.siteMetadata.title}
               </h1>
               <h2 className="subtitle">
-                a local news initiative
+                {data.site.siteMetadata.description}
               </h2>
             </div>
           </div>
@@ -76,6 +76,15 @@ export default function HomePage({ data }) {
 
 export const query = graphql`
   query {
+    site {
+      siteMetadata {
+        title
+        shortName
+        description
+        siteUrl
+      }
+    }
+
     allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}, sort: {fields: document___name}) {
         nodes {
             document {

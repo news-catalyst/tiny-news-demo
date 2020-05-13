@@ -5,6 +5,13 @@
  */
 
 module.exports = {
+  siteMetadata: {
+    shortName: `tinynewsco`,
+    title: `the tiny news collective`,
+    siteUrl: `http://www.tinynewsco.org`,
+    description: `a local news initiative`,
+  },
+
   /* Your site config here */
   plugins: 
     [
