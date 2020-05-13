@@ -280,6 +280,9 @@ class GoogleLogin extends Component {
                         Articles
                       </a>
 
+                      <a className="navbar-item" href="/tinycms/images">
+                        Images
+                      </a>
                     </div>
 
                     <div className="navbar-end">
@@ -382,6 +385,9 @@ class GoogleLogin extends Component {
                         Articles
                       </a>
 
+                      <a className="navbar-item" href="/tinycms/images">
+                        Images
+                      </a>
                     </div>
 
                     <div className="navbar-end">
