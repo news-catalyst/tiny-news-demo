@@ -8,7 +8,7 @@ module.exports = {
   siteMetadata: {
     shortName: `tinynewsco`,
     title: `the tiny news collective`,
-    siteUrl: `http://www.tinynewsco.org`,
+    siteUrl: `/`,
     description: `a local news initiative`,
     footerTitle: `tinynewsco.org`,
     footerBylineName: `News Catalyst`,

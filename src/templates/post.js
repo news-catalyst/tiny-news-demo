@@ -8,15 +8,15 @@ import "../pages/styles.scss"
 
 
 export default function Post({ data }) {
-  console.log(data);
   let doc = data.googleDocs.document;
   let articleHtml = data.googleDocs.childMarkdownRemark.html;
   //2020-05-03T22:22:14.981Z
   let parsedDate = parseISO(doc.createdTime)
 
+  console.log(data.site.siteMetadata);
   return (
     <div>
-      <ArticleNav />
+      <ArticleNav metadata={data.site.siteMetadata} />
 
       <Layout>
         <section className="hero is-bold">
@@ -52,13 +52,24 @@ export default function Post({ data }) {
         </section>
 
       </Layout>
-      <ArticleFooter />
+      <ArticleFooter metadata={data.site.siteMetadata} />
     </div>
   )
 }
 
 export const pageQuery = graphql`
   query($path: String!) {
+    site {
+      siteMetadata {
+        title
+        shortName
+        description
+        siteUrl
+        footerTitle
+        footerBylineName
+        footerBylineLink
+      }
+    }
     googleDocs(document: {path: {eq: $path}}) {
         document {
           author
