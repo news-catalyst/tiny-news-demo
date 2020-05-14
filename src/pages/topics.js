@@ -23,7 +23,7 @@ export default function HomePage({ data }) {
 
   return(
     <div>
-      <ArticleNav />
+      <ArticleNav metadata={data.site.siteMetadata} />
       <Layout>
         <section className="section">
           <h3 className="title is-size-4 is-bold-light">Topics</h3>
@@ -34,13 +34,29 @@ export default function HomePage({ data }) {
           </aside>
         </section>
       </Layout>
-      <ArticleFooter />
+      <ArticleFooter metadata={data.site.siteMetadata} />
     </div>
   )
 }
 
 export const query = graphql`
   query {
+    site {
+      siteMetadata {
+        title
+        shortName
+        description
+        siteUrl
+        footerTitle
+        footerBylineName
+        footerBylineLink
+        nav {
+          articles
+          topics
+          cms
+        }
+      }
+    }
     allGoogleDocs {
       edges {
         node {

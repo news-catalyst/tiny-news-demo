@@ -68,6 +68,11 @@ export const pageQuery = graphql`
         footerTitle
         footerBylineName
         footerBylineLink
+        nav {
+          articles
+          topics
+          cms
+        }
       }
     }
     googleDocs(document: {path: {eq: $path}}) {

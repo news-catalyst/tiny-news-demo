@@ -85,6 +85,11 @@ export const query = graphql`
         footerTitle
         footerBylineName
         footerBylineLink
+        nav {
+          articles
+          topics
+          cms
+        }
       }
     }
 
