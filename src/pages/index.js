@@ -45,7 +45,7 @@ export default function HomePage({ data }) {
             <div className="column is-four-fifths">
               <aside className="menu">
                 <p className="menu-label">
-                  Latest News
+                  {data.site.siteMetadata.labels.latest_news}
                 </p>
                 <ul className="menu-list">
                   {data.allGoogleDocs.nodes.map(({ document }, index) => (
@@ -57,11 +57,11 @@ export default function HomePage({ data }) {
             <div className="column">
               <nav className="panel">
                 <p className="panel-heading">
-                  Topics
+                  {data.site.siteMetadata.labels.topics}
                 </p>
                 {tagLinks}
               </nav>
-              <SearchPanel />
+              <SearchPanel metadata={data.site.siteMetadata} />
             </div>
           </div>
         </section>
@@ -85,6 +85,11 @@ export const query = graphql`
         footerTitle
         footerBylineName
         footerBylineLink
+        labels {
+          latestNews
+          search
+          topics
+        }
         nav {
           articles
           topics

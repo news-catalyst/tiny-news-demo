@@ -13,6 +13,11 @@ module.exports = {
     footerTitle: `tinynewsco.org`,
     footerBylineName: `News Catalyst`,
     footerBylineLink: `https://newscatalyst.org`,
+    labels: {
+      latestNews: `Latest News`,
+      search: `Search`,
+      topics: `Topics`,
+    },
     nav: {
       articles: `Articles`,
       topics: `Topics`,

@@ -50,6 +50,11 @@ export const query = graphql`
         footerTitle
         footerBylineName
         footerBylineLink
+        labels {
+          latestNews
+          search
+          topics
+        }
         nav {
           articles
           topics
