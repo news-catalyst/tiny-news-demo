@@ -8,7 +8,6 @@ import "../pages/styles.scss"
 
 
 export default function Post({ data }) {
-  console.log(data);
   let doc = data.googleDocs.document;
   let articleHtml = data.googleDocs.childMarkdownRemark.html;
   //2020-05-03T22:22:14.981Z
