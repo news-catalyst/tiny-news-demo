@@ -20,7 +20,6 @@ class GoogleLogin extends Component {
           user: null
         }
 
-        console.log("tinycms starting state: ", this.state);
         this.handleChangeDoc = this.handleChangeDoc.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -32,7 +31,6 @@ class GoogleLogin extends Component {
           data[key] = event.target.value;
         }
       }
-      console.log("new data: ", data)
       this.setState({doc: data});
     }
 
@@ -54,14 +52,13 @@ class GoogleLogin extends Component {
       gapi.client.request({'path': path, 'method': 'PATCH', 'body': JSON.stringify(bodyForGoogle)})
       .then((response) => {
         // Handle response
-        console.log("success: ", response);
         this.updateMessaging({success: true, errors: false, message: "Successfully updated document data. The site is now republishing..."})
         fetch('https://api.netlify.com/build_hooks/5eaf81776d3a2da2a6e11fac', {
           method: 'post'
         }).then(function(response) {
           return response;
         }).then(function(data) {
-          console.log(data);
+          console.log("response from netlify republish request: ", data);
         });
       }, (reason) => {
         // Handle error
@@ -74,7 +71,6 @@ class GoogleLogin extends Component {
 
         let location = window.location;
         const parsed = queryString.parse(location.search);
-        console.log("updating state with document id: ", parsed.id)
         this.updateDocId(parsed.id);
 
         let scopes = "https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.metadata";
@@ -92,7 +88,6 @@ class GoogleLogin extends Component {
 
     }
     async componentDidUpdate() {
-      console.log("componentDidUpdate")
       // TODO I'm not 100% sure on why or if this step is necessary
       if(!this.state.user) {
           let auth2 = await loadAuth2(process.env.GATSBY_TINY_CMS_CLIENT_ID, '')
@@ -102,7 +97,6 @@ class GoogleLogin extends Component {
 
     // UPDATE state with document metadata
     updateDocData = (docData) => {
-      console.log("tinycms updated doc data: ", docData);
       this.setState({
         doc: docData
       })
@@ -149,8 +143,6 @@ class GoogleLogin extends Component {
             'clientId': process.env.GATSBY_TINY_CMS_CLIENT_ID,
             'scope': scopes,
           }).then(function() {
-            console.log('client initialized')
-
             // BUILD path to document data endpoint for gapi requests
             let path = `/drive/v3/files/${docId}?fields=description,name`;
 
@@ -175,7 +167,6 @@ class GoogleLogin extends Component {
     // UPDATE state with google oauth2 session user
     updateUser(currentUser) {
       let name = currentUser.getBasicProfile().getName()
-      console.log("updateUser")
       this.setState({
         user: {
             name: name,
@@ -184,10 +175,8 @@ class GoogleLogin extends Component {
     }
 
     attachSignin(element, auth2) {
-      console.log("attachSignin")
       auth2.attachClickHandler(element, {},
           (googleUser) => {
-              console.log("attachSignin attached click handler for googleUser", googleUser)
               this.updateUser(googleUser);
               this.loadGoogleDoc(this.state.id);
           }, (error) => {
@@ -205,7 +194,6 @@ class GoogleLogin extends Component {
     };
 
     handleNewFieldChange = evt => {
-      console.log("handleNewFieldChange")
       this.setState({ newField: evt.target.value });
     };
 
@@ -229,7 +217,6 @@ class GoogleLogin extends Component {
         let auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(() => {
             this.setState({ user: null })
-            console.log('User signed out.');
         });
     }
 
