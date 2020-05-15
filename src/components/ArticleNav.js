@@ -1,11 +1,12 @@
 import React from "react"
 
 export default function ArticleNav(props) {
+  console.log("ArticleNav props: ", props)
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
-        <a className="navbar-item" href={props.link}>
-          {props.name}
+        <a className="navbar-item" href="/">
+          {props.metadata.shortName}
         </a>
 
         <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -18,11 +19,11 @@ export default function ArticleNav(props) {
       <div className="navbar-menu">
         <div className="navbar-start">
           <a className="navbar-item" href="/">
-            Articles
+            {props.metadata.nav.articles}
           </a>
 
           <a className="navbar-item" href="/topics">
-            Topics
+            {props.metadata.nav.topics}
           </a>
         </div>
 
@@ -30,7 +31,7 @@ export default function ArticleNav(props) {
           <div className="navbar-item">
             <div className="buttons">
                 <a className="button logout" href="/tinycms">
-                  tinycms
+                  {props.metadata.nav.cms}
                 </a>
             </div>
           </div>

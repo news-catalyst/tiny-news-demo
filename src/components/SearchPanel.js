@@ -1,10 +1,10 @@
 import React from "react"
 
-export default function SearchPanel() {
+export default function SearchPanel(props) {
   return (
     <nav className="panel">
       <p className="panel-heading">
-        Search
+        {props.metadata.labels.search}
       </p>
       <div className="panel-block">
         <p className="control has-icons-left">
