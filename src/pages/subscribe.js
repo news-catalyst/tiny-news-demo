@@ -38,7 +38,7 @@ export default class Subscribe extends React.Component {
   render() {
     return(
       <div>
-        <ArticleNav name={this.props.data.site.siteMetadata.shortName} link={this.props.data.site.siteMetadata.siteUrl} />
+        <ArticleNav metadata={this.props.data.site.siteMetadata} />
         <Layout>
           <section className="hero is-primary is-bold">
             <div className="hero-body">
@@ -73,7 +73,7 @@ export default class Subscribe extends React.Component {
             </form>
           </section>
         </Layout>
-        <ArticleFooter />
+        <ArticleFooter metadata={this.props.data.site.siteMetadata} />
       </div>
     );
   }
@@ -87,6 +87,19 @@ export const query = graphql`
         shortName
         description
         siteUrl
+        footerTitle
+        footerBylineName
+        footerBylineLink
+        labels {
+          latestNews
+          search
+          topics
+        }
+        nav {
+          articles
+          topics
+          cms
+        }
         subscribe {
           title
           subtitle
