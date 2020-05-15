@@ -66,5 +66,31 @@ module.exports = {
       `gatsby-plugin-sharp`,
       `gatsby-plugin-sass`,
 
+      {
+        resolve: `gatsby-plugin-amp`,
+        options: {
+          analytics: {
+            type: 'gtag',
+            dataCredentials: 'include',
+            config: {
+              vars: {
+                gtag_id: "UA-166777432-1",
+                config: {
+                  "UA-166777432-1": {
+                    page_location: '{{pathname}}'
+                  },
+                },
+              },
+            },
+          },
+          canonicalBaseUrl: 'http://tinynewsco.org/',
+          components: ['amp-form'],
+          excludedPaths: ['/404*', '/'],
+          pathIdentifier: '/amp/',
+          relAmpHtmlPattern: '{{canonicalBaseUrl}}{{pathname}}{{pathIdentifier}}',
+          useAmpClientIdApi: true,
+        },
+      },
+
     ]
 }
