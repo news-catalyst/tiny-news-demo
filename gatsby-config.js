@@ -10,6 +10,10 @@ module.exports = {
     title: `the tiny news collective`,
     siteUrl: `http://www.tinynewsco.org`,
     description: `a local news initiative`,
+    subscribe: {
+      title: `Subscribe`,
+      subtitle: `Get the latest news about the tiny news collective in your inbox.`,
+    }
   },
 
   /* Your site config here */
@@ -65,6 +69,11 @@ module.exports = {
       },
       `gatsby-plugin-sharp`,
       `gatsby-plugin-sass`,
-
+      {
+        resolve: 'gatsby-plugin-mailchimp',
+        options: {
+            endpoint: 'https://tinynewsco.us18.list-manage.com/subscribe/post?u=a91c8e3b29e153f11e34be272&amp;id=417b45b221', // add your MC list endpoint here; see instructions below
+        },
+      },
     ]
 }
