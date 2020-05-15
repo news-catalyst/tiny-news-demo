@@ -8,8 +8,6 @@ import Layout from "../components/Layout"
 import "./styles.scss"
 
 export default function HomePage({ data }) {
-  console.log(data)
-
   let tags = [];
   data.allGoogleDocs.nodes.forEach(({document}, index) => {
     tags = tags.concat(document.tags);

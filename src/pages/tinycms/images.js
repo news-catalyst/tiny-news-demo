@@ -1,17 +1,18 @@
 
 import React from "react"
+import { graphql } from 'gatsby'
 import Layout from "../../components/Layout"
 import TinyImage from "../../components/TinyImage"
 
 const TinyImages = ({data}) => {
   const images = data.allGoogleDocs.edges.map((edge) => {
     return edge.node.document.content.map((content) => {
-      if (content.img !== null) {
-        console.log(content)
-        return (
-          <TinyImage key={`${edge.node.id}-${content.img.source}`} document={edge.node.document} image={content.img} />
-        )
+      if (content.img === null) {
+        return null
       }
+      return (
+        <TinyImage key={`${edge.node.id}-${content.img.source}`} document={edge.node.document} image={content.img} />
+      )
     })
   })
 

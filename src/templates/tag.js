@@ -8,7 +8,6 @@ import "../pages/styles.scss"
 class Tag extends React.Component {
   render() {
     let data = this.props.data;
-    console.log(data);
     let tagHeader = "Articles tagged: " + this.props.pageContext.tag;
     let articles = data.allGoogleDocs.edges;
     const articleLinks = articles.map(article => (

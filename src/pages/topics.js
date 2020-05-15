@@ -7,15 +7,11 @@ import Layout from "../components/Layout"
 import "./styles.scss"
 
 export default function HomePage({ data }) {
-  console.log(data)
-
   let tags = [];
   data.allGoogleDocs.edges.forEach(({node}, index) => {
     tags = tags.concat(node.document.tags);
   })
-  console.log(tags);
   tags = _.uniq(tags).sort();
-  console.log(tags);
   const tagLinks = tags.map( (tag, index) => (
     <li key={index}><Link to={`/topics/${tag}`}>{_.startCase(tag)}</Link></li>
   ));
