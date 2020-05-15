@@ -21,6 +21,7 @@
     "bulma": "^0.8.2",
     "date-fns": "^2.12.0",
     "gapi-script": "^1.0.2",
+    "gatsby-plugin-amp": "^0.2.2",
     "gatsby-plugin-mailchimp": "^5.1.2",
     "gatsby-plugin-google-analytics": "^2.3.1",
     "gatsby": "^2.21.31",

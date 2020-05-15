@@ -83,6 +83,31 @@ module.exports = {
       `gatsby-plugin-sharp`,
       `gatsby-plugin-sass`,
       {
+        resolve: `gatsby-plugin-amp`,
+        options: {
+          analytics: {
+            type: 'gtag',
+            dataCredentials: 'include',
+            config: {
+              vars: {
+                gtag_id: "UA-166777432-1",
+                config: {
+                  "UA-166777432-1": {
+                    page_location: '{{pathname}}'
+                  },
+                },
+              },
+            },
+          },
+          canonicalBaseUrl: 'http://tinynewsco.org/',
+          components: ['amp-form'],
+          excludedPaths: ['/404*', '/'],
+          pathIdentifier: '/amp/',
+          relAmpHtmlPattern: '{{canonicalBaseUrl}}{{pathname}}{{pathIdentifier}}',
+          useAmpClientIdApi: true,
+        },
+      },
+      {
         resolve: 'gatsby-plugin-mailchimp',
         options: {
             endpoint: 'https://tinynewsco.us18.list-manage.com/subscribe/post?u=a91c8e3b29e153f11e34be272&amp;id=417b45b221', // add your MC list endpoint here; see instructions below
