@@ -21,7 +21,7 @@ class Tag extends React.Component {
 
     return (
       <div>
-        <ArticleNav />
+        <ArticleNav metadata={data.site.siteMetadata} />
 
         <Layout>
           <section className="section">
@@ -30,7 +30,7 @@ class Tag extends React.Component {
           </section>
         </Layout>
 
-        <ArticleFooter />
+        <ArticleFooter metadata={data.site.siteMetadata} />
         </div>
     )
   }
@@ -40,6 +40,22 @@ export default Tag;
 
 export const tagPageQuery = graphql`
   query TagPage($tag: String) {
+    site {
+      siteMetadata {
+        title
+        shortName
+        description
+        siteUrl
+        footerTitle
+        footerBylineName
+        footerBylineLink
+        nav {
+          articles
+          topics
+          cms
+        }
+      }
+    }
     allGoogleDocs(filter: {document: {tags: {in: [$tag]}}}) {
       edges {
         node {

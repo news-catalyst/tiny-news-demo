@@ -8,8 +8,21 @@ module.exports = {
   siteMetadata: {
     shortName: `tinynewsco`,
     title: `the tiny news collective`,
-    siteUrl: `http://www.tinynewsco.org`,
+    siteUrl: `https://tinynewsco.org/`,
     description: `a local news initiative`,
+    footerTitle: `tinynewsco.org`,
+    footerBylineName: `News Catalyst`,
+    footerBylineLink: `https://newscatalyst.org`,
+    labels: {
+      latestNews: `Latest News`,
+      search: `Search`,
+      topics: `Topics`,
+    },
+    nav: {
+      articles: `Articles`,
+      topics: `Topics`,
+      cms: `tinycms`
+    }
   },
 
   /* Your site config here */
