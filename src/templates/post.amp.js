@@ -8,13 +8,14 @@ import "../pages/styles.scss"
 
 
 export default function PostAMP({ data }) {
+  console.log("AMP data", data)
   let doc = data.googleDocs.document;
   let articleHtml = data.googleDocs.childMarkdownRemark.html;
   let parsedDate = parseISO(doc.createdTime)
 
   return (
     <div>
-      <ArticleNav />
+      <ArticleNav metadata={data.site.siteMetadata} />
 
       <Layout>
         <section className="hero is-bold">
@@ -24,7 +25,7 @@ export default function PostAMP({ data }) {
                 {doc.name}
               </h1>
               <h2 className="subtitle">
-                By {doc.author} | Published {formatRelative(parsedDate, new Date())} 
+                By {doc.author} | Published {formatRelative(parsedDate, new Date())}
               </h2>
             </div>
           </div>
@@ -50,13 +51,34 @@ export default function PostAMP({ data }) {
         </section>
 
       </Layout>
-      <ArticleFooter />
+      <ArticleFooter metadata={data.site.siteMetadata} />
     </div>
   )
 }
 
 export const pageQuery = graphql`
   query AmpArticleBySlug($slug: String!) {
+    site {
+      siteMetadata {
+        title
+        shortName
+        description
+        siteUrl
+        footerTitle
+        footerBylineName
+        footerBylineLink
+        labels {
+          latestNews
+          search
+          topics
+        }
+        nav {
+          articles
+          topics
+          cms
+        }
+      }
+    }
     googleDocs(document: {path: {eq: $slug}}) {
         document {
           author
