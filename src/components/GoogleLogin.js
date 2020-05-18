@@ -53,7 +53,7 @@ class GoogleLogin extends Component {
       .then((response) => {
         // Handle response
         this.updateMessaging({success: true, errors: false, message: "Successfully updated document data. The site is now republishing..."})
-        fetch('https://api.netlify.com/build_hooks/5eaf81776d3a2da2a6e11fac', {
+        fetch('https://api.netlify.com/build_hooks/5ec1e22b58e878a9b24bb61c', {
           method: 'post'
         }).then(function(response) {
           return response;
