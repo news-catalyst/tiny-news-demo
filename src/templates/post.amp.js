@@ -7,13 +7,12 @@ import { parseISO, formatRelative } from 'date-fns'
 import "../pages/styles.scss"
 
 
-export default function Post({ data }) {
+export default function PostAMP({ data }) {
+  console.log("AMP data", data)
   let doc = data.googleDocs.document;
   let articleHtml = data.googleDocs.childMarkdownRemark.html;
-  //2020-05-03T22:22:14.981Z
   let parsedDate = parseISO(doc.createdTime)
 
-  console.log(data.site.siteMetadata);
   return (
     <div>
       <ArticleNav metadata={data.site.siteMetadata} />
@@ -26,7 +25,7 @@ export default function Post({ data }) {
                 {doc.name}
               </h1>
               <h2 className="subtitle">
-                By {doc.author} | Published {formatRelative(parsedDate, new Date())} 
+                By {doc.author} | Published {formatRelative(parsedDate, new Date())}
               </h2>
             </div>
           </div>
@@ -58,7 +57,7 @@ export default function Post({ data }) {
 }
 
 export const pageQuery = graphql`
-  query($path: String!) {
+  query AmpArticleBySlug($slug: String!) {
     site {
       siteMetadata {
         title
@@ -80,7 +79,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    googleDocs(document: {path: {eq: $path}}) {
+    googleDocs(document: {path: {eq: $slug}}) {
         document {
           author
           createdTime

@@ -1,11 +1,9 @@
-import React, { useState } from "react"
+import React from "react"
 import { Link, graphql } from 'gatsby'
 import Layout from "../../components/Layout"
 import "../styles.scss"
 
 export default function Publish({ data }) {
-  const [message, setMessage] = useState('');
-
   return(
     <div>
 

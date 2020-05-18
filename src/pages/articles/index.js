@@ -3,8 +3,6 @@ import { graphql } from "gatsby"
 import Layout from "../../components/Layout"
 
 export default function HomePage({ data }) {
-  console.log(data)
-
   return(
     <Layout>
       <h1>tiny news co</h1>

@@ -7,15 +7,11 @@ import Layout from "../components/Layout"
 import "./styles.scss"
 
 export default function HomePage({ data }) {
-  console.log(data)
-
   let tags = [];
   data.allGoogleDocs.edges.forEach(({node}, index) => {
     tags = tags.concat(node.document.tags);
   })
-  console.log(tags);
   tags = _.uniq(tags).sort();
-  console.log(tags);
   const tagLinks = tags.map( (tag, index) => (
     <li key={index}><Link to={`/topics/${tag}`}>{_.startCase(tag)}</Link></li>
   ));
@@ -23,7 +19,7 @@ export default function HomePage({ data }) {
 
   return(
     <div>
-      <ArticleNav />
+      <ArticleNav metadata={data.site.siteMetadata} />
       <Layout>
         <section className="section">
           <h3 className="title is-size-4 is-bold-light">Topics</h3>
@@ -34,13 +30,34 @@ export default function HomePage({ data }) {
           </aside>
         </section>
       </Layout>
-      <ArticleFooter />
+      <ArticleFooter metadata={data.site.siteMetadata} />
     </div>
   )
 }
 
 export const query = graphql`
   query {
+    site {
+      siteMetadata {
+        title
+        shortName
+        description
+        siteUrl
+        footerTitle
+        footerBylineName
+        footerBylineLink
+        labels {
+          latestNews
+          search
+          topics
+        }
+        nav {
+          articles
+          topics
+          cms
+        }
+      }
+    }
     allGoogleDocs {
       edges {
         node {
