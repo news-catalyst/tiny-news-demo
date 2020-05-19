@@ -3,14 +3,16 @@ import { graphql, Link } from "gatsby"
 
 import { parseISO, formatRelative } from 'date-fns'
 import { TwitterTweetEmbed } from 'react-twitter-embed';
+import Embed from 'react-embed';
 import { Parser, ProcessNodeDefinitions } from "html-to-react";
-
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
 import "../pages/styles.scss"
 
 let tweetRegex = /\[tweet id=(.*?)\]/i;
+let urlRegex = /(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/i; 
+
 const htmlParser = new Parser(React);
 const processNodeDefinitions = new ProcessNodeDefinitions(React);
 function isValidNode(){
@@ -20,8 +22,8 @@ const processingInstructions = [
   // Create instruction for custom elements
   {
       shouldProcessNode: (node) => {
-          // Process the node if it matches a custom element
-          let foundMatch = (node.data && tweetRegex.test(node.data));
+          // Process the node if it matches a tweet shortcode or url
+          let foundMatch = (node.data && (tweetRegex.test(node.data) || urlRegex.test(node.data)));
           if (foundMatch) {
             console.log(node.data);
           }
@@ -29,8 +31,14 @@ const processingInstructions = [
       },
       processNode: (node) => {
         let result = tweetRegex.exec(node.data);
-        let tweetId = result[1];
-        return <TwitterTweetEmbed tweetId={tweetId} />;
+        if (result && result[1]) {
+          let tweetId = result[1];
+          return <TwitterTweetEmbed tweetId={tweetId} />;
+        } else {
+          // matched an entire url
+          return <Embed width={560} url={node.data} />
+        }
+        
       }
   },
   // Default processing
@@ -63,7 +71,11 @@ export default class Posttest extends React.Component {
               </div>
             </div>
           </section>
-          {updatedHtml}
+        <section className="section">
+          <div className="content">
+            {updatedHtml}
+          </div>
+        </section>
         <section className="section">
           <div className="container">
             <div className="tags">

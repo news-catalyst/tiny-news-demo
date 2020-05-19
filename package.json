@@ -40,6 +40,7 @@
     "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-embed": "^3.3.2",
     "react-string-replace": "^0.4.4",
     "react-twitter-embed": "^3.0.3"
   },
