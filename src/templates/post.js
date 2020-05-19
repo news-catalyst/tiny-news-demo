@@ -1,46 +1,69 @@
-import React from "react"
-import { Link, graphql } from "gatsby"
+import React from 'react';
+import { graphql, Link } from "gatsby"
+
+import { parseISO, formatRelative } from 'date-fns'
+import { TwitterTweetEmbed } from 'react-twitter-embed';
+import { Parser, ProcessNodeDefinitions } from "html-to-react";
+
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
-import { parseISO, formatRelative } from 'date-fns'
 import "../pages/styles.scss"
 
+let tweetRegex = /\[tweet id=(.*?)\]/i;
+const htmlParser = new Parser(React);
+const processNodeDefinitions = new ProcessNodeDefinitions(React);
+function isValidNode(){
+    return true;
+}
+const processingInstructions = [
+  // Create instruction for custom elements
+  {
+      shouldProcessNode: (node) => {
+          // Process the node if it matches a custom element
+          let foundMatch = (node.data && tweetRegex.test(node.data));
+          if (foundMatch) {
+            console.log(node.data);
+          }
+          return foundMatch;
+      },
+      processNode: (node) => {
+        let result = tweetRegex.exec(node.data);
+        let tweetId = result[1];
+        return <TwitterTweetEmbed tweetId={tweetId} />;
+      }
+  },
+  // Default processing
+  {
+      shouldProcessNode: () => true,
+      processNode: processNodeDefinitions.processDefaultNode
+  }
+];
 
-export default function Post({ data }) {
-  let doc = data.googleDocs.document;
-  let articleHtml = data.googleDocs.childMarkdownRemark.html;
-  //2020-05-03T22:22:14.981Z
-  let parsedDate = parseISO(doc.createdTime)
-
-  console.log(data.site.siteMetadata);
-  return (
-    <div>
-      <ArticleNav metadata={data.site.siteMetadata} />
-
-      <Layout>
-        <section className="hero is-bold">
-          <div className="hero-body">
-            <div className="container">
-              <h1 className="title">
-                {doc.name}
-              </h1>
-              <h2 className="subtitle">
-                By {doc.author} | Published {formatRelative(parsedDate, new Date())} 
-              </h2>
+export default class Posttest extends React.Component {
+  render () {
+    let data = this.props.data;
+    let doc = data.googleDocs.document;
+    let parsedDate = parseISO(doc.createdTime)
+    let articleHtml = data.googleDocs.childMarkdownRemark.html;
+    let updatedHtml = htmlParser.parseWithInstructions(articleHtml, isValidNode, processingInstructions);
+    return (
+      <div>
+        <ArticleNav metadata={data.site.siteMetadata} />
+        <Layout>
+          <section className="hero is-bold">
+            <div className="hero-body">
+              <div className="container">
+                <h1 className="title">
+                  {doc.name}
+                </h1>
+                <h2 className="subtitle">
+                  By {doc.author} | Published {formatRelative(parsedDate, new Date())} 
+                </h2>
+              </div>
             </div>
-          </div>
-        </section>
-
-        <section className="section">
-          <div className="content">
-
-              <div
-                dangerouslySetInnerHTML={{__html: articleHtml}}
-              />
-          </div>
-        </section>
-
+          </section>
+          {updatedHtml}
         <section className="section">
           <div className="container">
             <div className="tags">
@@ -54,7 +77,8 @@ export default function Post({ data }) {
       </Layout>
       <ArticleFooter metadata={data.site.siteMetadata} />
     </div>
-  )
+    )
+  }
 }
 
 export const pageQuery = graphql`
