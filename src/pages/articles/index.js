@@ -4,7 +4,7 @@ import Layout from "../../components/Layout"
 
 export default function HomePage({ data }) {
   return(
-    <Layout>
+    <Layout title="Articles" description="The latest news stories.">
       <h1>tiny news co</h1>
       <p>here are the latest articles:</p>
 

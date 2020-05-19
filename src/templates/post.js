@@ -58,7 +58,7 @@ export default class Posttest extends React.Component {
     return (
       <div>
         <ArticleNav metadata={data.site.siteMetadata} />
-        <Layout>
+        <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt}>
           <section className="hero is-bold">
             <div className="hero-body">
               <div className="container">
@@ -124,7 +124,8 @@ export const pageQuery = graphql`
           tags
         }
         childMarkdownRemark {
-            html
+          excerpt
+          html
         }
     }
   }

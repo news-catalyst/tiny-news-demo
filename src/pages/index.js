@@ -23,7 +23,7 @@ export default function HomePage({ data }) {
   return(
     <div>
       <ArticleNav metadata={data.site.siteMetadata} />
-      <Layout>
+      <Layout title={this.props.data.site.siteMetadata.title} description={this.props.site.siteMetadata.description}>
         <section className="hero is-primary is-bold">
           <div className="hero-body">
             <div className="container">
