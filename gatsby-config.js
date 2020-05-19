@@ -82,6 +82,7 @@ module.exports = {
       },
       `gatsby-plugin-sharp`,
       `gatsby-plugin-sass`,
+      `gatsby-plugin-netlify-cache`,
       {
         resolve: `gatsby-plugin-amp`,
         options: {
