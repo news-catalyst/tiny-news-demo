@@ -8,7 +8,6 @@ import "../pages/styles.scss"
 
 
 export default function PostAMP({ data }) {
-  console.log("AMP data", data)
   let doc = data.googleDocs.document;
   let articleHtml = data.googleDocs.childMarkdownRemark.html;
   let parsedDate = parseISO(doc.createdTime)
