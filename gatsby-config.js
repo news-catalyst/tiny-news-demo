@@ -84,6 +84,25 @@ module.exports = {
       `gatsby-plugin-sass`,
       `gatsby-plugin-netlify-cache`,
       {
+        resolve: 'gatsby-plugin-next-seo',
+        options: {
+          canonical: 'https://tinynewsco.org/',
+          titleTemplate: 'tiny news co | %s',
+          openGraph: {
+            type: 'website',
+            locale: 'en_US',
+            url: 'https://tinynewsco.org/',
+            site_name: 'tiny news co',
+          },
+          twitter: {
+            handle: '@tinynewsco',
+            site: '@newscatalyst',
+            cardType: 'summary_large_image',
+          },
+        },
+      },
+
+      {
         resolve: `gatsby-plugin-amp`,
         options: {
           analytics: {

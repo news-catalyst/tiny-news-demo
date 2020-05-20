@@ -39,7 +39,7 @@ export default class Subscribe extends React.Component {
     return(
       <div>
         <ArticleNav metadata={this.props.data.site.siteMetadata} />
-        <Layout>
+        <Layout title={this.props.data.site.siteMetadata.subscribe.title} description={this.props.site.siteMetadata.subscribe.subtitle}>
           <section className="hero is-primary is-bold">
             <div className="hero-body">
               <div className="container">
