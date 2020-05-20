@@ -1,4 +1,5 @@
 import React from "react"
+import { graphql } from 'gatsby'
 import addToMailchimp from 'gatsby-plugin-mailchimp'
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
@@ -36,18 +37,19 @@ export default class Subscribe extends React.Component {
   }
 
   render() {
+    let data = this.props.data;
     return(
       <div>
-        <ArticleNav metadata={this.props.data.site.siteMetadata} />
-        <Layout title={this.props.data.site.siteMetadata.subscribe.title} description={this.props.site.siteMetadata.subscribe.subtitle}>
+        <ArticleNav metadata={data.site.siteMetadata} />
+        <Layout title={data.site.siteMetadata.subscribe.title} description={data.site.siteMetadata.subscribe.subtitle}>
           <section className="hero is-primary is-bold">
             <div className="hero-body">
               <div className="container">
                 <h1 className="title">
-                  {this.props.data.site.siteMetadata.subscribe.title}
+                  {data.site.siteMetadata.subscribe.title}
                 </h1>
                 <h2 className="subtitle">
-                  {this.props.data.site.siteMetadata.subscribe.subtitle}
+                  {data.site.siteMetadata.subscribe.subtitle}
                 </h2>
               </div>
             </div>
@@ -73,7 +75,7 @@ export default class Subscribe extends React.Component {
             </form>
           </section>
         </Layout>
-        <ArticleFooter metadata={this.props.data.site.siteMetadata} />
+        <ArticleFooter metadata={data.site.siteMetadata} />
       </div>
     );
   }

@@ -1,7 +1,6 @@
 import React from "react"
 
 export default function ArticleNav(props) {
-  console.log("ArticleNav props: ", props)
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">

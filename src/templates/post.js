@@ -2,7 +2,7 @@ import React from 'react';
 import { graphql, Link } from "gatsby"
 
 import { parseISO, formatRelative } from 'date-fns'
-import { TwitterTweetEmbed } from 'react-twitter-embed';
+// import { TwitterTweetEmbed } from 'react-twitter-embed';
 import Embed from 'react-embed';
 import { Parser, ProcessNodeDefinitions } from "html-to-react";
 import ArticleFooter from "../components/ArticleFooter"
@@ -25,7 +25,7 @@ const processingInstructions = [
           // Process the node if it matches a tweet shortcode or url
           let foundMatch = (node.data && (tweetRegex.test(node.data) || urlRegex.test(node.data)));
           if (foundMatch) {
-            console.log(node.data);
+            console.log("found match: ", node.data);
           }
           return foundMatch;
       },
@@ -33,10 +33,12 @@ const processingInstructions = [
         let result = tweetRegex.exec(node.data);
         if (result && result[1]) {
           let tweetId = result[1];
-          return <TwitterTweetEmbed tweetId={tweetId} />;
+          return <div></div>
+          // return <Embed width={560} url={`https://twitter.com/${tweetId}`} />
         } else {
           // matched an entire url
           return <Embed width={560} url={node.data} />
+          // return <div></div>
         }
         
       }
@@ -49,12 +51,20 @@ const processingInstructions = [
 ];
 
 export default class Posttest extends React.Component {
+  state = {
+    articleHtml: null,
+  }
+  componentDidMount() {
+    let updatedHtml = htmlParser.parseWithInstructions(this.props.data.googleDocs.childMarkdownRemark.html, isValidNode, processingInstructions);
+    this.setState({
+      articleHtml: updatedHtml,
+    })
+  }
+
   render () {
     let data = this.props.data;
     let doc = data.googleDocs.document;
     let parsedDate = parseISO(doc.createdTime)
-    let articleHtml = data.googleDocs.childMarkdownRemark.html;
-    let updatedHtml = htmlParser.parseWithInstructions(articleHtml, isValidNode, processingInstructions);
     return (
       <div>
         <ArticleNav metadata={data.site.siteMetadata} />
@@ -71,21 +81,20 @@ export default class Posttest extends React.Component {
               </div>
             </div>
           </section>
-        <section className="section">
-          <div className="content">
-            {updatedHtml}
-          </div>
-        </section>
-        <section className="section">
-          <div className="container">
-            <div className="tags">
-              {doc.tags.map((tag, index) => (
-                <Link to={`/topics/${tag}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
-              ))}
+          <section className="section">
+            <div className="content">
+              {this.state.articleHtml}
             </div>
-          </div>
-        </section>
-
+          </section>
+          <section className="section">
+            <div className="container">
+              <div className="tags">
+                {doc.tags.map((tag, index) => (
+                  <Link to={`/topics/${tag}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
+                ))}
+              </div>
+            </div>
+          </section>
       </Layout>
       <ArticleFooter metadata={data.site.siteMetadata} />
     </div>
