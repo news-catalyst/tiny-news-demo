@@ -27,6 +27,7 @@
     "gatsby-plugin-mailchimp": "^5.1.2",
     "gatsby-plugin-netlify-cache": "^1.2.0",
     "gatsby-plugin-netlify-cms": "^4.3.0",
+    "gatsby-plugin-next-seo": "^1.5.1",
     "gatsby-plugin-sass": "^2.3.0",
     "gatsby-plugin-sharp": "^2.6.0",
     "gatsby-remark-images": "^3.3.0",
