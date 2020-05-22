@@ -1,8 +1,6 @@
 import React from 'react';
 import { graphql, Link } from "gatsby"
-
 import { parseISO, formatRelative } from 'date-fns'
-// import { TwitterTweetEmbed } from 'react-twitter-embed';
 import Embed from 'react-embed';
 import { Parser, ProcessNodeDefinitions } from "html-to-react";
 import ArticleFooter from "../components/ArticleFooter"
@@ -10,8 +8,7 @@ import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
 import "../pages/styles.scss"
 
-let tweetRegex = /\[tweet id=(.*?)\]/i;
-let urlRegex = /(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/i; 
+let embedRegex = /\[embed src=\s*(.*?)\]/i;
 
 const htmlParser = new Parser(React);
 const processNodeDefinitions = new ProcessNodeDefinitions(React);
@@ -19,28 +16,39 @@ function isValidNode(){
     return true;
 }
 const processingInstructions = [
-  // Create instruction for custom elements
+  // first case: when [embed src=http://twitter.com/tweet1234] and the url is linked
+  // this comes through as a node with 3 children:
+  //    * "[embed src "
+  //    * { attribs: { href: "http://twitter.com/tweet1234" } }
+  //    * "]"
+  // look for this case in the PARENT node and replace its children with an <Embed> component
+  //    using the url found in the second child. 
+  {
+    replaceChildren: true,
+    shouldProcessNode: (node) => {
+      console.log("replace children shouldProcessNode: ", node);
+      return (node.children !== undefined && node.children.length == 3 && (/\[embed src=\s/).test(node.children[0].data));
+    },
+    processNode: (node, children, index) => {
+      let embedUrl = node.children[1].attribs.href;
+      return <Embed width={560} url={embedUrl} />
+    }
+  },
+  // second case: when the embed code is NOT automagically hyperlinked from google
+  // it comes through as a single plaintext node :)
   {
       shouldProcessNode: (node) => {
-          // Process the node if it matches a tweet shortcode or url
-          let foundMatch = (node.data && (tweetRegex.test(node.data) || urlRegex.test(node.data)));
-          if (foundMatch) {
-            console.log("found match: ", node.data);
-          }
-          return foundMatch;
+        let foundMatch = (node.data && embedRegex.test(node.data));
+        return foundMatch;
       },
+
       processNode: (node) => {
-        let result = tweetRegex.exec(node.data);
+        let result = embedRegex.exec(node.data);
         if (result && result[1]) {
-          let tweetId = result[1];
-          // return <div></div>
-          return <Embed width={560} url={`https://twitter.com/${tweetId}`} />
-        } else {
-          // matched an entire url
-          return <Embed width={560} url={node.data} />
-          // return <div></div>
+          let embedUrl = result[1];
+          return <Embed width={560} url={embedUrl} />
         }
-        
+
       }
   },
   // Default processing
