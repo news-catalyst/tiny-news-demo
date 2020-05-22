@@ -16,13 +16,6 @@ function isValidNode(){
     return true;
 }
 const processingInstructions = [
-  // first case: when [embed src=http://twitter.com/tweet1234] and the url is linked
-  // this comes through as a node with 3 children:
-  //    * "[embed src "
-  //    * { attribs: { href: "http://twitter.com/tweet1234" } }
-  //    * "]"
-  // look for this case in the PARENT node and replace its children with an <Embed> component
-  //    using the url found in the second child. 
   {
     replaceChildren: true,
     shouldProcessNode: (node) => {
