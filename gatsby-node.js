@@ -8,7 +8,6 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}) {
                 nodes {
                     document {
-                        id
                         path
                         tags
                     }
@@ -25,14 +24,6 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             path: document.path,
             component: path.resolve(`./src/templates/post.js`),
         })
-        // console.log("creating AMP page for google doc at ", `${document.path}/amp`)
-        // actions.createPage({
-        //   path: `${document.path}/amp`,
-        //   component: path.resolve('./src/templates/post.amp.js'),
-        //   context: {
-        //     slug: document.path,
-        //   }
-        // })
       })
 
       tags = _.uniq(tags)
