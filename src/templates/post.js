@@ -19,7 +19,6 @@ const processingInstructions = [
   {
     replaceChildren: true,
     shouldProcessNode: (node) => {
-      console.log("replace children shouldProcessNode: ", node);
       return (node.children !== undefined && node.children.length == 3 && (/\[embed src=\s/).test(node.children[0].data));
     },
     processNode: (node, children, index) => {
@@ -69,7 +68,7 @@ export default class Posttest extends React.Component {
     return (
       <div>
         <ArticleNav metadata={data.site.siteMetadata} />
-        <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt}>
+        <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} {...doc}>
           <section className="hero is-bold">
             <div className="hero-body">
               <div className="container">
@@ -132,6 +131,16 @@ export const pageQuery = graphql`
           createdTime
           name
           tags
+          og_locale
+          og_title
+          og_description
+          og_image_url
+          og_image_alt
+          og_site_name
+          og_url
+          tw_handle
+          tw_site
+          tw_cardType
         }
         childMarkdownRemark {
           excerpt
