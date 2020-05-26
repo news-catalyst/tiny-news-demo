@@ -95,6 +95,27 @@ class GoogleLogin extends Component {
       }
     }
 
+    getDocData = (description) => {
+      let docData;
+      if ( (!description || /^\s*$/.test(description)) ) {
+        console.log("description is blank");
+        docData = {
+          "author": "Ace Reporter",
+          "tags": ["news"],
+          "og_type":"website",
+          "og_locale":"en_US",
+          "og_url":"https://tinynewsco.org/",
+          "og_site_name":"tiny news co",
+          "tw_handle":"@tinynewsco",
+          "tw_site":"@newscatalyst",
+          "tw_cardType":"summary_large_image"
+        }
+      } else {
+        docData = JSON.parse(description);
+      }
+      return docData;
+    }
+
     // UPDATE state with document metadata
     updateDocData = (docData) => {
       this.setState({
@@ -154,9 +175,10 @@ class GoogleLogin extends Component {
           }).then(response => {
             // PARSE description JSON for document metadata
             let docName = response.result.name;
-            let doc = JSON.parse(response.result.description);
+
+            let docData = this.getDocData(response.result.description);
             // STORE doc metadata in react state
-            this.updateDocData(doc);
+            this.updateDocData(docData);
             // STORE doc name at top-level react state
             // I'm doing this to avoid potentially storing it unnecessarily in the doc description
             this.updateDocName(docName);
