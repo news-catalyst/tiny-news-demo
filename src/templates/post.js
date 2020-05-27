@@ -86,6 +86,12 @@ export default class Posttest extends React.Component {
       }
     };
 
+    let tagLinks;
+    if (doc.tags) {
+      tagLinks = doc.tags.map((tag, index) => (
+        <Link to={`/topics/${tag}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
+      ))
+    } 
     return (
       <div>
         <Helmet>
@@ -118,16 +124,14 @@ export default class Posttest extends React.Component {
             <section className="section">
               <div className="container">
                 <div className="tags">
-                  {doc.tags.map((tag, index) => (
-                    <Link to={`/topics/${tag}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
-                  ))}
+                  {tagLinks}
                 </div>
               </div>
             </section>
           </aside>
-      </Layout>
-      <ArticleFooter metadata={data.site.siteMetadata} />
-    </div>
+        </Layout>
+        <ArticleFooter metadata={data.site.siteMetadata} />
+      </div>
     )
   }
 }
