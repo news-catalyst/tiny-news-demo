@@ -259,7 +259,7 @@ class GoogleLogin extends Component {
                 <div className="field-body">
                   <div className="field">
                     <div className="control">
-                      <input name={key} className="input" type="text" value={this.state.doc[key] || ''} onChange={this.handleChangeDoc} />
+                      <input aria-label={key} name={key} className="input" type="text" value={this.state.doc[key] || ''} onChange={this.handleChangeDoc} />
                     </div>
                   </div>
                   <div className="field">
@@ -280,7 +280,7 @@ class GoogleLogin extends Component {
                       tinycms
                     </a>
 
-                    <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" href="/tinycms">
                       <span aria-hidden="true"></span>
                       <span aria-hidden="true"></span>
                       <span aria-hidden="true"></span>
@@ -302,14 +302,14 @@ class GoogleLogin extends Component {
                       <div className="navbar-item">
                         <div className="buttons">
                           {this.state.user && 
-                            <a id="" className="button logout" onClick={this.signOut}>
+                            <button id="" className="button logout" onClick={this.signOut}>
                               Log out
-                            </a>
+                            </button>
                           }
                           {!this.state.user && 
-                            <a id="customBtn" className="button is-light">
+                            <button id="customBtn" className="button is-light">
                               Log in
-                            </a>
+                            </button>
                           }   
                         </div>
                       </div>
@@ -347,27 +347,9 @@ class GoogleLogin extends Component {
                       {formFields}
 
                       <hr/>
-                      <div className="field is-horizontal">
-                        <div className="field-label is-normal">
-                          <label className="label">New field</label>
-                        </div>
-                        <div className="field-body">
-                          <div className="field has-addons">
-                            <div className="control">
-                              <input className="input" type="text" placeholder="field name" value={this.state.newField} onChange={this.handleNewFieldChange} />
-                            </div>
-                            <div className="control">
-                              <a className="button is-info" onClick={this.addFieldToForm}>
-                                Add
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <hr/>
 
                       <div className="control">
-                        <input className="button is-primary" type="submit" value="Save" />
+                        <input aria-label="Save" className="button is-primary" type="submit" value="Save" />
                       </div>
                     </form>
                   </section>
@@ -385,7 +367,7 @@ class GoogleLogin extends Component {
                       tinycms
                     </a>
 
-                    <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" href="/tinycms">
                       <span aria-hidden="true"></span>
                       <span aria-hidden="true"></span>
                       <span aria-hidden="true"></span>
@@ -407,14 +389,14 @@ class GoogleLogin extends Component {
                       <div className="navbar-item">
                         <div className="buttons">
                           {this.state.user && 
-                            <a id="" className="button logout" onClick={this.signOut}>
+                            <button id="" className="button logout" onClick={this.signOut}>
                               Log out
-                            </a>
+                            </button>
                           }
                           {!this.state.user && 
-                            <a id="customBtn" className="button is-light">
+                            <button id="customBtn" className="button is-light">
                               Log in
-                            </a>
+                            </button>
                           }   
                         </div>
                       </div>

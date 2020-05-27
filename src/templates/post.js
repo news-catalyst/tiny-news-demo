@@ -19,7 +19,7 @@ const processingInstructions = [
   {
     replaceChildren: true,
     shouldProcessNode: (node) => {
-      return (node.children !== undefined && node.children.length == 3 && (/\[embed src=\s/).test(node.children[0].data));
+      return (node.children !== undefined && node.children.length === 3 && (/\[embed src=\s/).test(node.children[0].data));
     },
     processNode: (node, children, index) => {
       let embedUrl = node.children[1].attribs.href;
