@@ -69,32 +69,36 @@ export default class Posttest extends React.Component {
       <div>
         <ArticleNav metadata={data.site.siteMetadata} />
         <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} {...doc}>
-          <section className="hero is-bold">
-            <div className="hero-body">
+          <article>
+            <section className="hero is-bold">
+              <div className="hero-body">
+                <div className="container">
+                  <h1 className="title">
+                    {doc.name}
+                  </h1>
+                  <h2 className="subtitle">
+                    By {doc.author} | Published {formatRelative(parsedDate, new Date())} 
+                  </h2>
+                </div>
+              </div>
+            </section>
+            <section className="section">
+              <div className="content">
+                {this.state.articleHtml}
+              </div>
+            </section>
+          </article>
+          <aside>
+            <section className="section">
               <div className="container">
-                <h1 className="title">
-                  {doc.name}
-                </h1>
-                <h2 className="subtitle">
-                  By {doc.author} | Published {formatRelative(parsedDate, new Date())} 
-                </h2>
+                <div className="tags">
+                  {doc.tags.map((tag, index) => (
+                    <Link to={`/topics/${tag}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
+                  ))}
+                </div>
               </div>
-            </div>
-          </section>
-          <section className="section">
-            <div className="content">
-              {this.state.articleHtml}
-            </div>
-          </section>
-          <section className="section">
-            <div className="container">
-              <div className="tags">
-                {doc.tags.map((tag, index) => (
-                  <Link to={`/topics/${tag}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
-                ))}
-              </div>
-            </div>
-          </section>
+            </section>
+          </aside>
       </Layout>
       <ArticleFooter metadata={data.site.siteMetadata} />
     </div>
