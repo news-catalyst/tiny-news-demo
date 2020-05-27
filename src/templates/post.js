@@ -65,6 +65,12 @@ export default class Posttest extends React.Component {
     let data = this.props.data;
     let doc = data.googleDocs.document;
     let parsedDate = parseISO(doc.createdTime)
+    let tagLinks;
+    if (doc.tags) {
+      tagLinks = doc.tags.map((tag, index) => (
+        <Link to={`/topics/${tag}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
+      ))
+    } 
     return (
       <div>
         <ArticleNav metadata={data.site.siteMetadata} />
@@ -89,9 +95,7 @@ export default class Posttest extends React.Component {
           <section className="section">
             <div className="container">
               <div className="tags">
-                {doc.tags.map((tag, index) => (
-                  <Link to={`/topics/${tag}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
-                ))}
+                {tagLinks}
               </div>
             </div>
           </section>
