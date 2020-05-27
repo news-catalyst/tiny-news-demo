@@ -2,6 +2,7 @@ import React from 'react';
 import { graphql, Link } from "gatsby"
 import { parseISO, formatRelative } from 'date-fns'
 import Embed from 'react-embed';
+import { Helmet } from "react-helmet"
 import { Parser, ProcessNodeDefinitions } from "html-to-react";
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
@@ -65,8 +66,33 @@ export default class Posttest extends React.Component {
     let data = this.props.data;
     let doc = data.googleDocs.document;
     let parsedDate = parseISO(doc.createdTime)
+
+    let schemaOrgJsonLd = {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://google.com/article"
+      },
+      "headline": doc.name,
+      "datePublished": doc.createdTime,
+      "author": {
+        "@type": "Person",
+        "name": doc.author
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": data.site.siteMetadata.shortName
+      }
+    };
+
     return (
       <div>
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify(schemaOrgJsonLd)}
+          </script>
+        </Helmet>
         <ArticleNav metadata={data.site.siteMetadata} />
         <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} {...doc}>
           <article>
