@@ -103,11 +103,15 @@ class GoogleLogin extends Component {
           "author": "Ace Reporter",
           "tags": ["news"],
           "og_type":"website",
+          "og_title":"",
+          "og_description":"",
           "og_locale":"en_US",
-          "og_url":"https://tinynewsco.org/",
-          "og_site_name":"tiny news co",
-          "tw_handle":"@tinynewsco",
-          "tw_site":"@newscatalyst",
+          "og_image_url": "",
+          "og_image_alt": "",
+          "og_url":"",
+          "og_site_name":"",
+          "tw_handle":"@",
+          "tw_site":"@",
           "tw_cardType":"summary_large_image"
         }
       } else {
