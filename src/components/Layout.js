@@ -27,9 +27,11 @@ export default function Layout(props) {
 
     />
 
-    <div className="container">
-      {props.children}
-    </div>
+    <main>
+      <div className="container">
+        {props.children}
+      </div>
+    </main>
     </>
   )
 }
