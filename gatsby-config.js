@@ -49,7 +49,7 @@ module.exports = {
                 // It's important to specify the maxWidth (in pixels) of
                 // the content container as this plugin uses this as the
                 // base for generating different widths of each image.
-                maxWidth: 650,
+                maxWidth: 1290,
                 wrapperStyle: "margin-top: 10px; margin-bottom: 10px;"
               },
             },
@@ -82,6 +82,7 @@ module.exports = {
       },
       `gatsby-plugin-sharp`,
       `gatsby-plugin-sass`,
+      `gatsby-plugin-react-helmet`,
       {
         resolve: 'gatsby-plugin-next-seo',
         options: {

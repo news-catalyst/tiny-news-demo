@@ -2,6 +2,7 @@ import React from 'react';
 import { graphql, Link } from "gatsby"
 import { parseISO, formatRelative } from 'date-fns'
 import Embed from 'react-embed';
+import { Helmet } from "react-helmet"
 import { Parser, ProcessNodeDefinitions } from "html-to-react";
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
@@ -19,7 +20,7 @@ const processingInstructions = [
   {
     replaceChildren: true,
     shouldProcessNode: (node) => {
-      return (node.children !== undefined && node.children.length == 3 && (/\[embed src=\s/).test(node.children[0].data));
+      return (node.children !== undefined && node.children.length === 3 && (/\[embed src=\s/).test(node.children[0].data));
     },
     processNode: (node, children, index) => {
       let embedUrl = node.children[1].attribs.href;
@@ -65,6 +66,26 @@ export default class Posttest extends React.Component {
     let data = this.props.data;
     let doc = data.googleDocs.document;
     let parsedDate = parseISO(doc.createdTime)
+
+    let schemaOrgJsonLd = {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://google.com/article"
+      },
+      "headline": doc.name,
+      "datePublished": doc.createdTime,
+      "author": {
+        "@type": "Person",
+        "name": doc.author
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": data.site.siteMetadata.shortName
+      }
+    };
+
     let tagLinks;
     if (doc.tags) {
       tagLinks = doc.tags.map((tag, index) => (
@@ -73,35 +94,44 @@ export default class Posttest extends React.Component {
     } 
     return (
       <div>
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify(schemaOrgJsonLd)}
+          </script>
+        </Helmet>
         <ArticleNav metadata={data.site.siteMetadata} />
         <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} {...doc}>
-          <section className="hero is-bold">
-            <div className="hero-body">
+          <article>
+            <section className="hero is-bold">
+              <div className="hero-body">
+                <div className="container">
+                  <h1 className="title">
+                    {doc.name}
+                  </h1>
+                  <h2 className="subtitle">
+                    By {doc.author} | Published {formatRelative(parsedDate, new Date())} 
+                  </h2>
+                </div>
+              </div>
+            </section>
+            <section className="section">
+              <div className="content">
+                {this.state.articleHtml}
+              </div>
+            </section>
+          </article>
+          <aside>
+            <section className="section">
               <div className="container">
-                <h1 className="title">
-                  {doc.name}
-                </h1>
-                <h2 className="subtitle">
-                  By {doc.author} | Published {formatRelative(parsedDate, new Date())} 
-                </h2>
+                <div className="tags">
+                  {tagLinks}
+                </div>
               </div>
-            </div>
-          </section>
-          <section className="section">
-            <div className="content">
-              {this.state.articleHtml}
-            </div>
-          </section>
-          <section className="section">
-            <div className="container">
-              <div className="tags">
-                {tagLinks}
-              </div>
-            </div>
-          </section>
-      </Layout>
-      <ArticleFooter metadata={data.site.siteMetadata} />
-    </div>
+            </section>
+          </aside>
+        </Layout>
+        <ArticleFooter metadata={data.site.siteMetadata} />
+      </div>
     )
   }
 }
