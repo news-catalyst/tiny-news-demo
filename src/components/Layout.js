@@ -8,8 +8,8 @@ export default function Layout(props) {
       title={props.og_title}
       description={props.og_description}
       openGraph={{
-        title: props.title,
-        description: props.description,
+        title: props.og_title,
+        description: props.og_description,
         images: [
           {
             url: props.og_image_url,

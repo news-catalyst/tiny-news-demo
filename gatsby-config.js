@@ -121,7 +121,7 @@ module.exports = {
           canonicalBaseUrl: 'http://tinynewsco.org/',
           components: ['amp-form'],
           excludedPaths: ['/404*', '/'],
-          pathIdentifier: '/amp/',
+          pathIdentifier: '/',
           relAmpHtmlPattern: '{{canonicalBaseUrl}}{{pathname}}{{pathIdentifier}}',
           useAmpClientIdApi: true,
         },

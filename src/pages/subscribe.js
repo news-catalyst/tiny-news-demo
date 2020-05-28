@@ -59,7 +59,7 @@ export default class Subscribe extends React.Component {
           <section className="section">
             <form onSubmit={this._handleSubmit}>
               <div className="field">
-                <label className="label" htmlFor="email">Email</label>
+                <label className="label" htmlFor="email" id="email-label">Email</label>
                 <div className="control">
                   <input aria-labelledby="email-label" aria-label="email" id="email" name="email" className="input" type="email" placeholder="hello@example.com" onChange={this._handleChange} />
                 </div>
