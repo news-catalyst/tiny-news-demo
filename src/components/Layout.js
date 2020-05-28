@@ -5,8 +5,8 @@ export default function Layout(props) {
   return (
     <>
       <GatsbySeo
-      title={props.title}
-      description={props.description}
+      title={props.og_title}
+      description={props.og_description}
       openGraph={{
         title: props.title,
         description: props.description,
@@ -19,6 +19,12 @@ export default function Layout(props) {
           },
         ],
       }}
+      twitter={{
+        handle: props.tw_handle,
+        site: props.tw_site,
+        cardType: props.tw_cardType,
+      }}
+
     />
 
     <div className="container">
