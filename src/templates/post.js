@@ -33,12 +33,10 @@ const processingInstructions = [
         let result = tweetRegex.exec(node.data);
         if (result && result[1]) {
           let tweetId = result[1];
-          return <div></div>
-          // return <Embed width={560} url={`https://twitter.com/${tweetId}`} />
+          return <Embed width={560} url={`https://twitter.com/${tweetId}`} />
         } else {
           // matched an entire url
           return <Embed width={560} url={node.data} />
-          // return <div></div>
         }
         
       }
