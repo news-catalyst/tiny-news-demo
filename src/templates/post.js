@@ -2,7 +2,6 @@ import React from 'react';
 import { graphql, Link } from "gatsby"
 import { parseISO, formatRelative } from 'date-fns'
 import Embed from 'react-embed';
-import { Helmet } from "react-helmet"
 import { Parser, ProcessNodeDefinitions } from "html-to-react";
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
@@ -17,9 +16,17 @@ function isValidNode(){
     return true;
 }
 const processingInstructions = [
+  // first case: when [embed src=http://twitter.com/tweet1234] and the url is linked
+  // this comes through as a node with 3 children:
+  //    * "[embed src "
+  //    * { attribs: { href: "http://twitter.com/tweet1234" } }
+  //    * "]"
+  // look for this case in the PARENT node and replace its children with an <Embed> component
+  //    using the url found in the second child. 
   {
     replaceChildren: true,
     shouldProcessNode: (node) => {
+      console.log("replace children shouldProcessNode: ", node);
       return (node.children !== undefined && node.children.length === 3 && (/\[embed src=\s/).test(node.children[0].data));
     },
     processNode: (node, children, index) => {
@@ -33,13 +40,16 @@ const processingInstructions = [
       shouldProcessNode: (node) => {
         let foundMatch = (node.data && embedRegex.test(node.data));
         return foundMatch;
-      },
-
+  },
       processNode: (node) => {
         let result = embedRegex.exec(node.data);
+
         if (result && result[1]) {
           let embedUrl = result[1];
           return <Embed width={560} url={embedUrl} />
+        } else {
+          // matched an entire url
+          return <Embed width={560} url={node.data} />
         }
 
       }
@@ -66,26 +76,6 @@ export default class Posttest extends React.Component {
     let data = this.props.data;
     let doc = data.googleDocs.document;
     let parsedDate = parseISO(doc.createdTime)
-
-    let schemaOrgJsonLd = {
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "https://google.com/article"
-      },
-      "headline": doc.name,
-      "datePublished": doc.createdTime,
-      "author": {
-        "@type": "Person",
-        "name": doc.author
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": data.site.siteMetadata.shortName
-      }
-    };
-
     let tagLinks;
     if (doc.tags) {
       tagLinks = doc.tags.map((tag, index) => (
@@ -94,11 +84,6 @@ export default class Posttest extends React.Component {
     } 
     return (
       <div>
-        <Helmet>
-          <script type="application/ld+json">
-            {JSON.stringify(schemaOrgJsonLd)}
-          </script>
-        </Helmet>
         <ArticleNav metadata={data.site.siteMetadata} />
         <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} {...doc}>
           <article>

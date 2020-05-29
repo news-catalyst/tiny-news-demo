@@ -82,7 +82,6 @@ module.exports = {
       },
       `gatsby-plugin-sharp`,
       `gatsby-plugin-sass`,
-      `gatsby-plugin-react-helmet`,
       {
         resolve: 'gatsby-plugin-next-seo',
         options: {
@@ -122,7 +121,7 @@ module.exports = {
           canonicalBaseUrl: 'http://tinynewsco.org/',
           components: ['amp-form'],
           excludedPaths: ['/404*', '/'],
-          pathIdentifier: '/',
+          pathIdentifier: '/amp/',
           relAmpHtmlPattern: '{{canonicalBaseUrl}}{{pathname}}{{pathIdentifier}}',
           useAmpClientIdApi: true,
         },

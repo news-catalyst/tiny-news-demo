@@ -180,8 +180,8 @@ class GoogleLogin extends Component {
             // PARSE description JSON for document metadata
             let docName = response.result.name;
 
-            let docData = this.getDocData(response.result.description);
             // STORE doc metadata in react state
+            let docData = this.getDocData(response.result.description);
             this.updateDocData(docData);
             // STORE doc name at top-level react state
             // I'm doing this to avoid potentially storing it unnecessarily in the doc description
@@ -260,11 +260,6 @@ class GoogleLogin extends Component {
                   <div className="field">
                     <div className="control">
                       <input aria-label={key} name={key} className="input" type="text" value={this.state.doc[key] || ''} onChange={this.handleChangeDoc} />
-                    </div>
-                  </div>
-                  <div className="field">
-                    <div className="control">
-                      <button className="button" onClick={this.removeFieldFromForm(key)}>-</button>
                     </div>
                   </div>
                 </div>
