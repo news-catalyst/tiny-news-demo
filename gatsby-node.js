@@ -49,9 +49,11 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         })
       })
 
+      // remove any null tags
       tags = tags.filter(function (el) {
         return el != null;
       });
+
       tags = _.uniq(tags)
       console.log(tags);
       console.log("Making", tags.length, "tag pages...")

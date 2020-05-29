@@ -5,8 +5,8 @@ export default function Layout(props) {
   return (
     <>
       <GatsbySeo
-      title={props.title}
-      description={props.description}
+      title={props.og_title}
+      description={props.og_description}
       openGraph={{
         title: props.og_title,
         description: props.og_description,
@@ -27,9 +27,11 @@ export default function Layout(props) {
 
     />
 
-    <div className="container">
-      {props.children}
-    </div>
+    <main>
+      <div className="container">
+        {props.children}
+      </div>
+    </main>
     </>
   )
 }

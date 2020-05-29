@@ -16,10 +16,18 @@ function isValidNode(){
     return true;
 }
 const processingInstructions = [
+  // first case: when [embed src=http://twitter.com/tweet1234] and the url is linked
+  // this comes through as a node with 3 children:
+  //    * "[embed src "
+  //    * { attribs: { href: "http://twitter.com/tweet1234" } }
+  //    * "]"
+  // look for this case in the PARENT node and replace its children with an <Embed> component
+  //    using the url found in the second child. 
   {
     replaceChildren: true,
     shouldProcessNode: (node) => {
-      return (node.children !== undefined && node.children.length == 3 && (/\[embed src=\s/).test(node.children[0].data));
+      console.log("replace children shouldProcessNode: ", node);
+      return (node.children !== undefined && node.children.length === 3 && (/\[embed src=\s/).test(node.children[0].data));
     },
     processNode: (node, children, index) => {
       let embedUrl = node.children[1].attribs.href;
@@ -32,13 +40,16 @@ const processingInstructions = [
       shouldProcessNode: (node) => {
         let foundMatch = (node.data && embedRegex.test(node.data));
         return foundMatch;
-      },
-
+  },
       processNode: (node) => {
         let result = embedRegex.exec(node.data);
+
         if (result && result[1]) {
           let embedUrl = result[1];
           return <Embed width={560} url={embedUrl} />
+        } else {
+          // matched an entire url
+          return <Embed width={560} url={node.data} />
         }
 
       }
@@ -75,33 +86,37 @@ export default class Posttest extends React.Component {
       <div>
         <ArticleNav metadata={data.site.siteMetadata} />
         <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} {...doc}>
-          <section className="hero is-bold">
-            <div className="hero-body">
+          <article>
+            <section className="hero is-bold">
+              <div className="hero-body">
+                <div className="container">
+                  <h1 className="title">
+                    {doc.name}
+                  </h1>
+                  <h2 className="subtitle">
+                    By {doc.author} | Published {formatRelative(parsedDate, new Date())} 
+                  </h2>
+                </div>
+              </div>
+            </section>
+            <section className="section">
+              <div className="content">
+                {this.state.articleHtml}
+              </div>
+            </section>
+          </article>
+          <aside>
+            <section className="section">
               <div className="container">
-                <h1 className="title">
-                  {doc.name}
-                </h1>
-                <h2 className="subtitle">
-                  By {doc.author} | Published {formatRelative(parsedDate, new Date())} 
-                </h2>
+                <div className="tags">
+                  {tagLinks}
+                </div>
               </div>
-            </div>
-          </section>
-          <section className="section">
-            <div className="content">
-              {this.state.articleHtml}
-            </div>
-          </section>
-          <section className="section">
-            <div className="container">
-              <div className="tags">
-                {tagLinks}
-              </div>
-            </div>
-          </section>
-      </Layout>
-      <ArticleFooter metadata={data.site.siteMetadata} />
-    </div>
+            </section>
+          </aside>
+        </Layout>
+        <ArticleFooter metadata={data.site.siteMetadata} />
+      </div>
     )
   }
 }
