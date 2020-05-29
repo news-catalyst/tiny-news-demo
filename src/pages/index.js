@@ -13,6 +13,11 @@ export default function HomePage({ data }) {
     tags = tags.concat(document.tags);
   })
   tags = _.uniq(tags).sort();
+  // remove any null tags
+  tags = tags.filter(function (el) {
+    return el != null;
+  });
+
   const tagLinks = tags.map(tag => (
     <Link key={tag} to={`/topics/${tag}`} className="panel-block is-active">
       {_.startCase(tag)}
@@ -96,9 +101,10 @@ export const query = graphql`
       }
     }
 
-    allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}, sort: {fields: document___name}) {
+    allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}, sort: {fields: document___createdTime, order: DESC}) {
         nodes {
             document {
+              createdTime
               name
               path
               tags
