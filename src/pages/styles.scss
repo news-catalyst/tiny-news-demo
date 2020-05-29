@@ -4,3 +4,10 @@
 // $title-color: #ff0000;
 
 @import "~bulma/bulma.sass";
+
+.hero-body {
+  padding-bottom: 0;
+}
+em {
+  font-style: normal;
+}
