@@ -43,11 +43,11 @@ A tiny news co demo built with Gatsby, React, Google Docs, and a lot off integra
 
 ## ❓What else?
 
-    Public-facing pages (like `http://localhost:8000`, `http://localhost:8000/articles/your-title-here`) are served by gatsby based on data in graphQL.
+Public-facing pages (like `http://localhost:8000`, `http://localhost:8000/articles/your-title-here`) are served by gatsby based on data in graphQL.
 
-    This data is imported into graphQL from Google Drive.
+This data is imported into graphQL from Google Drive.
 
-    The tinycms loads and updates data directly in Google Drive via Google APIs. If you make changes either in Google Drive or in tinycms and are wondering why you can't see them in the web pages, you probably need to restart the server (`gatsby develop`).
+The tinycms loads and updates data directly in Google Drive via Google APIs. If you make changes either in Google Drive or in tinycms and are wondering why you can't see them in the web pages, you probably need to restart the server (`gatsby develop`).
 
 ## Editing articles in Google Docs
 
