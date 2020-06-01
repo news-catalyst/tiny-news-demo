@@ -8,7 +8,7 @@
   tiny news demo
 </h1>
 
-A demo of integrating Gatsby with Netlify CMS and Google Docs.
+A tiny news co demo built with Gatsby, React, Google Docs, and a lot off integrations.
 
 ## 🚀 Quick start
 
@@ -48,3 +48,19 @@ A demo of integrating Gatsby with Netlify CMS and Google Docs.
     This data is imported into graphQL from Google Drive.
 
     The tinycms loads and updates data directly in Google Drive via Google APIs. If you make changes either in Google Drive or in tinycms and are wondering why you can't see them in the web pages, you probably need to restart the server (`gatsby develop`).
+
+## Editing articles in Google Docs
+
+* headlines / names
+* images
+* copy
+* embeds
+
+## Configuration & Integration 
+
+* sitewide text in gatsby-config.js
+* Google Docs setup
+* Google Analytics and AMP setup
+* Mailchimp setup
+* Non-google docs sourced pages (ex: /topics)
+* SEO and Social settings
