@@ -24,7 +24,7 @@ module.exports = {
     },
     nav: {
       articles: `Articles`,
-      topics: `Topics`,
+      topics: `All Topics`,
       cms: `tinycms`
     }
   },
