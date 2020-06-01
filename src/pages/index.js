@@ -48,7 +48,7 @@ export default function HomePage({ data }) {
           <div className="columns">
             <div className="column is-four-fifths">
               {data.allGoogleDocs.nodes.map(({ document, childMarkdownRemark }, index) => (
-                <ArticleLink document={document} excerpt={childMarkdownRemark.excerpt} /> 
+                <ArticleLink key={document.path} document={document} excerpt={childMarkdownRemark.excerpt} /> 
               ))}
             </div>
             <div className="column">
