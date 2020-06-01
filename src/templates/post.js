@@ -26,7 +26,6 @@ const processingInstructions = [
   {
     replaceChildren: true,
     shouldProcessNode: (node) => {
-      console.log("replace children shouldProcessNode: ", node);
       return (node.children !== undefined && node.children.length === 3 && (/\[embed src=\s/).test(node.children[0].data));
     },
     processNode: (node, children, index) => {
@@ -83,7 +82,7 @@ export default class Posttest extends React.Component {
       ))
     } 
     return (
-      <div>
+      <div id="article-container">
         <ArticleNav metadata={data.site.siteMetadata} />
         <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} {...doc}>
           <article>
@@ -99,6 +98,9 @@ export default class Posttest extends React.Component {
                 </div>
               </div>
             </section>
+            {doc.cover &&
+              <img src={doc.cover.image} alt={doc.cover.title} className="image" />
+            }
             <section className="section">
               <div className="content">
                 {this.state.articleHtml}
@@ -160,6 +162,11 @@ export const pageQuery = graphql`
           tw_handle
           tw_site
           tw_cardType
+          cover {
+            image
+            alt
+            title
+          }
         }
         childMarkdownRemark {
           excerpt
