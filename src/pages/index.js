@@ -2,6 +2,7 @@ import React from "react"
 import _ from 'lodash'
 import { Link, graphql } from "gatsby"
 import ArticleFooter from "../components/ArticleFooter"
+import ArticleLink from "../components/ArticleLink"
 import ArticleNav from "../components/ArticleNav"
 import SearchPanel from "../components/SearchPanel"
 import Layout from "../components/Layout"
@@ -13,6 +14,11 @@ export default function HomePage({ data }) {
     tags = tags.concat(document.tags);
   })
   tags = _.uniq(tags).sort();
+  // remove any null tags
+  tags = tags.filter(function (el) {
+    return el != null;
+  });
+
   const tagLinks = tags.map(tag => (
     <Link key={tag} to={`/topics/${tag}`} className="panel-block is-active">
       {_.startCase(tag)}
@@ -22,9 +28,9 @@ export default function HomePage({ data }) {
 
   return(
     <div>
-      <ArticleNav metadata={data.site.siteMetadata} />
+      <ArticleNav metadata={data.site.siteMetadata} tags={tags} />
       <Layout title={data.site.siteMetadata.title} description={data.site.siteMetadata.description}>
-        <section className="hero is-primary is-bold">
+        <section className="hero is-dark is-bold">
           <div className="hero-body">
             <div className="container">
               <h1 className="title">
@@ -41,16 +47,9 @@ export default function HomePage({ data }) {
         <section className="section">
           <div className="columns">
             <div className="column is-four-fifths">
-              <aside className="menu">
-                <p className="menu-label">
-                  {data.site.siteMetadata.labels.latest_news}
-                </p>
-                <ul className="menu-list">
-                  {data.allGoogleDocs.nodes.map(({ document }, index) => (
-                    <li key={index}><a href={document.path}>{document.name}</a></li>
-                  ))}
-                </ul>
-              </aside>
+              {data.allGoogleDocs.nodes.map(({ document, childMarkdownRemark }, index) => (
+                <ArticleLink key={document.path} document={document} excerpt={childMarkdownRemark.excerpt} /> 
+              ))}
             </div>
             <div className="column">
               <nav className="panel">
@@ -96,12 +95,19 @@ export const query = graphql`
       }
     }
 
-    allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}, sort: {fields: document___name}) {
+    allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}, sort: {fields: document___createdTime, order: DESC}) {
         nodes {
             document {
+              createdTime
               name
               path
               tags
+              cover {
+                image
+              }
+            }
+            childMarkdownRemark {
+              excerpt(truncate: true, format: PLAIN, pruneLength: 100)
             }
         }
     }

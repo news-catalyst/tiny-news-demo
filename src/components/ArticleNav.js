@@ -1,8 +1,19 @@
 import React from "react"
+import _ from 'lodash'
+import { Link } from "gatsby"
 
 export default function ArticleNav(props) {
+  let tagLinks;
+
+  if (props.tags) {
+    tagLinks = props.tags.slice(0,4).map(tag => (
+      <Link key={`navbar-${tag}`} to={`/topics/${tag}`} className="navbar-item">
+        {_.startCase(tag)}
+      </Link>
+    ));
+  }
   return (
-    <nav className="navbar" role="navigation" aria-label="main navigation">
+    <nav className="navbar is-spaced" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
         <a className="navbar-item" href="/">
           {props.metadata.shortName}
@@ -17,9 +28,8 @@ export default function ArticleNav(props) {
 
       <div className="navbar-menu">
         <div className="navbar-start">
-          <a className="navbar-item" href="/">
-            {props.metadata.nav.articles}
-          </a>
+          
+          {tagLinks}
 
           <a className="navbar-item" href="/topics">
             {props.metadata.nav.topics}
