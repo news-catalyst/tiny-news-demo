@@ -1,13 +1,31 @@
 @charset "utf-8";
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Libre+Franklin:ital,wght@0,300;0,800;1,300;1,800&display=swap');
 
 // // If need, change your variables before importing Bulma
-// $title-color: #ff0000;
+$family-sans-serif: "Libre Franklin", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+$family-serif: "Libre Baskerville", georgia, serif;
 
 @import "~bulma/bulma.sass";
 
 #article-container .hero-body {
   padding-bottom: 0;
 }
+
+article {
+  h1, h2, h3, h4, h5, h6, table {
+      font-family: $family-sans-serif;
+  }
+  p, ul, ol, li, span {
+      font-family: $family-serif;
+      line-height: 1.65em;
+  }
+  .content {
+    max-width: 768px;
+    margin: 0 auto;
+    font-size: 125%;
+  }
+}
+
 em {
   font-style: normal;
 }
