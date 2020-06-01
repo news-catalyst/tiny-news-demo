@@ -22,7 +22,7 @@ const processingInstructions = [
   //    * { attribs: { href: "http://twitter.com/tweet1234" } }
   //    * "]"
   // look for this case in the PARENT node and replace its children with an <Embed> component
-  //    using the url found in the second child. 
+  //    using the url found in the second child.
   {
     replaceChildren: true,
     shouldProcessNode: (node) => {
@@ -80,7 +80,7 @@ export default class Posttest extends React.Component {
       tagLinks = doc.tags.map((tag, index) => (
         <Link to={`/topics/${tag}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
       ))
-    } 
+    }
     return (
       <div id="article-container">
         <ArticleNav metadata={data.site.siteMetadata} />
@@ -89,11 +89,11 @@ export default class Posttest extends React.Component {
             <section className="hero is-bold">
               <div className="hero-body">
                 <div className="container">
-                  <h1 className="title">
+                  <h1 className="title is-size-1">
                     {doc.name}
                   </h1>
                   <h2 className="subtitle">
-                    By {doc.author} | Published {formatRelative(parsedDate, new Date())} 
+                    By {doc.author} | Published {formatRelative(parsedDate, new Date())}
                   </h2>
                 </div>
               </div>
@@ -109,7 +109,7 @@ export default class Posttest extends React.Component {
           </article>
           <aside>
             <section className="section">
-              <div className="container">
+              <div className="container is-desktop">
                 <div className="tags">
                   {tagLinks}
                 </div>
