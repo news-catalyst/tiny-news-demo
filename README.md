@@ -92,9 +92,161 @@ Now open `gatsby-config.js` in the top-level of this repo and find the configura
       },
 ```
 
-* sitewide text in gatsby-config.js
-* Google Docs setup
-* Google Analytics and AMP setup
+We'll get into creating an article later in the docs.
+
+### Sitewide Text Setup
+
+For now, we define general text used across the site in a special configuration file for Gatsby located in the root of this repo: `gatsby-config.js`, the same file we used to configure Google Docs integration.
+
+The section you'll want to edit is towards the top of the file:
+
+```
+module.exports = {
+  siteMetadata: {
+    shortName: `tinynewsco`,
+    title: `the tiny news collective`,
+    siteUrl: `https://tinynewsco.org/`,
+    description: `a local news initiative`,
+    subscribe: {
+      title: `Subscribe`,
+      subtitle: `Get the latest news about the tiny news collective in your inbox.`,
+    },
+    footerTitle: `tinynewsco.org`,
+    footerBylineName: `News Catalyst`,
+    footerBylineLink: `https://newscatalyst.org`,
+    labels: {
+      latestNews: `Latest News`,
+      search: `Search`,
+      topics: `Topics`,
+    },
+    nav: {
+      articles: `Articles`,
+      topics: `All Topics`,
+      cms: `tinycms`
+    }
+  },
+```
+
+Everything in `siteMetadata` can be customised to work with your particular tinynewsco's language. 
+
+The various site templates make use of these snippets of text by first requesting them in a `graphql` query, as seen in this example pulled from the homepage code at `src/pages/index.js`:
+
+```javascript
+export const query = graphql`
+  query {
+    site {
+      siteMetadata {
+        title
+        shortName
+        description
+        siteUrl
+        footerTitle
+        footerBylineName
+        footerBylineLink
+        labels {
+          latestNews
+          search
+          topics
+        }
+        nav {
+          articles
+          topics
+          cms
+        }
+      }
+    }
+```
+
+Once requested, the text is then available in the template:
+
+```javascript
+  <section className="hero is-dark is-bold">
+    <div className="hero-body">
+      <div className="container">
+        <h1 className="title">
+          {data.site.siteMetadata.title}
+        </h1>
+        <h2 className="subtitle">
+          {data.site.siteMetadata.description}
+        </h2>
+      </div>
+    </div>
+  </section>
+```
+
+To-do: internationalization of text, which will probably require a different solution than `gatsby-config.js`.
+
+
+### Google Analytic and AMP Setup
+
+To configure your site's Google Analytics and AMP, open `gatsby-config.js` again and edit the following sections.
+
+For AMP, specify your Google Analytics ID in two places, set the base URL, specify any AMP add-ons (we use `amp-form` by default) and finally set the `pathIdentifier` that identifies AMP versions of a page:
+
+```json
+     {
+        resolve: `gatsby-plugin-amp`,
+        options: {
+          analytics: {
+            type: 'gtag',
+            dataCredentials: 'include',
+            config: {
+              vars: {
+                gtag_id: "UA-166777432-1",
+                config: {
+                  "UA-166777432-1": {
+                    page_location: '{{pathname}}'
+                  },
+                },
+              },
+            },
+          },
+          canonicalBaseUrl: 'http://tinynewsco.org/',
+          components: ['amp-form'],
+          excludedPaths: ['/404*', '/'],
+          pathIdentifier: '/amp/',
+          relAmpHtmlPattern: '{{canonicalBaseUrl}}{{pathname}}{{pathIdentifier}}',
+          useAmpClientIdApi: true,
+        },
+      },
+```
+
+The default URL for AMP appends `/amp/` to a page URL, so `/articles/article-with-embeds/` becomes `/articles/article-with-embeds/amp/` and so on.
+
+For Google Analytics, depending on your preferences, you may merely need to edit this section by specifying your tracking ID:
+
+```
+     {
+        resolve: `gatsby-plugin-google-analytics`,
+        options: {
+          // The property ID; the tracking code won't be generated without it
+          trackingId: "UA-166777432-1",
+          // Defines where to place the tracking script - `true` in the head and `false` in the body
+          head: true,
+          // Setting this parameter is optional
+          anonymize: true,
+          // Setting this parameter is also optional
+          respectDNT: true,
+          // Avoids sending pageview hits from custom paths
+          exclude: ["/preview/**", "/do-not-track/me/too/"],
+          // Delays sending pageview hits on route update (in milliseconds)
+          pageTransitionDelay: 0,
+          // Enables Google Optimize using your container Id
+          // optimizeId: "YOUR_GOOGLE_OPTIMIZE_TRACKING_ID",
+          // Enables Google Optimize Experiment ID
+          // experimentId: "YOUR_GOOGLE_EXPERIMENT_ID",
+          // Set Variation ID. 0 for original 1,2,3....
+          // variationId: "YOUR_GOOGLE_OPTIMIZE_VARIATION_ID",
+          // Defers execution of google analytics script after page load
+          defer: false,
+          // Any additional optional fields
+          // sampleRate: 5,
+          // siteSpeedSampleRate: 10,
+          // cookieDomain: "example.com",
+        },
+      },
+```
+
 * Mailchimp setup
 * Creating pages outside of Google Docs
 * SEO and Social settings
