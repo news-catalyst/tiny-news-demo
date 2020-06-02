@@ -43,7 +43,8 @@
     "react-helmet-async": "^1.0.6",
     "react-player": "^2.1.1",
     "react-string-replace": "^0.4.4",
-    "react-twitter-embed": "^3.0.3"
+    "react-twitter-embed": "^3.0.3",
+    "web-vitals": "^0.2.2"
   },
   "devDependencies": {
     "prettier": "2.0.5"
