@@ -1,11 +1,13 @@
-import React from 'react';
+import React from "react"
 import { graphql, Link } from "gatsby"
 import { parseISO, formatRelative } from 'date-fns'
 import Embed from 'react-embed';
+import {getCLS, getFID, getLCP} from 'web-vitals';
 import { Parser, ProcessNodeDefinitions } from "html-to-react";
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
+import sendToGoogleAnalytics from "../utils/vitals"
 import "../pages/styles.scss"
 
 let embedRegex = /\[embed src=\s*(.*?)\]/i;
@@ -69,6 +71,9 @@ export default class Posttest extends React.Component {
     this.setState({
       articleHtml: updatedHtml,
     })
+    getCLS(sendToGoogleAnalytics);
+    getFID(sendToGoogleAnalytics);
+    getLCP(sendToGoogleAnalytics);
   }
 
   render () {

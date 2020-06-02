@@ -1,14 +1,23 @@
-import React from "react"
+import React, { useEffect } from "react"
 import _ from 'lodash'
 import { Link, graphql } from "gatsby"
+import {getCLS, getFID, getLCP} from 'web-vitals';
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleLink from "../components/ArticleLink"
 import ArticleNav from "../components/ArticleNav"
 import SearchPanel from "../components/SearchPanel"
 import Layout from "../components/Layout"
+import sendToGoogleAnalytics from "../utils/vitals"
+
 import "./styles.scss"
 
 export default function HomePage({ data }) {
+  useEffect(() => {
+    getCLS(sendToGoogleAnalytics);
+    getFID(sendToGoogleAnalytics);
+    getLCP(sendToGoogleAnalytics);
+  }, []);
+
   let tags = [];
   data.allGoogleDocs.nodes.forEach(({document}, index) => {
     tags = tags.concat(document.tags);
