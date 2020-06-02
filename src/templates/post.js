@@ -88,7 +88,7 @@ export default class Posttest extends React.Component {
           <article>
             <section className="hero is-bold">
               <div className="hero-body">
-                <div className="container">
+                <div className={doc.cover ? "container head-margin" : "container"}>
                   <h1 className="title is-size-1">
                     {doc.name}
                   </h1>
@@ -109,7 +109,10 @@ export default class Posttest extends React.Component {
           </article>
           <aside>
             <section className="section">
-              <div className="container is-desktop">
+              <div className="align-content">
+                {tagLinks &&
+                  <p className="subtitle">Tags</p>
+                }
                 <div className="tags">
                   {tagLinks}
                 </div>
