@@ -82,7 +82,7 @@ Click into your "Ready" folder and copy the last bit of the URL for the folder I
 
 Now open `gatsby-config.js` in the top-level of this repo and find the configuration section for `gatsby-source-google-docs`. Update the `folders` array so your folder ID is included, like below:
 
-```json
+```javascript
      {
         resolve: "gatsby-source-google-docs",
         options: {
@@ -100,7 +100,7 @@ For now, we define general text used across the site in a special configuration 
 
 The section you'll want to edit is towards the top of the file:
 
-```json
+```javascript
 module.exports = {
   siteMetadata: {
     shortName: `tinynewsco`,
@@ -183,7 +183,7 @@ To configure your site's Google Analytics and AMP, open `gatsby-config.js` again
 
 For AMP, specify your Google Analytics ID in two places, set the base URL, specify any AMP add-ons (we use `amp-form` by default) and finally set the `pathIdentifier` that identifies AMP versions of a page:
 
-```json
+```javascript
      {
         resolve: `gatsby-plugin-amp`,
         options: {
@@ -215,7 +215,7 @@ The default URL for AMP appends `/amp/` to a page URL, so `/articles/article-wit
 
 For Google Analytics, depending on your preferences, you may merely need to edit this section by specifying your tracking ID:
 
-```json
+```javascript
   {
     resolve: `gatsby-plugin-google-analytics`,
     options: {
@@ -251,7 +251,7 @@ For Google Analytics, depending on your preferences, you may merely need to edit
 
 You can also integrate your tinynewsco site with Mailchimp. This integration allows you to solicit subscribers for your newsletter directly on your site, providing a subscribe form at `/subscribe/`. Once again, open your `gatsby-config.js` and enter the endpoint URL for your newsletter in the right section:
 
-```json
+```javascript
   {
     resolve: 'gatsby-plugin-mailchimp',
     options: {
@@ -272,9 +272,37 @@ Scroll down that page and you should see a section called "Copy/paste onto your 
 
 Copy and paste that value into the `endpoint` section of the `gatsby-config.js` file we showed above. Restart your site and you should have a functioning subscribe form now at `/subscribe`. If you'd like to edit any of the text that appears on that page, you can do so by following the "Sitewide Text Setup" instructions above. Look for any fields with "subscribe" in their name.
 
+### SEO and Social settings
 
-* Creating pages outside of Google Docs
-* SEO and Social settings
+Default values for all SEO and social tagging on the site are configured in `gatsby-config.js` but may be overridden on a per-article basis in the tinycms. 
+
+First, make sure you have set sane defaults by editing this section of `gatsby-config.js`:
+
+```javascript
+     {
+        resolve: 'gatsby-plugin-next-seo',
+        options: {
+          canonical: 'https://tinynewsco.org/',
+          titleTemplate: 'tiny news co | %s',
+          openGraph: {
+            type: 'website',
+            locale: 'en_US',
+            url: 'https://tinynewsco.org/',
+            site_name: 'tiny news co',
+          },
+          twitter: {
+            handle: '@tinynewsco',
+            site: '@newscatalyst',
+            cardType: 'summary_large_image',
+          },
+        },
+      },
+```
+
+If you'd like to edit these values on a particular article, you may do so by opening it in the tinycms and changing the form, like so:
+
+<img src="/static/docs/tinycms-editor.png" />
+
 ## Editing articles in Google Docs
 
 * headlines / names
