@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import _ from 'lodash'
 import { Link, graphql } from "gatsby"
 import {getCLS, getFID, getLCP} from 'web-vitals';
-
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleLink from "../components/ArticleLink"
 import ArticleNav from "../components/ArticleNav"
