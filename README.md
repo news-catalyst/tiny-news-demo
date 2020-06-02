@@ -314,6 +314,8 @@ To add an article to the tinynewsco site:
 * add links, tables and inline images directly to the copy
 * to embed content from social media and other sites, use an embed shortcode: `[embed src=http://youtube.com/link/to-your-video]`
   * supported: facebook, google maps, instagram, soundcloud, twitter, youtube
+* publish the site (locally, restart `gatsby develop`)
+* add metadata like topical tags and SEO and social content in the [tinycms](http://tinynewsco.org/tinycms)
 
 The screenshots below show how to set a title, a main article image (used in any list of articles, and as the top image on an article), including a table - even one copied and pasted from elsewhere, different text formatting and inline images.
 
