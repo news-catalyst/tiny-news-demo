@@ -303,10 +303,53 @@ If you'd like to edit these values on a particular article, you may do so by ope
 
 <img src="/static/docs/tinycms-editor.png" />
 
-## Editing articles in Google Docs
+## Editing Articles in Google Docs
 
-* headlines / names
-* images
-* copy
-* embeds
+To add an article to the tinynewsco site:
+
+* create a new document in the "Ready" folder
+* set the document title to the headline
+* set a main image by adding a header to the first page and inserting an image
+* format your article text
+* add links, tables and inline images directly to the copy
+* to embed content from social media and other sites, use an embed shortcode: `[embed src=http://youtube.com/link/to-your-video]`
+  * supported: facebook, google maps, instagram, soundcloud, twitter, youtube
+
+The screenshots below show how to set a title, a main article image (used in any list of articles, and as the top image on an article), including a table - even one copied and pasted from elsewhere, different text formatting and inline images.
+
+<img src="/static/docs/google-docs-title.png" />
+Set the title of the document to the article's headline. This will be used to generate the article's URL slug.
+
+<img src="/static/docs/google-docs-insert-header.png" />
+Insert a header into the first page of the doc...
+
+<img src="/static/docs/google-docs-main-image.png" />
+... and drag an image into the header to set it as the article's main image.
+
+<img src="/static/docs/google-docs-table.png" />
+Either insert a table in Google Docs directly or copy & paste it from another doc or webpage to include it in the article.
+
+<img src="/static/docs/google-docs-formatting-inline-image.png" />
+Basic text formatting like *bold* and _italics_ is supported. So is including images inline - just insert the image directly into the copy.
+
+<img src="/static/docs/google-docs-image-alt.png" />
+Add photo credits and other information to any image by selecting the image, right clicking and selecting "Alt text" to bring up this dialog.
+
+## Dynamic Pages (not edited via Google Docs)
+
+### Index
+
+Also known as the homepage, this lists all articles in reverse chronological order along with a unique list of topics. It also includes a nav and footer.
+
+The source code for [http://tinynewsco.org/](http://tinynewsco.org/) is found in [src/pages/index.js](/src/pages/index.js).
+
+### Topics
+
+This page lists all of the unique tags used across all articles and is available at [http://tinynewsco.org/topics](http://tinynewsco.org/topics). The source code for this page is in [src/pages/topics.js](/src/pages/topics.js).
+
+To add a tag to this page, you merely need to add it to one or more articles in the tinycms editor.
+
+### Subscribe
+
+This page is available at [http://tinynewsco.org/subscribe/](http://tinynewsco.org/subscribe) and is powered by the Mailchimp Integration we detailed above. You can find the source code for this in [src/pages/subscribe.js](/src/pages/subscribe.js).
 
