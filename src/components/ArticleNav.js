@@ -13,7 +13,7 @@ export default function ArticleNav(props) {
     ));
   }
   return (
-    <nav className="navbar is-spaced" role="navigation" aria-label="main navigation">
+    <nav className="navbar is-spaced nav-border" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
         <a className="navbar-item" href="/">
           {props.metadata.shortName}
