@@ -4,6 +4,7 @@ import { Link, graphql } from "gatsby"
 import {getCLS, getFID, getLCP} from 'web-vitals';
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleLink from "../components/ArticleLink"
+import FeaturedArticleLink from "../components/FeaturedArticleLink"
 import ArticleNav from "../components/ArticleNav"
 import SearchPanel from "../components/SearchPanel"
 import Layout from "../components/Layout"
@@ -51,12 +52,15 @@ export default function HomePage({ data }) {
             </div>
           </div>
         </section>
-
-
+        <div class="featured-article">
+          {data.allGoogleDocs.nodes.slice(0, 1).map(({ document, childMarkdownRemark }, index) => (
+            <FeaturedArticleLink key={document.path} document={document} excerpt={childMarkdownRemark.excerpt} /> 
+          ))}
+        </div>
         <section className="section">
           <div className="columns">
             <div className="column is-four-fifths">
-              {data.allGoogleDocs.nodes.map(({ document, childMarkdownRemark }, index) => (
+              {data.allGoogleDocs.nodes.slice(1).map(({ document, childMarkdownRemark }, index) => (
                 <ArticleLink key={document.path} document={document} excerpt={childMarkdownRemark.excerpt} /> 
               ))}
             </div>
@@ -104,9 +108,10 @@ export const query = graphql`
       }
     }
 
-    allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}, sort: {fields: document___createdTime, order: DESC}) {
+    allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}, sort: {fields: document___author, order: DESC}) {
         nodes {
             document {
+              author
               createdTime
               name
               path

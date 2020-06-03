@@ -12,7 +12,7 @@ $family-serif: "Libre Baskerville", georgia, serif;
 }
 
 article {
-  h1, h2, h3, h4, h5, h6, table {
+  h1, h2, h3, h4, h5, h6, table, .byline {
       font-family: $family-sans-serif;
   }
   p, ul, ol, li, span {
@@ -42,4 +42,18 @@ em {
   max-width: 768px;
   margin: 0 auto;
   font-size: 125%;
+}
+
+.featured {
+  font-size: 150%;
+}
+
+.featured-img {
+  width: 100%;
+  height: auto;
+  padding-bottom: 3rem;
+}
+
+.featured-article {
+  padding-top: 3rem;
 }
