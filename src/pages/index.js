@@ -52,7 +52,7 @@ export default function HomePage({ data }) {
             </div>
           </div>
         </section>
-        <div class="featured-article">
+        <div className="featured-article">
           {data.allGoogleDocs.nodes.slice(0, 1).map(({ document, childMarkdownRemark }, index) => (
             <FeaturedArticleLink key={document.path} document={document} excerpt={childMarkdownRemark.excerpt} /> 
           ))}
