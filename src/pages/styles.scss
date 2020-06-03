@@ -45,12 +45,13 @@ em {
 }
 
 .featured {
-  font-size: 125%;
+  font-size: 150%;
 }
 
 .featured-img {
-  width: 256px;
-  height: 256px;
+  width: 100%;
+  height: auto;
+  padding-bottom: 3rem;
 }
 
 .featured-article {

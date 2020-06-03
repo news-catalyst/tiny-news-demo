@@ -6,16 +6,15 @@ import { parseISO, formatRelative } from 'date-fns'
 export default function ArticleLink(props) {
   let parsedDate = parseISO(props.document.createdTime)
   return (
-    <article className="media">
+    <article>
       {props.document.cover &&
-        <figure className="media-left">
+        <div className="media">
           <p className="image featured-img">
             <img src={props.document.cover.image} />
           </p>
-        </figure>
+        </div>
       }
-      <div className="media-content">
-        <div className="content">
+        <div className="media-left">
           <h1 className="title"><Link className="featured" to={props.document.path}>{props.document.name}</Link></h1>
           <p className="featured">{props.excerpt}</p>
           <p className="byline">{props.document.author} | {formatRelative(parsedDate, new Date())}</p>
@@ -33,7 +32,6 @@ export default function ArticleLink(props) {
             </a>
           </div>
         </nav>
-      </div>
     </article>
   )
 }
