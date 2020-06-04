@@ -40,12 +40,12 @@ export default function Publish({ data }) {
             <li className="article-list-margin" key={index}><Link to={`/tinycms/edit?id=${document.id}`}>{document.name}</Link>
               <ul>
                 <li>{childMarkdownRemark.excerpt}</li>
-                <li>{document.author}</li>
+                <li>Author: {document.author}</li>
                 {document.createdTime &&
-                  <li>Published</li>
+                  <li>Status: Published</li>
                 }
                 {!document.createdTime &&
-                  <li>Pending Publish</li>
+                  <li>Status: Pending Publish</li>
                 }
               </ul>
             </li>

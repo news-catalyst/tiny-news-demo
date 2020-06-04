@@ -121,8 +121,10 @@ export default class Posttest extends React.Component {
             </section>
           </aside>
           <section className="section">
-            <h1 className="title media-left">{data.site.siteMetadata.subscribe.subtitle}</h1>
-            <SignUp/>
+            <div className="align-content medium-margin-top">
+              <h1 className="title media-left">{data.site.siteMetadata.subscribe.subtitle}</h1>
+              <SignUp/>
+            </div>
           </section>
         </Layout>
         <ArticleFooter metadata={data.site.siteMetadata} />
