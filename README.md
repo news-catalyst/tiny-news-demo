@@ -27,6 +27,28 @@ A tiny news co demo built with Gatsby, React, Google Docs, and a lot off integra
     npm install
     ```
 
+1. **Set a token for Google Docs access.**
+
+    This is required for the tinynewsco site to read from a Google Docs folder.
+
+    ```shell
+    npm run token
+    # copy the contents of .google/token.json to your clipboard: `cat .google/token.json | pbcopy` on a mac
+    export GATSBY_SOURCE_GOOGLE_DOCS_TOKEN="token data here"
+    ```
+
+    This environment variable is already set on Netlify for building the site to `http://tinynewsco.org/`
+
+    Need Netlify access? Talk to Jacqui. This might require upgrading the Netlify account ($$).
+
+1. **Configure site settings.**
+
+    There are many of these in `gatsby-config.js` but the most important ones you'll need to set in order to get up and running is
+    adding the Google Docs "Ready" folder ID to the array in the section for "gatsby-source-google-docs" :)
+
+    More info on configuration can be found below, keep scrolling.
+
+
 1.  **Start up on localhost.**
 
     ```shell
