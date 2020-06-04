@@ -10,7 +10,7 @@ export default function HomePage({ data }) {
 
       <div>
         <ul>
-        {data.allGoogleDocs.nodes.map(({ document }, index) => (
+        {data.allGoogleDocs.nodes.map(({ document, childMarkdownRemark }, index) => (
           <li key={index}><a href={document.path}>{document.name}</a></li>
         ))}
         </ul>

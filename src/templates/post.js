@@ -6,6 +6,7 @@ import { Parser, ProcessNodeDefinitions } from "html-to-react";
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
+import SignUp from "../components/SignUp"
 import "../pages/styles.scss"
 
 let embedRegex = /\[embed src=\s*(.*?)\]/i;
@@ -119,6 +120,10 @@ export default class Posttest extends React.Component {
               </div>
             </section>
           </aside>
+          <section className="section">
+            <h1 className="title media-left">{data.site.siteMetadata.subscribe.subtitle}</h1>
+            <SignUp/>
+          </section>
         </Layout>
         <ArticleFooter metadata={data.site.siteMetadata} />
       </div>
@@ -146,6 +151,10 @@ export const pageQuery = graphql`
           articles
           topics
           cms
+        }
+        subscribe {
+          title
+          subtitle
         }
       }
     }
