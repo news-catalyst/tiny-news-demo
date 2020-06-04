@@ -1,7 +1,8 @@
 import React, { useState } from "react"
-import { Link, graphql } from "gatsby"
+import { graphql } from "gatsby"
 import { useFlexSearch } from 'react-use-flexsearch'
 import { Formik, Form, Field } from 'formik'
+import SearchResults from "../components/SearchResults"
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
@@ -37,15 +38,7 @@ export default function SearchPage({ data }) {
             </Formik>
           </div>
         </nav>
-        <section className="section">
-          <h1 className="title">Results</h1>
-
-          <ul>
-            {results.map(result => (
-              <li key={result.id}><Link to={result.path}>{result.name}</Link></li>
-            ))}
-          </ul>
-        </section>
+        <SearchResults results={results} />
       </Layout>
       <ArticleFooter metadata={data.site.siteMetadata} />
     </div>
