@@ -132,7 +132,7 @@ export default class Posttest extends React.Component {
 }
 
 export const pageQuery = graphql`
-  query($path: String!) {
+  query($slug: String!) {
     site {
       siteMetadata {
         title
@@ -154,7 +154,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    googleDocs(document: {path: {eq: $path}}) {
+    googleDocs(document: {path: {eq: $slug}}) {
         document {
           author
           createdTime
