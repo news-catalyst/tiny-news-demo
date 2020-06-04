@@ -1,4 +1,5 @@
 import React from "react"
+import _ from 'lodash'
 import { graphql, Link } from "gatsby"
 import { parseISO, formatRelative } from 'date-fns'
 import Embed from 'react-embed';
@@ -83,7 +84,7 @@ export default class Posttest extends React.Component {
     let tagLinks;
     if (doc.tags) {
       tagLinks = doc.tags.map((tag, index) => (
-        <Link to={`/topics/${tag}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
+        <Link to={`/topics/${_.kebabCase(tag)}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
       ))
     }
     return (

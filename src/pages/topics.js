@@ -11,9 +11,13 @@ export default function HomePage({ data }) {
   data.allGoogleDocs.edges.forEach(({node}, index) => {
     tags = tags.concat(node.document.tags);
   })
+  // remove any null tags
+  tags = tags.filter(function (el) {
+    return el != null;
+  });
   tags = _.uniq(tags).sort();
   const tagLinks = tags.map( (tag, index) => (
-    <li key={index}><Link to={`/topics/${tag}`}>{_.startCase(tag)}</Link></li>
+    <li key={index}><Link to={`/topics/${_.kebabCase(tag)}`}>{_.startCase(tag)}</Link></li>
   ));
 
 
@@ -58,7 +62,7 @@ export const query = graphql`
         }
       }
     }
-    allGoogleDocs {
+    allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}) {
       edges {
         node {
           document {
