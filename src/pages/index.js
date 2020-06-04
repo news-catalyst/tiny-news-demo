@@ -6,7 +6,6 @@ import ArticleFooter from "../components/ArticleFooter"
 import ArticleLink from "../components/ArticleLink"
 import FeaturedArticleLink from "../components/FeaturedArticleLink"
 import ArticleNav from "../components/ArticleNav"
-import SearchPanel from "../components/SearchPanel"
 import Layout from "../components/Layout"
 import sendToGoogleAnalytics from "../utils/vitals"
 
@@ -52,7 +51,7 @@ export default function HomePage({ data }) {
             </div>
           </div>
         </section>
-        <div class="featured-article">
+        <div className="featured-article">
           {data.allGoogleDocs.nodes.slice(0, 1).map(({ document, childMarkdownRemark }, index) => (
             <FeaturedArticleLink key={document.path} document={document} excerpt={childMarkdownRemark.excerpt} /> 
           ))}
@@ -71,7 +70,6 @@ export default function HomePage({ data }) {
                 </p>
                 {tagLinks}
               </nav>
-              <SearchPanel metadata={data.site.siteMetadata} />
             </div>
           </div>
         </section>
