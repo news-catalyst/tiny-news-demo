@@ -1,5 +1,6 @@
 import React from "react"
 import { Link, graphql } from 'gatsby'
+import { parseISO, formatRelative } from 'date-fns'
 import Layout from "../../components/Layout"
 import "../styles.scss"
 
@@ -33,12 +34,20 @@ export default function Publish({ data }) {
       </nav>
     <Layout>
       <h1 className="title is-1">tinycms articles list</h1>
-
       <div>
         <ul>
-          {data.allGoogleDocs.nodes.map(({ document }, index) => (
-            <li key={index}>
-              <Link to={`/tinycms/edit?id=${document.id}`}>{document.name}</Link>
+          {data.allGoogleDocs.nodes.map(({ document, childMarkdownRemark }, index) => (
+            <li className="article-list-margin" key={index}><Link to={`/tinycms/edit?id=${document.id}`}>{document.name}</Link>
+              <ul>
+                <li>{childMarkdownRemark.excerpt}</li>
+                <li>Author: {document.author}</li>
+                {document.createdTime &&
+                  <li>Status: Published</li>
+                }
+                {!document.createdTime &&
+                  <li>Status: Pending Publish</li>
+                }
+              </ul>
             </li>
           ))}
         </ul>
@@ -53,9 +62,14 @@ export const query = graphql`
     allGoogleDocs(sort: {fields: document___name}) {
       nodes {
         document {
+          author
+          createdTime
           id
           name
           path
+        }
+        childMarkdownRemark {
+          excerpt(truncate: true, format: PLAIN, pruneLength: 100)
         }
       }
     }

@@ -8,6 +8,7 @@ import { Parser, ProcessNodeDefinitions } from "html-to-react";
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
+import SignUp from "../components/SignUp"
 import sendToGoogleAnalytics from "../utils/vitals"
 import "../pages/styles.scss"
 
@@ -125,6 +126,12 @@ export default class Posttest extends React.Component {
               </div>
             </section>
           </aside>
+          <section className="section">
+            <div className="align-content medium-margin-top">
+              <h1 className="title media-left">{data.site.siteMetadata.subscribe.subtitle}</h1>
+              <SignUp/>
+            </div>
+          </section>
         </Layout>
         <ArticleFooter metadata={data.site.siteMetadata} />
       </div>
@@ -152,6 +159,10 @@ export const pageQuery = graphql`
           articles
           topics
           cms
+        }
+        subscribe {
+          title
+          subtitle
         }
       }
     }
