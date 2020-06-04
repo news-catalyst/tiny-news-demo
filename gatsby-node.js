@@ -46,8 +46,21 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         actions.createPage({
             path: document.path,
             component: path.resolve(`./src/templates/post.js`),
+            context: {
+              slug: document.path,
+            }
+        })
+
+        console.log("creating amp page for google doc at ", `${document.path}/amp/`)
+        actions.createPage({
+          path: `${document.path}/amp/`,
+          component: path.resolve('./src/templates/post.js'),
+          context: {
+            slug: document.path,
+          }
         })
       })
+
 
       // remove any null tags
       tags = tags.filter(function (el) {

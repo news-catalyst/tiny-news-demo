@@ -1,15 +1,24 @@
-import React from "react"
+import React, { useEffect } from "react"
 import _ from 'lodash'
 import { Link, graphql } from "gatsby"
+import {getCLS, getFID, getLCP} from 'web-vitals';
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleLink from "../components/ArticleLink"
 import FeaturedArticleLink from "../components/FeaturedArticleLink"
 import ArticleNav from "../components/ArticleNav"
 import SearchPanel from "../components/SearchPanel"
 import Layout from "../components/Layout"
+import sendToGoogleAnalytics from "../utils/vitals"
+
 import "./styles.scss"
 
 export default function HomePage({ data }) {
+  useEffect(() => {
+    getCLS(sendToGoogleAnalytics);
+    getFID(sendToGoogleAnalytics);
+    getLCP(sendToGoogleAnalytics);
+  }, []);
+
   let tags = [];
   data.allGoogleDocs.nodes.forEach(({document}, index) => {
     tags = tags.concat(document.tags);
@@ -43,7 +52,7 @@ export default function HomePage({ data }) {
             </div>
           </div>
         </section>
-        <div class="featured-article">
+        <div className="featured-article">
           {data.allGoogleDocs.nodes.slice(0, 1).map(({ document, childMarkdownRemark }, index) => (
             <FeaturedArticleLink key={document.path} document={document} excerpt={childMarkdownRemark.excerpt} /> 
           ))}
