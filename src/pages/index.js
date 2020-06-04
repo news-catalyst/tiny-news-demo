@@ -73,9 +73,7 @@ export default function HomePage({ data }) {
             </div>
           </div>
         </section>
-
-        <div>
-        </div>
+        
       </Layout>
       <ArticleFooter metadata={data.site.siteMetadata} />
     </div>

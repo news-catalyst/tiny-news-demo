@@ -1,4 +1,5 @@
 import React from "react"
+import _ from 'lodash'
 import { graphql, Link } from "gatsby"
 import { parseISO, formatRelative } from 'date-fns'
 import Embed from 'react-embed';
@@ -7,6 +8,7 @@ import { Parser, ProcessNodeDefinitions } from "html-to-react";
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
+import SignUp from "../components/SignUp"
 import sendToGoogleAnalytics from "../utils/vitals"
 import "../pages/styles.scss"
 
@@ -83,7 +85,7 @@ export default class Posttest extends React.Component {
     let tagLinks;
     if (doc.tags) {
       tagLinks = doc.tags.map((tag, index) => (
-        <Link to={`/topics/${tag}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
+        <Link to={`/topics/${_.kebabCase(tag)}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
       ))
     }
     return (
@@ -124,6 +126,12 @@ export default class Posttest extends React.Component {
               </div>
             </section>
           </aside>
+          <section className="section">
+            <div className="align-content medium-margin-top">
+              <h1 className="title media-left">{data.site.siteMetadata.subscribe.subtitle}</h1>
+              <SignUp/>
+            </div>
+          </section>
         </Layout>
         <ArticleFooter metadata={data.site.siteMetadata} />
       </div>
@@ -132,7 +140,7 @@ export default class Posttest extends React.Component {
 }
 
 export const pageQuery = graphql`
-  query($path: String!) {
+  query($slug: String!) {
     site {
       siteMetadata {
         title
@@ -152,9 +160,13 @@ export const pageQuery = graphql`
           topics
           cms
         }
+        subscribe {
+          title
+          subtitle
+        }
       }
     }
-    googleDocs(document: {path: {eq: $path}}) {
+    googleDocs(document: {path: {eq: $slug}}) {
         document {
           author
           createdTime
