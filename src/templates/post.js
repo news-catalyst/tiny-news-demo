@@ -1,12 +1,15 @@
-import React from 'react';
+import React from "react"
+import _ from 'lodash'
 import { graphql, Link } from "gatsby"
 import { parseISO, formatRelative } from 'date-fns'
 import Embed from 'react-embed';
+import {getCLS, getFID, getLCP} from 'web-vitals';
 import { Parser, ProcessNodeDefinitions } from "html-to-react";
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
 import SignUp from "../components/SignUp"
+import sendToGoogleAnalytics from "../utils/vitals"
 import "../pages/styles.scss"
 
 let embedRegex = /\[embed src=\s*(.*?)\]/i;
@@ -70,6 +73,9 @@ export default class Posttest extends React.Component {
     this.setState({
       articleHtml: updatedHtml,
     })
+    getCLS(sendToGoogleAnalytics);
+    getFID(sendToGoogleAnalytics);
+    getLCP(sendToGoogleAnalytics);
   }
 
   render () {
@@ -79,7 +85,7 @@ export default class Posttest extends React.Component {
     let tagLinks;
     if (doc.tags) {
       tagLinks = doc.tags.map((tag, index) => (
-        <Link to={`/topics/${tag}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
+        <Link to={`/topics/${_.kebabCase(tag)}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
       ))
     }
     return (
@@ -134,7 +140,7 @@ export default class Posttest extends React.Component {
 }
 
 export const pageQuery = graphql`
-  query($path: String!) {
+  query($slug: String!) {
     site {
       siteMetadata {
         title
@@ -160,7 +166,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    googleDocs(document: {path: {eq: $path}}) {
+    googleDocs(document: {path: {eq: $slug}}) {
         document {
           author
           createdTime
