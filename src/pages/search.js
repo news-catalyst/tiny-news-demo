@@ -1,7 +1,7 @@
-import React, { useState } from "react"
+import React, {useState} from "react"
 import { graphql } from "gatsby"
 import { useFlexSearch } from 'react-use-flexsearch'
-import { Formik, Form, Field } from 'formik'
+import SearchPanel from "../components/SearchPanel"
 import SearchResults from "../components/SearchResults"
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
@@ -13,31 +13,14 @@ export default function SearchPage({ data }) {
   const index = data.localSearchArticles.index;
   const store = data.localSearchArticles.store;
 
-  const [query, setQuery] = useState(null)
+  const [query, setQuery] = useState('')
   const results = useFlexSearch(query, index, JSON.parse(store))
 
   return(
     <div>
       <ArticleNav metadata={data.site.siteMetadata} />
       <Layout title={data.site.siteMetadata.title} description={data.site.siteMetadata.description}>
-        <nav className="panel">
-          <p className="panel-heading">
-            {data.site.siteMetadata.labels.search}
-          </p>
-          <div className="panel-block">
-            <Formik
-              initialValues={{ query: '' }}
-              onSubmit={(values, { setSubmitting }) => {
-                setQuery(values.query)
-                setSubmitting(false)
-              }}
-            >
-              <Form>
-                <Field name="query" className="input" />
-              </Form>
-            </Formik>
-          </div>
-        </nav>
+        <SearchPanel metadata={data.site.siteMetadata} query={query} setQuery={setQuery} />
         <SearchResults results={results} />
       </Layout>
       <ArticleFooter metadata={data.site.siteMetadata} />

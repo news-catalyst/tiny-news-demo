@@ -1,4 +1,5 @@
 import React from "react"
+import { Formik, Form, Field } from 'formik'
 
 export default function SearchPanel(props) {
   return (
@@ -7,12 +8,19 @@ export default function SearchPanel(props) {
         {props.metadata.labels.search}
       </p>
       <div className="panel-block">
-        <p className="control has-icons-left">
-          <input aria-label="Search" className="input" type="text" placeholder="Search"/>
-          <span className="icon is-left">
-            <i className="fas fa-search" aria-hidden="true"></i>
-          </span>
-        </p>
+        <div className="control">
+          <Formik
+            initialValues={{ query: props.query }}
+            onSubmit={(values, { setSubmitting }) => {
+              props.setQuery(values.query)
+              setSubmitting(false)
+            }}
+          >
+            <Form>
+              <Field name="query" className="input" />
+            </Form>
+          </Formik>
+        </div>
       </div>
     </nav>
   )
