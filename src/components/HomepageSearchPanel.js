@@ -1,7 +1,7 @@
 import React from "react"
 import { Formik, Form, Field } from 'formik'
 
-export default function SearchPanel(props) {
+export default function HomepageSearchPanel(props) {
   return (
     <nav className="panel">
       <p className="panel-heading">
@@ -12,8 +12,8 @@ export default function SearchPanel(props) {
           <Formik
             initialValues={{ query: props.query }}
             onSubmit={(values, { setSubmitting }) => {
-              props.setQuery(values.query)
-              setSubmitting(false)
+              setSubmitting(false);
+              window.location.href = `/search?query=${values.query}`;
             }}
           >
             <Form>

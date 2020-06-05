@@ -1,18 +1,19 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import _ from 'lodash'
 import { Link, graphql } from "gatsby"
 import {getCLS, getFID, getLCP} from 'web-vitals';
+import Layout from "../components/Layout"
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleLink from "../components/ArticleLink"
 import FeaturedArticleLink from "../components/FeaturedArticleLink"
 import ArticleNav from "../components/ArticleNav"
-import SearchPanel from "../components/SearchPanel"
-import Layout from "../components/Layout"
+import HomepageSearchPanel from "../components/HomepageSearchPanel"
 import sendToGoogleAnalytics from "../utils/vitals"
 
 import "./styles.scss"
 
 export default function HomePage({ data }) {
+  const [query, setQuery] = useState('')
   useEffect(() => {
     getCLS(sendToGoogleAnalytics);
     getFID(sendToGoogleAnalytics);
@@ -65,13 +66,13 @@ export default function HomePage({ data }) {
               ))}
             </div>
             <div className="column">
+              <HomepageSearchPanel metadata={data.site.siteMetadata} query={query} setQuery={setQuery} />
               <nav className="panel">
                 <p className="panel-heading">
                   {data.site.siteMetadata.labels.topics}
                 </p>
                 {tagLinks}
               </nav>
-              <SearchPanel metadata={data.site.siteMetadata} />
             </div>
           </div>
         </section>

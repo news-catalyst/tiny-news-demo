@@ -27,6 +27,7 @@
     "gatsby-interface": "0.0.167",
     "gatsby-plugin-amp": "^0.2.2",
     "gatsby-plugin-google-analytics": "^2.3.2",
+    "gatsby-plugin-local-search": "^1.1.1",
     "gatsby-plugin-mailchimp": "^5.2.2",
     "gatsby-plugin-next-seo": "^1.5.1",
     "gatsby-plugin-react-helmet": "^3.3.2",
@@ -47,6 +48,7 @@
     "react-player": "^2.1.1",
     "react-string-replace": "^0.4.4",
     "react-twitter-embed": "^3.0.3",
+    "react-use-flexsearch": "^0.1.1",
     "web-vitals": "^0.2.2"
   },
   "devDependencies": {
