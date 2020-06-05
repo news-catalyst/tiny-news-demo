@@ -1,12 +1,13 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import _ from 'lodash'
 import { Link, graphql } from "gatsby"
 import {getCLS, getFID, getLCP} from 'web-vitals';
+import Layout from "../components/Layout"
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleLink from "../components/ArticleLink"
 import FeaturedArticleLink from "../components/FeaturedArticleLink"
 import ArticleNav from "../components/ArticleNav"
-import Layout from "../components/Layout"
+import HomepageSearchPanel from "../components/HomepageSearchPanel"
 import sendToGoogleAnalytics from "../utils/vitals"
 
 import "./styles.scss"
@@ -18,6 +19,7 @@ export default function HomePage({ data }) {
     getLCP(sendToGoogleAnalytics);
   }, []);
 
+  const [query, setQuery] = useState('')
   let tags = [];
   data.allGoogleDocs.nodes.forEach(({document}, index) => {
     tags = tags.concat(document.tags);
@@ -64,6 +66,7 @@ export default function HomePage({ data }) {
               ))}
             </div>
             <div className="column">
+              <HomepageSearchPanel metadata={data.site.siteMetadata} query={query} setQuery={setQuery} />
               <nav className="panel">
                 <p className="panel-heading">
                   {data.site.siteMetadata.labels.topics}
