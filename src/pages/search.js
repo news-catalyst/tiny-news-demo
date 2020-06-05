@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import { graphql } from "gatsby"
 import queryString from 'query-string';
 import { useFlexSearch } from 'react-use-flexsearch'
@@ -11,14 +11,19 @@ import Layout from "../components/Layout"
 import "./styles.scss"
 
 export default function SearchPage({ data }) {
-  const index = data.localSearchArticles.index;
-  const store = data.localSearchArticles.store;
-  let location = window.location;
-  const parsed = queryString.parse(location.search);
+  const [query, setQuery] = useState('')
 
-  const [query, setQuery] = useState(parsed.query)
+  let searchIndex = data.localSearchArticles.index;
+  let searchStore = JSON.parse(data.localSearchArticles.store);
 
-  const results = useFlexSearch(query, index, JSON.parse(store))
+  useEffect(
+    () => {
+      let parsed = queryString.parse(window.location.search);
+      setQuery(parsed.query);
+    }, []);
+
+
+  let results = useFlexSearch(query, searchIndex, searchStore);
 
   return(
     <div>

@@ -13,13 +13,13 @@ import sendToGoogleAnalytics from "../utils/vitals"
 import "./styles.scss"
 
 export default function HomePage({ data }) {
+  const [query, setQuery] = useState('')
   useEffect(() => {
     getCLS(sendToGoogleAnalytics);
     getFID(sendToGoogleAnalytics);
     getLCP(sendToGoogleAnalytics);
   }, []);
 
-  const [query, setQuery] = useState('')
   let tags = [];
   data.allGoogleDocs.nodes.forEach(({document}, index) => {
     tags = tags.concat(document.tags);

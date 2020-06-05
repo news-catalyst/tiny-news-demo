@@ -12,8 +12,8 @@ export default function HomepageSearchPanel(props) {
           <Formik
             initialValues={{ query: props.query }}
             onSubmit={(values, { setSubmitting }) => {
-              setSubmitting(false)
-              window.location.href = `/search?query=${values.query}`
+              setSubmitting(false);
+              window.location.href = `/search?query=${values.query}`;
             }}
           >
             <Form>
