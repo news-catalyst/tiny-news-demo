@@ -1,6 +1,6 @@
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
-  <a href="http://tinynewsco.org">
+  <a href="https://tinynewsco.org">
     <img alt="Gatsby" src="/static/tiny_news_64.png" width="60" />
   </a>
 </p>
@@ -201,7 +201,7 @@ For AMP, specify your Google Analytics ID in two places, set the base URL, speci
               },
             },
           },
-          canonicalBaseUrl: 'http://tinynewsco.org/',
+          canonicalBaseUrl: 'https://tinynewsco.org/',
           components: ['amp-form'],
           excludedPaths: ['/404*', '/'],
           pathIdentifier: '/amp/',
@@ -315,7 +315,7 @@ To add an article to the tinynewsco site:
 * to embed content from social media and other sites, use an embed shortcode: `[embed src=http://youtube.com/link/to-your-video]`
   * supported: facebook, google maps, instagram, soundcloud, twitter, youtube
 * publish the site (locally, restart `gatsby develop`)
-* add metadata like topical tags and SEO and social content in the [tinycms](http://tinynewsco.org/tinycms)
+* add metadata like topical tags and SEO and social content in the [tinycms](https://tinynewsco.org/tinycms)
 
 The screenshots below show how to set a title, a main article image (used in any list of articles, and as the top image on an article), including a table - even one copied and pasted from elsewhere, different text formatting and inline images.
 
@@ -343,15 +343,15 @@ Add photo credits and other information to any image by selecting the image, rig
 
 Also known as the homepage, this lists all articles in reverse chronological order along with a unique list of topics. It also includes a nav and footer.
 
-The source code for [http://tinynewsco.org/](http://tinynewsco.org/) is found in [src/pages/index.js](/src/pages/index.js).
+The source code for [https://tinynewsco.org/](https://tinynewsco.org/) is found in [src/pages/index.js](/src/pages/index.js).
 
 ### Topics
 
-This page lists all of the unique tags used across all articles and is available at [http://tinynewsco.org/topics](http://tinynewsco.org/topics). The source code for this page is in [src/pages/topics.js](/src/pages/topics.js).
+This page lists all of the unique tags used across all articles and is available at [https://tinynewsco.org/topics](https://tinynewsco.org/topics). The source code for this page is in [src/pages/topics.js](/src/pages/topics.js).
 
 To add a tag to this page, you merely need to add it to one or more articles in the tinycms editor.
 
 ### Subscribe
 
-This page is available at [http://tinynewsco.org/subscribe/](http://tinynewsco.org/subscribe) and is powered by the Mailchimp Integration we detailed above. You can find the source code for this in [src/pages/subscribe.js](/src/pages/subscribe.js).
+This page is available at [https://tinynewsco.org/subscribe/](https://tinynewsco.org/subscribe) and is powered by the Mailchimp Integration we detailed above. You can find the source code for this in [src/pages/subscribe.js](/src/pages/subscribe.js).
 
