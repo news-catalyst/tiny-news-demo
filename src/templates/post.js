@@ -12,7 +12,8 @@ import SignUp from "../components/SignUp"
 import sendToGoogleAnalytics from "../utils/vitals"
 import "../pages/styles.scss"
 
-let embedRegex = /\[embed src=\s*(.*?)\]/i;
+// Look for URLs in the article copy for embedding social media
+let urlRegex = /(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/i; 
 
 const htmlParser = new Parser(React);
 const processNodeDefinitions = new ProcessNodeDefinitions(React);
@@ -20,41 +21,17 @@ function isValidNode(){
     return true;
 }
 const processingInstructions = [
-  // first case: when [embed src=http://twitter.com/tweet1234] and the url is linked
-  // this comes through as a node with 3 children:
-  //    * "[embed src "
-  //    * { attribs: { href: "http://twitter.com/tweet1234" } }
-  //    * "]"
-  // look for this case in the PARENT node and replace its children with an <Embed> component
-  //    using the url found in the second child.
-  {
-    replaceChildren: true,
-    shouldProcessNode: (node) => {
-      return (node.children !== undefined && node.children.length === 3 && (/\[embed src=\s/).test(node.children[0].data));
-    },
-    processNode: (node, children, index) => {
-      let embedUrl = node.children[1].attribs.href;
-      return <Embed width={560} url={embedUrl} />
-    }
-  },
-  // second case: when the embed code is NOT automagically hyperlinked from google
-  // it comes through as a single plaintext node :)
+  // first, should this block become an embed? try matching against URL regex
   {
       shouldProcessNode: (node) => {
-        let foundMatch = (node.data && embedRegex.test(node.data));
+        let foundMatch = (node.data && urlRegex.test(node.data));
         return foundMatch;
   },
+  // processNode gets executed if shouldProcessNode returns true
+  // this replaces the URL with an embed
       processNode: (node) => {
-        let result = embedRegex.exec(node.data);
-
-        if (result && result[1]) {
-          let embedUrl = result[1];
-          return <Embed width={560} url={embedUrl} />
-        } else {
-          // matched an entire url
-          return <Embed width={560} url={node.data} />
-        }
-
+        let embedUrl = node.data;
+        return <Embed width={560} url={embedUrl} />
       }
   },
   // Default processing
