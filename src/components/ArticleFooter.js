@@ -11,9 +11,11 @@ class ArticleFooter extends React.Component {
         taxonomies: { tags: this.props.document.tags },
         url: window.location.href
     };
-    if(typeof window.pico !== 'undefined' && typeof pageInfo === 'object') {
+    if (typeof window.pico !== 'undefined') {
       console.log(pageInfo);
       window.pico('visit', pageInfo);
+    } else {
+      console.log("window.pico is not defined")
     }
   }
 
