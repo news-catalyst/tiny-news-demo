@@ -1,14 +1,10 @@
-
 import React from "react"
 
-class ArticleFooter extends React.Component {
+class Footer extends React.Component {
   componentDidMount () {
-    console.log(this.props);
     var pageInfo = {
-        article: true,
-        post_id: this.props.document.id,
-        post_type: "article",
-        taxonomies: { tags: this.props.document.tags },
+        article: false,
+        post_type: "home",
         url: window.location.href
     };
     if(typeof window.pico !== 'undefined' && typeof pageInfo === 'object') {
@@ -29,4 +25,4 @@ class ArticleFooter extends React.Component {
     )
   }
 }
-export default ArticleFooter;
+export default Footer;

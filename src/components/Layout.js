@@ -1,9 +1,13 @@
 import React from "react"
+import {Helmet} from "react-helmet";
 import { GatsbySeo } from 'gatsby-plugin-next-seo';
 
 export default function Layout(props) {
   return (
     <>
+      <Helmet>
+        <script type="text/javascript" src="/pico.js"/>
+      </Helmet>
       <GatsbySeo
       title={props.og_title}
       description={props.og_description}
