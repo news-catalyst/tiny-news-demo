@@ -24,6 +24,7 @@ class ArticleFooter extends React.Component {
             <p>
               <strong>{this.props.metadata.footerTitle}</strong> by <a href={this.props.metadata.footerBylineLink}>{this.props.metadata.footerBylineName}</a>. 
             </p>
+            <button className="PicoRule">Open Pico (Test)</button>
           </div>
         </footer>
     )
