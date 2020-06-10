@@ -7,6 +7,7 @@ exports.createSchemaCustomization = ({ actions }) => {
     type Document implements Node {
       name: String!
       author: String
+      featured: Boolean
       createdTime: Date
       tags: [String]
       og_locale: String
