@@ -4,8 +4,8 @@ import queryString from 'query-string';
 import { useFlexSearch } from 'react-use-flexsearch'
 import SearchPanel from "../components/SearchPanel"
 import SearchResults from "../components/SearchResults"
-import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
+import Footer from "../components/Footer"
 import Layout from "../components/Layout"
 
 import "./styles.scss"
@@ -32,7 +32,7 @@ export default function SearchPage({ data }) {
         <SearchPanel metadata={data.site.siteMetadata} query={query} setQuery={setQuery} />
         <SearchResults results={results} />
       </Layout>
-      <ArticleFooter metadata={data.site.siteMetadata} />
+      <Footer post_type="search" metadata={data.site.siteMetadata} />
     </div>
   )
 }
