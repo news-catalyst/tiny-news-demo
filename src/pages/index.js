@@ -78,7 +78,7 @@ export default function HomePage({ data }) {
         </section>
         
       </Layout>
-      <Footer metadata={data.site.siteMetadata} />
+      <Footer post_type="home" metadata={data.site.siteMetadata} />
     </div>
   )
 }

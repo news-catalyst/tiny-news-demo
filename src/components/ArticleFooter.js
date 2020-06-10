@@ -4,7 +4,6 @@ import Pico from "./Pico"
 
 class ArticleFooter extends React.Component {
   render () {
-  console.log(this.props);
     return (
         <footer className="footer">
           <Pico post_id={this.props.document.id} post_type="article" tags={this.props.document.tags} article={true} />
