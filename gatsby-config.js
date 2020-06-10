@@ -94,7 +94,7 @@ module.exports = {
               },
             },
           },
-          canonicalBaseUrl: 'http://tinynewsco.org/',
+          canonicalBaseUrl: 'https://tinynewsco.org/',
           components: ['amp-form'],
           excludedPaths: ['/404*', '/'],
           pathIdentifier: '/amp/',
