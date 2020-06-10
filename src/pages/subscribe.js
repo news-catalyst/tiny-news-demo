@@ -1,9 +1,9 @@
 import React from "react"
 import { graphql } from 'gatsby'
-import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
 import SignUp from "../components/SignUp"
 import Layout from "../components/Layout"
+import Footer from "../components/Footer"
 
 export default class Subscribe extends React.Component {
   render() {
@@ -29,7 +29,7 @@ export default class Subscribe extends React.Component {
           </section>
           
         </Layout>
-        <ArticleFooter metadata={data.site.siteMetadata} />
+        <Footer post_type="page" metadata={data.site.siteMetadata} />
       </div>
     );
   }

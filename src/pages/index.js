@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { Link, graphql } from "gatsby"
 import {getCLS, getFID, getLCP} from 'web-vitals';
 import Layout from "../components/Layout"
-import ArticleFooter from "../components/ArticleFooter"
+import Footer from "../components/Footer"
 import ArticleLink from "../components/ArticleLink"
 import FeaturedArticleLink from "../components/FeaturedArticleLink"
 import ArticleNav from "../components/ArticleNav"
@@ -82,7 +82,7 @@ export default function HomePage({ data }) {
         </section>
         
       </Layout>
-      <ArticleFooter metadata={data.site.siteMetadata} />
+      <Footer post_type="home" metadata={data.site.siteMetadata} />
     </div>
   )
 }

@@ -177,7 +177,7 @@ export default class Posttest extends React.Component {
             </div>
           </section>
         </Layout>
-        <ArticleFooter metadata={data.site.siteMetadata} />
+        <ArticleFooter metadata={data.site.siteMetadata} document={doc} />
       </div>
     )
   }
@@ -214,6 +214,7 @@ export const pageQuery = graphql`
         document {
           author
           createdTime
+          id
           name
           tags
           og_locale
