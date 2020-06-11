@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { StaticQuery, graphql } from "gatsby"
 import { gapi, loadAuth2 } from 'gapi-script' 
 import queryString from 'query-string';
 import Layout from "../components/Layout"
 import "../pages/styles.scss"
 
-class GoogleLogin extends Component {
+class GoogleEdit extends Component {
     constructor(props) {
         super(props);
 
@@ -422,4 +421,4 @@ class GoogleLogin extends Component {
     }
 }
 
-export default GoogleLogin;
+export default GoogleEdit;
