@@ -46,12 +46,18 @@ em {
 
 .featured {
   font-size: 150%;
+  margin: 0 auto;
 }
 
 .featured-img {
   width: 100%;
   height: auto;
   padding-bottom: 3rem;
+}
+
+.article-link-img {
+  max-width: 400px;
+  max-height: 400px;
 }
 
 .featured-article {
@@ -64,4 +70,8 @@ em {
 
 .medium-margin-top {
   margin-top: 3rem;
+}
+
+.small-margin-left {
+  margin-left: 1rem;
 }

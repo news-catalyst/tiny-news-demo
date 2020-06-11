@@ -1,7 +1,8 @@
 import React from "react"
-import { Link, graphql } from "gatsby"
+import { graphql } from "gatsby"
 import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
+import ArticleLink from "../components/ArticleLink"
 import Layout from "../components/Layout"
 import "../pages/styles.scss"
 
@@ -9,26 +10,18 @@ class Tag extends React.Component {
   render() {
     let data = this.props.data;
     let tagHeader = "Articles tagged: " + this.props.pageContext.tag;
-    let articles = data.allGoogleDocs.edges;
-    const articleLinks = articles.map(article => (
-      <li key={article.node.document.path}>
-        <Link to={article.node.document.path}>
-          {article.node.document.name}
-        </Link>
-      </li>
-    ))
-
+    
     return (
       <div>
         <ArticleNav metadata={data.site.siteMetadata} />
-
         <Layout>
           <section className="section">
             <h3 className="title is-size-4 is-bold-light">{tagHeader}</h3>
-            <ul className="taglist">{articleLinks}</ul>
+            {data.allGoogleDocs.nodes.map(({ document, childMarkdownRemark }, index) => (
+              <ArticleLink key={document.path} document={document} excerpt={childMarkdownRemark.excerpt} /> 
+            ))}
           </section>
         </Layout>
-
         <ArticleFooter metadata={data.site.siteMetadata} />
         </div>
     )
@@ -56,15 +49,16 @@ export const tagPageQuery = graphql`
       }
     }
     allGoogleDocs(filter: {document: {tags: {in: [$tag]}}}) {
-      edges {
-        node {
-          document {
-            id
-            name
-            path
-            createdTime
-            author
-          }
+      nodes {
+        document {
+          id
+          name
+          path
+          createdTime
+          author
+        }
+        childMarkdownRemark {
+          excerpt(truncate: true, format: PLAIN, pruneLength: 100)
         }
       }
     }
