@@ -1,6 +1,5 @@
 import React from "react"
 import { Link, graphql } from 'gatsby'
-import { parseISO, formatRelative } from 'date-fns'
 import Layout from "../../components/Layout"
 import "../styles.scss"
 
@@ -34,10 +33,17 @@ export default function Publish({ data }) {
       </nav>
     <Layout>
       <h1 className="title is-1">tinycms articles list</h1>
+      <p class="content">
+        To feature an article, click to edit and check the box next to <code>featured</code>. To un-feature an article, simply uncheck the box.
+      </p>
       <div>
         <ul>
           {data.allGoogleDocs.nodes.map(({ document, childMarkdownRemark }, index) => (
-            <li className="article-list-margin" key={index}><Link to={`/tinycms/edit?id=${document.id}`}>{document.name}</Link>
+            <li className="article-list-margin" key={index}>
+                {document.featured &&
+                  <span className="tag">Featured</span>
+                }
+              <Link to={`/tinycms/edit?id=${document.id}`}>{document.name}</Link>
               <ul>
                 <li>{childMarkdownRemark.excerpt}</li>
                 <li>Author: {document.author}</li>
@@ -64,6 +70,7 @@ export const query = graphql`
         document {
           author
           createdTime
+          featured
           id
           name
           path

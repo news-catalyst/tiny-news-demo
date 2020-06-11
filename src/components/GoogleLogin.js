@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { StaticQuery, graphql } from "gatsby"
 import { gapi, loadAuth2 } from 'gapi-script' 
 import queryString from 'query-string';
 import Layout from "../components/Layout"
@@ -24,11 +25,13 @@ class GoogleLogin extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+
     handleChangeDoc(event) {
       let data = this.state.doc;
       for (const key in data) {
         if (key === event.target.name) {
-          data[key] = event.target.value;
+          let value = event.target.name === "featured" ? event.target.checked : event.target.value;
+          data[key] = value;
         }
       }
       this.setState({doc: data});
@@ -98,9 +101,9 @@ class GoogleLogin extends Component {
     getDocData = (description) => {
       let docData;
       if ( (!description || /^\s*$/.test(description)) ) {
-        console.log("description is blank");
         docData = {
-          "author": "Ace Reporter",
+          "author": "",
+          "featured": false,
           "tags": ["news"],
           "og_type":"website",
           "og_title":"",
@@ -116,6 +119,10 @@ class GoogleLogin extends Component {
         }
       } else {
         docData = JSON.parse(description);
+      }
+      // default article to not being featured on the homepage
+      if (!Object.keys(docData).includes("featured")) {
+        docData["featured"] = false;
       }
       return docData;
     }
@@ -259,7 +266,12 @@ class GoogleLogin extends Component {
                 <div className="field-body">
                   <div className="field">
                     <div className="control">
-                      <input aria-label={key} name={key} className="input" type="text" value={this.state.doc[key] || ''} onChange={this.handleChangeDoc} />
+                      {(key === "featured") && 
+                        <input aria-label={key} name={key} type="checkbox" checked={this.state.doc[key] || false} onChange={this.handleChangeDoc} />
+                      }
+                      {(key !== "featured") && 
+                        <input aria-label={key} name={key} className="input" type="text" value={this.state.doc[key] || ''} onChange={this.handleChangeDoc} />
+                      }
                     </div>
                   </div>
                 </div>

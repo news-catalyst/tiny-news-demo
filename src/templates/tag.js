@@ -1,9 +1,10 @@
 import React from "react"
 import { graphql } from "gatsby"
-import ArticleFooter from "../components/ArticleFooter"
+import { Link, graphql } from "gatsby"
 import ArticleNav from "../components/ArticleNav"
 import ArticleLink from "../components/ArticleLink"
 import Layout from "../components/Layout"
+import Footer from "../components/Footer"
 import "../pages/styles.scss"
 
 class Tag extends React.Component {
@@ -22,8 +23,8 @@ class Tag extends React.Component {
             ))}
           </section>
         </Layout>
-        <ArticleFooter metadata={data.site.siteMetadata} />
-        </div>
+        <Footer post_type="tag" metadata={data.site.siteMetadata} />
+      </div>
     )
   }
 }

@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { Link, graphql } from "gatsby"
 import {getCLS, getFID, getLCP} from 'web-vitals';
 import Layout from "../components/Layout"
-import ArticleFooter from "../components/ArticleFooter"
+import Footer from "../components/Footer"
 import ArticleLink from "../components/ArticleLink"
 import FeaturedArticleLink from "../components/FeaturedArticleLink"
 import ArticleNav from "../components/ArticleNav"
@@ -20,8 +20,12 @@ export default function HomePage({ data }) {
     getLCP(sendToGoogleAnalytics);
   }, []);
 
+  let allArticles = data.allGoogleDocs.nodes;
+  let featuredArticles = allArticles.filter(node => node.document.featured);
+  let unfeaturedArticles = allArticles.filter(node => !node.document.featured);
+
   let tags = [];
-  data.allGoogleDocs.nodes.forEach(({document}, index) => {
+  allArticles.forEach(({document}, index) => {
     tags = tags.concat(document.tags);
   })
   tags = _.uniq(tags).sort();
@@ -54,14 +58,14 @@ export default function HomePage({ data }) {
           </div>
         </section>
         <div className="featured-article">
-          {data.allGoogleDocs.nodes.slice(0, 1).map(({ document, childMarkdownRemark }, index) => (
+          {featuredArticles.map(({ document, childMarkdownRemark }, index) => (
             <FeaturedArticleLink key={document.path} document={document} excerpt={childMarkdownRemark.excerpt} /> 
           ))}
         </div>
         <section className="section">
           <div className="columns">
             <div className="column is-four-fifths">
-              {data.allGoogleDocs.nodes.slice(1).map(({ document, childMarkdownRemark }, index) => (
+              {unfeaturedArticles.map(({ document, childMarkdownRemark }, index) => (
                 <ArticleLink key={document.path} document={document} excerpt={childMarkdownRemark.excerpt} /> 
               ))}
             </div>
@@ -78,7 +82,7 @@ export default function HomePage({ data }) {
         </section>
         
       </Layout>
-      <ArticleFooter metadata={data.site.siteMetadata} />
+      <Footer post_type="home" metadata={data.site.siteMetadata} />
     </div>
   )
 }
@@ -112,6 +116,7 @@ export const query = graphql`
             document {
               author
               createdTime
+              featured
               name
               path
               tags

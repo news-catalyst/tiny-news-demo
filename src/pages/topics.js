@@ -1,9 +1,9 @@
 import React from "react"
 import _ from 'lodash'
 import { Link, graphql } from "gatsby"
-import ArticleFooter from "../components/ArticleFooter"
 import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
+import Footer from "../components/Footer"
 import "./styles.scss"
 
 export default function HomePage({ data }) {
@@ -34,7 +34,7 @@ export default function HomePage({ data }) {
           </aside>
         </section>
       </Layout>
-      <ArticleFooter metadata={data.site.siteMetadata} />
+      <Footer post_type="tag" metadata={data.site.siteMetadata} />
     </div>
   )
 }
