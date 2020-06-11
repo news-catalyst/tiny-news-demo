@@ -17,7 +17,7 @@ export default function ArticleLink(props) {
         <div className="media-left">
           <h1 className="title"><Link className="featured" to={props.document.path}>{props.document.name}</Link></h1>
           <p className="featured">{props.excerpt}</p>
-          <p className="byline">{props.document.author} | {formatRelative(parsedDate, new Date())}</p>
+          <p className="byline featured">{props.document.author} | {formatRelative(parsedDate, new Date())}</p>
         </div>
         <nav className="level is-mobile">
           <div className="level-left">

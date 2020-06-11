@@ -8,8 +8,8 @@ import "./styles.scss"
 
 export default function HomePage({ data }) {
   let tags = [];
-  data.allGoogleDocs.edges.forEach(({node}, index) => {
-    tags = tags.concat(node.document.tags);
+  data.allGoogleDocs.nodes.forEach(({document}, index) => {
+    tags = tags.concat(document.tags);
   })
   // remove any null tags
   tags = tags.filter(function (el) {
@@ -63,11 +63,10 @@ export const query = graphql`
       }
     }
     allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}) {
-      edges {
-        node {
-          document {
-            tags
-          }
+      nodes {
+        document {
+          name
+          tags
         }
       }
     }
