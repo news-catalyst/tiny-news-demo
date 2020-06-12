@@ -9,12 +9,12 @@ export default function ArticleLink(props) {
     <article className="media">
       {props.document.cover &&
         <figure className="media-left">
-          <p className="image is-128x128">
+          <p className="image article-link-img">
             <img src={props.document.cover.image} />
           </p>
         </figure>
       }
-      <div className="media-content">
+      <div className="media-content small-margin-left">
         <div className="content">
           <h1 className="title"><Link to={props.document.path}>{props.document.name}</Link></h1>
           <p>{props.excerpt}</p>
