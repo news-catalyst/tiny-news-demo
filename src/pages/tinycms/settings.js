@@ -1,18 +1,40 @@
 import React, {useEffect, useState} from 'react';
 import { gapi, loadAuth2 } from 'gapi-script' 
 import { graphql } from "gatsby"
-// import { fetchUser } from '../utils/google.js'
+import TinyCmsNav from '../../components/TinyCmsNav'
+import VerticalField from '../../components/VerticalField'
+
 
 export default function TinySettings({data}) {
   const [user, setUser] = useState({
     name: null,
     email: null
   });
+  const [sections, setSections] = useState([]);
 
   let settingsDoc = data.allGoogleDocs.nodes[0];
 
   let settingsDocID = settingsDoc.document.id;
   let settingsContents = settingsDoc.childMarkdownRemark.rawMarkdownBody;
+  let parsed = JSON.parse(settingsContents);
+  console.log("parsed data: ", parsed);
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    let newSections = [];
+    for(var pair of formData.entries()) {
+      console.log(pair[0]+ ', '+ pair[1]); 
+   }
+   parsed.sections = formData.entries;
+
+   console.log(parsed);
+  }
+  const verticalItems = parsed.sections.map( (vertical, index) => {
+    return (
+      <VerticalField key={`vertical-fieldset-${index}`} index={index} label={vertical.label} link={vertical.link} sections={sections} updateSections={setSections} />
+    )
+  });
 
   let scopes = "https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.metadata";
 
@@ -23,7 +45,6 @@ export default function TinySettings({data}) {
         let auth2 = await loadAuth2(process.env.GATSBY_TINY_CMS_CLIENT_ID, scopes);
         if (auth2.isSignedIn.get()) {
           userData = auth2.currentUser.get().getBasicProfile();
-          console.log("userData: ", userData)
           setUser({name: userData.getName(), email: userData.getEmail()})
         }
       }
@@ -66,11 +87,26 @@ export default function TinySettings({data}) {
       <p>
         Configure various aspects of the tinynewsco site here.
       </p>
+
+      <section className="section">
+        <h2 className="is-2">Verticals</h2>
+        <form onSubmit={handleSubmit}>
+          {verticalItems}
+          <div className="field is-grouped">
+            <div className="control">
+              <input type="submit" className="button is-link" value="Submit" />
+            </div>
+            <div className="control">
+              <button className="button is-link is-light">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </section>
       <pre>
         {settingsContents}
       </pre>
       <p>
-        You are logged in as: {username} ({email})
+        You are logged in as: {user.name} ({user.email})
       </p>
     </div>
   );

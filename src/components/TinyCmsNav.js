@@ -36,12 +36,12 @@ return (
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
-              {this.props.user && 
-                <button id="" className="button logout" onClick={this.props.signOut}>
+              {props.user && 
+                <button id="" className="button logout" onClick={props.signOut}>
                   Log out
                 </button>
               }
-              {!this.props.user && 
+              {!props.user && 
                 <button id="customBtn" className="button is-light">
                   Log in
                 </button>
