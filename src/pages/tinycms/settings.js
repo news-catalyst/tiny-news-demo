@@ -4,7 +4,6 @@ import { graphql } from "gatsby"
 import TinyCmsNav from '../../components/TinyCmsNav'
 import VerticalField from '../../components/VerticalField'
 
-
 export default function TinySettings({data}) {
   const [user, setUser] = useState({
     name: null,
@@ -13,24 +12,26 @@ export default function TinySettings({data}) {
   const [sections, setSections] = useState([]);
 
   let settingsDoc = data.allGoogleDocs.nodes[0];
-
   let settingsDocID = settingsDoc.document.id;
-  let settingsContents = settingsDoc.childMarkdownRemark.rawMarkdownBody;
-  let parsed = JSON.parse(settingsContents);
-  console.log("parsed data: ", parsed);
 
   const handleSubmit = event => {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    let newSections = [];
-    for(var pair of formData.entries()) {
-      console.log(pair[0]+ ', '+ pair[1]); 
-   }
-   parsed.sections = formData.entries;
+    console.log("handleSubmit sections: ", sections);
+    let docData = { "sections": sections };
+    let docContentString = JSON.stringify(docData);
+    console.log("new doc contents: ", docContentString);
 
-   console.log(parsed);
+    gapi.client.drive.files.update({'fileId': settingsDocID, 'method': 'PATCH', 'body': docContentString})
+    .then((response) => {
+      // Handle response
+      console.log("update google doc response: ", response);
+    }, (reason) => {
+      // Handle error
+      console.log("update google doc error: ", reason);
+    });
   }
-  const verticalItems = parsed.sections.map( (vertical, index) => {
+
+  const verticalItems = sections.map( (vertical, index) => {
     return (
       <VerticalField key={`vertical-fieldset-${index}`} index={index} label={vertical.label} link={vertical.link} sections={sections} updateSections={setSections} />
     )
@@ -58,18 +59,24 @@ export default function TinySettings({data}) {
           'apiKey': process.env.GATSBY_TINY_CMS_API_KEY,
           'clientId': process.env.GATSBY_TINY_CMS_CLIENT_ID,
           'scope': scopes,
+          'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
         }).then(function() {
-          console.log("initialized google drive api client")
-          // BUILD path to document data endpoint for gapi requests
-          let path = `/drive/v3/files/${settingsDocID}?fields=description,name`;
-
-          // GET document metadata from Google Drive
-          return gapi.client.request({
-            'path': path,
-            'method': 'GET'
-          })
-        }).then(response => {
-          console.log("found settings document: ", response)
+          return gapi.client.drive.files.export({fileId: settingsDocID, mimeType: 'text/plain'})
+        }).then(function(resp) {
+          let contents = resp.body;
+          contents = contents.replace(/\\n/g, "\\n")  
+               .replace(/\\'/g, "\\'")
+               .replace(/\\"/g, '\\"')
+               .replace(/\\&/g, "\\&")
+               .replace(/\\r/g, "\\r")
+               .replace(/\\t/g, "\\t")
+               .replace(/\\b/g, "\\b")
+               .replace(/\\f/g, "\\f")
+               .replace(/\s+/, '');
+          // contents = contents.replace(/[\u0000-\u0019]+/g,""); 
+          contents = contents.replace(/[\u0000-\u001F]+/g,"")
+          let data = JSON.parse(`${contents}`);
+          setSections(data.sections);
         });
       });
   }, []);
@@ -102,9 +109,6 @@ export default function TinySettings({data}) {
           </div>
         </form>
       </section>
-      <pre>
-        {settingsContents}
-      </pre>
       <p>
         You are logged in as: {user.name} ({user.email})
       </p>
