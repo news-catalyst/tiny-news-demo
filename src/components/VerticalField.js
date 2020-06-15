@@ -20,17 +20,21 @@ export default function VerticalField(props) {
     props.updateSections(newSections)
   }
   return (
-    <div>
-      <div className="field">
-        <label className="label">Label</label>
-        <div className="control">
-          <input type="text" data-vertical-index={props.index} className="input" value={label} name="label" onChange={handleChange} />
+    <div className="columns">
+      <div className="column is-half">
+        <div className="field">
+          <label className="label">Label</label>
+          <div className="control">
+            <input type="text" data-vertical-index={props.index} className="input" value={label} name="label" onChange={handleChange} />
+          </div>
         </div>
       </div>
-      <div className="field">
-        <label className="label">Link</label>
-        <div className="control">
-          <input type="text" data-vertical-index={props.index} className="input" value={link} name="link" onChange={handleChange} />
+      <div className="column is-half">
+        <div className="field">
+          <label className="label">Link</label>
+          <div className="control">
+            <input type="text" data-vertical-index={props.index} className="input" value={link} name="link" onChange={handleChange} />
+          </div>
         </div>
       </div>
     </div>

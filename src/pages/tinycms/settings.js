@@ -10,24 +10,36 @@ export default function TinySettings({data}) {
     email: null
   });
   const [sections, setSections] = useState([]);
+  const [message, setMessage] = useState(null);
+  const [error, setError] = useState(null);
 
   let settingsDoc = data.allGoogleDocs.nodes[0];
   let settingsDocID = settingsDoc.document.id;
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log("handleSubmit sections: ", sections);
     let docData = { "sections": sections };
     let docContentString = JSON.stringify(docData);
     console.log("new doc contents: ", docContentString);
 
-    gapi.client.drive.files.update({'fileId': settingsDocID, 'method': 'PATCH', 'body': docContentString})
+    let path = `/upload/drive/v3/files/${settingsDocID}`;
+    // gapi.client.drive.files.update({'fileId': settingsDocID, 'method': 'PATCH', 'body': docContentString})
+    gapi.client.request({
+      'path': path,
+      'method': "PATCH",
+      'params': { 'uploadType': 'media'},
+      'body': docContentString
+    })
     .then((response) => {
       // Handle response
       console.log("update google doc response: ", response);
+      setError(null);
+      setMessage("Updated settings.")
     }, (reason) => {
       // Handle error
       console.log("update google doc error: ", reason);
+      setMessage(null);
+      setError("An error occurred while updating the settings.")
     });
   }
 
@@ -90,21 +102,47 @@ export default function TinySettings({data}) {
   return (
     <div>
       <TinyCmsNav user={user} signOut={signOut} />
-      <h1 className="title">tinycms settings</h1>
+      <h1 className="title is-size-1">tinycms settings</h1>
       <p>
         Configure various aspects of the tinynewsco site here.
       </p>
 
-      <section className="section">
-        <h2 className="is-2">Verticals</h2>
-        <form onSubmit={handleSubmit}>
-          {verticalItems}
-          <div className="field is-grouped">
-            <div className="control">
-              <input type="submit" className="button is-link" value="Submit" />
+      { message && 
+        <div className="message is-success">
+            <div className="message-header">
+              Success
             </div>
-            <div className="control">
-              <button className="button is-link is-light">Cancel</button>
+            <div className="message-body">
+              {message}
+            </div>
+        </div>
+      }
+      {error &&
+        <div className="message is-danger">
+            <div className="message-header">
+              Error
+            </div>
+            <div className="message-body">
+              {error}
+            </div>
+        </div>
+      }
+      <section className="section">
+        <h2 className="title is-size-2">Sections</h2>
+        <form onSubmit={handleSubmit}>
+
+          <div className="container" style={ {marginBottom: '1rem' }}>
+            {verticalItems}
+          </div>
+
+          <div className="container">
+            <div className="field is-grouped">
+              <div className="control">
+                <input type="submit" className="button is-link" value="Submit" />
+              </div>
+              <div className="control">
+                <button className="button is-link is-light">Cancel</button>
+              </div>
             </div>
           </div>
         </form>
