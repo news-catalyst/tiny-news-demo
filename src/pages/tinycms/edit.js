@@ -1,12 +1,12 @@
 
 import React from "react"
 import Layout from "../../components/Layout"
-import GoogleLogin from "../../components/GoogleLogin"
+import GoogleEdit from "../../components/GoogleEdit"
 
 const TinyEdit = () => {
   return (
     <Layout>
-      <GoogleLogin />
+      <GoogleEdit />
     </Layout>
   )
 }

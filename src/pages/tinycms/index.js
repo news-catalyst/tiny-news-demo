@@ -33,7 +33,7 @@ export default function Publish({ data }) {
       </nav>
     <Layout>
       <h1 className="title is-1">tinycms articles list</h1>
-      <p class="content">
+      <p className="content">
         To feature an article, click to edit and check the box next to <code>featured</code>. To un-feature an article, simply uncheck the box.
       </p>
       <div>
