@@ -25,7 +25,25 @@ exports.createSchemaCustomization = ({ actions }) => {
   createTypes(typeDefs)
 }
 
+let sections = [];
 exports.createPages = async ({ actions, graphql, reporter }) => {
+  graphql(
+    `{
+      allGoogleDocs(filter: {document: {name: {eq: "settings"}}}) {
+        nodes {
+          childMarkdownRemark {
+            rawMarkdownBody
+          }
+        }
+      }
+    }`
+  ).then(result => {
+    let settingsJson = result.data.allGoogleDocs.nodes[0].childMarkdownRemark.rawMarkdownBody;
+    console.log("found settings JSON: ", settingsJson);
+    let settings = JSON.parse(settingsJson);
+    sections = settings.sections;
+  });
+
   graphql(
     `
         {
@@ -40,6 +58,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         }
     `
   ).then(result => {
+    console.log("working with how many sections: ", sections.length)
       let tags = []
       result.data.allGoogleDocs.nodes.forEach(({document}, index) => {
         tags = tags.concat(document.tags);
@@ -49,6 +68,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             component: path.resolve(`./src/templates/post.js`),
             context: {
               slug: document.path,
+              sections: sections,
             }
         })
 
@@ -58,6 +78,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
           component: path.resolve('./src/templates/post.js'),
           context: {
             slug: document.path,
+            sections: sections,
           }
         })
       })
@@ -79,6 +100,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
           component: path.resolve(`./src/templates/tag.js`),
           context: {
             tag,
+            sections,
           },
         })
         console.log(" - created ", tagPath)
