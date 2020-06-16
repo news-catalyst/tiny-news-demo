@@ -39,7 +39,6 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     }`
   ).then(result => {
     let settingsJson = result.data.allGoogleDocs.nodes[0].childMarkdownRemark.rawMarkdownBody;
-    console.log("found settings JSON: ", settingsJson);
     let settings = JSON.parse(settingsJson);
     sections = settings.sections;
   });
@@ -58,7 +57,6 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         }
     `
   ).then(result => {
-    console.log("working with how many sections: ", sections.length)
       let tags = []
       result.data.allGoogleDocs.nodes.forEach(({document}, index) => {
         tags = tags.concat(document.tags);
@@ -90,7 +88,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       });
 
       tags = _.uniq(tags)
-      console.log(tags);
+
       console.log("Making", tags.length, "tag pages...")
       tags.forEach(tag => {
         const tagPath = `/topics/${_.kebabCase(tag)}/`
