@@ -10,6 +10,7 @@ class GoogleEdit extends Component {
 
         this.state = {
           id: '',
+          categories: props.settingsData.sections,
           doc: { },
           newField: '',
           message: '',
@@ -102,8 +103,8 @@ class GoogleEdit extends Component {
       if ( (!description || /^\s*$/.test(description)) ) {
         docData = {
           "author": "",
+          "category": "",
           "featured": false,
-          "tags": ["news"],
           "og_type":"website",
           "og_title":"",
           "og_description":"",
@@ -112,6 +113,7 @@ class GoogleEdit extends Component {
           "og_image_alt": "",
           "og_url":"",
           "og_site_name":"",
+          "tags": ["news"],
           "tw_handle":"@",
           "tw_site":"@",
           "tw_cardType":"summary_large_image"
@@ -122,6 +124,9 @@ class GoogleEdit extends Component {
       // default article to not being featured on the homepage
       if (!Object.keys(docData).includes("featured")) {
         docData["featured"] = false;
+      }
+      if (!Object.keys(docData).includes("category")) {
+        docData["category"] = "";
       }
       return docData;
     }
@@ -253,6 +258,10 @@ class GoogleEdit extends Component {
     }
 
     render() {
+      let categoryOptions = this.state.categories.map((category, index) => (
+        <option value={category.label} key={`section-option-${index}`}>{category.label}</option>
+      ));
+
         if(this.state.user) {
           let formFields = [];
           if (this.state.docLoaded) {
@@ -268,7 +277,15 @@ class GoogleEdit extends Component {
                       {(key === "featured") && 
                         <input aria-label={key} name={key} type="checkbox" checked={this.state.doc[key] || false} onChange={this.handleChangeDoc} />
                       }
-                      {(key !== "featured") && 
+                      {(key === "category") && 
+                        <div className="select">
+                          <select name="category" value={this.state.doc["category"]} onChange={this.handleChangeDoc}>
+                            <option>Please select...</option>
+                            {categoryOptions}
+                          </select>
+                        </div>
+                      }
+                      {(key !== "featured" && key !== "category") && 
                         <input aria-label={key} name={key} className="input" type="text" value={this.state.doc[key] || ''} onChange={this.handleChangeDoc} />
                       }
                     </div>
@@ -301,6 +318,10 @@ class GoogleEdit extends Component {
 
                       <a className="navbar-item" href="/tinycms/images">
                         Images
+                      </a>
+
+                      <a className="navbar-item" href="/tinycms/settings">
+                        Settings
                       </a>
                     </div>
 
@@ -388,6 +409,10 @@ class GoogleEdit extends Component {
 
                       <a className="navbar-item" href="/tinycms/images">
                         Images
+                      </a>
+
+                      <a className="navbar-item" href="/tinycms/settings">
+                        Settings
                       </a>
                     </div>
 
