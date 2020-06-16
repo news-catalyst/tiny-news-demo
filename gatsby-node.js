@@ -81,6 +81,20 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         })
       })
 
+      console.log("Making ", sections.length, " section pages...")
+      sections.forEach(section => {
+  
+        actions.createPage({
+          path: section.link,
+          component: path.resolve(`./src/templates/section.js`),
+          context: {
+            category: section.label,
+            section: section,
+            sections: sections,
+          },
+        })
+        console.log(" - created ", section.link)
+      })
 
       // remove any null tags
       tags = tags.filter(function (el) {
