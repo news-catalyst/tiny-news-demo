@@ -46,7 +46,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         console.log("creating page for google doc at ", document.path)
         actions.createPage({
             path: document.path,
-            component: path.resolve(`./src/templates/post.js`),
+            component: path.resolve(`./src/templates/article.js`),
             context: {
               slug: document.path,
             }
@@ -55,9 +55,10 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         console.log("creating amp page for google doc at ", `${document.path}/amp/`)
         actions.createPage({
           path: `${document.path}/amp/`,
-          component: path.resolve('./src/templates/post.js'),
+          component: path.resolve('./src/templates/article.amp.js'),
           context: {
             slug: document.path,
+            amp: true,
           }
         })
       })
