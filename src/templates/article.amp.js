@@ -1,4 +1,5 @@
 import React from "react"
+import { Helmet } from 'react-helmet'
 import _ from 'lodash'
 import { graphql, Link } from "gatsby"
 import { parseISO, formatRelative } from 'date-fns'
@@ -106,14 +107,18 @@ const processingInstructions = [
   }
 ];
 
-export default class Posttest extends React.Component {
+export default class ArticleAMP extends React.Component {
   state = {
-    articleHtml: null,
+    articleHtml: this.props.data.googleDocs.childMarkdownRemark.html,
   }
   componentDidMount() {
     let updatedHtml = htmlParser.parseWithInstructions(this.props.data.googleDocs.childMarkdownRemark.html, isValidNode, processingInstructions);
+
+    let canonicalUrl = window.location.href.replace("/amp/", "");
+
     this.setState({
       articleHtml: updatedHtml,
+      canonicalUrl: canonicalUrl,
     })
     getCLS(sendToGoogleAnalytics);
     getFID(sendToGoogleAnalytics);
@@ -125,15 +130,23 @@ export default class Posttest extends React.Component {
     let doc = data.googleDocs.document;
     let parsedDate = parseISO(doc.createdTime)
 
-
     let tagLinks;
     if (doc.tags) {
       tagLinks = doc.tags.map((tag, index) => (
         <Link to={`/topics/${_.kebabCase(tag)}`} key={`${tag}-${index}`} className="is-link tag">{tag}</Link>
       ))
     }
+
     return (
       <div id="article-container">
+        <Helmet
+          htmlAttributes={{ amp: true, lang: 'en' }}
+        >
+          <meta charset="utf-8" />
+          <script async src="https://cdn.ampproject.org/v0.js"></script>
+          <link rel="canonical" href={this.state.canonicalUrl} /> // ⚡ Add canonical
+        </Helmet>
+
         <ArticleNav metadata={data.site.siteMetadata} />
         <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} {...doc}>
           <article>
@@ -150,7 +163,7 @@ export default class Posttest extends React.Component {
               </div>
             </section>
             {doc.cover &&
-              <amp-img src={doc.cover.image} alt={doc.cover.title} className="image" layout="responsive" />
+              <amp-img src={doc.cover.image} width="1600" height="1000" alt={doc.cover.title} className="image" layout="responsive" />
             }
             <section className="section">
               <div className="content">

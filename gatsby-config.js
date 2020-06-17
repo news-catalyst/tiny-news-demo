@@ -76,32 +76,6 @@ module.exports = {
           },
         },
       },
-
-      {
-        resolve: `gatsby-plugin-amp`,
-        options: {
-          analytics: {
-            type: 'gtag',
-            dataCredentials: 'include',
-            config: {
-              vars: {
-                gtag_id: "UA-166777432-1",
-                config: {
-                  "UA-166777432-1": {
-                    page_location: '{{pathname}}'
-                  },
-                },
-              },
-            },
-          },
-          canonicalBaseUrl: 'https://tinynewsco.org/',
-          components: ['amp-form'],
-          excludedPaths: ['/404*', '/'],
-          pathIdentifier: '/amp/',
-          relAmpHtmlPattern: '{{canonicalBaseUrl}}{{pathname}}{{pathIdentifier}}',
-          useAmpClientIdApi: true,
-        },
-      },
       {
         resolve: 'gatsby-plugin-mailchimp',
         options: {

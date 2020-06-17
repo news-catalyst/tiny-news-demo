@@ -60,7 +60,6 @@ const canEmbedStreamable = (url) => MATCH_URL_STREAMABLE.test(url);
 
 function isValidUrl(url) {
   let validUrl = urlRegex.test(url);
-  console.log(url, "is it valid? ", validUrl);
   if (!validUrl) {
     return false; // don't bother processing further
   }
@@ -78,7 +77,6 @@ function isValidUrl(url) {
     canEmbedYoutube(url) || 
     canEmbedVimeo(url) );
 
-  console.log(url, "is it supported? ", supportedPlatform);
   return validUrl && supportedPlatform;
 }
 
@@ -108,7 +106,7 @@ const processingInstructions = [
   }
 ];
 
-export default class Posttest extends React.Component {
+export default class Article extends React.Component {
   state = {
     articleHtml: null,
   }

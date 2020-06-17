@@ -70,7 +70,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       });
 
       tags = _.uniq(tags)
-      console.log(tags);
+
       console.log("Making", tags.length, "tag pages...")
       tags.forEach(tag => {
         const tagPath = `/topics/${_.kebabCase(tag)}/`
