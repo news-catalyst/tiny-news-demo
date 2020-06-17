@@ -108,6 +108,20 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         component: path.resolve(`./src/templates/topics.amp.js`),
       })
       console.log("creating topics index page for AMP at /topics/amp/")
+
+      // create subscribe page
+      actions.createPage({
+        path: "/subscribe/",
+        component: path.resolve(`./src/templates/subscribe.js`),
+      })
+      console.log("creating newsletter subscribe page at /subscribe/")
+
+      // create subscribe page - AMP
+      actions.createPage({
+        path: "/subscribe/amp/",
+        component: path.resolve(`./src/templates/subscribe.amp.js`),
+      })
+      console.log("creating newsletter subscribe page for AMP at /subscribe/amp/")
   })
 
 }
