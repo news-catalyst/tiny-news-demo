@@ -83,6 +83,16 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
           },
         })
         console.log(" - created ", tagPath)
+
+        actions.createPage({
+          path: tagPath,
+          path: `${tagPath}amp/`,
+          component: path.resolve(`./src/templates/tag.amp.js`),
+          context: {
+            tag,
+          },
+        })
+        console.log(" - created ", `${tagPath}amp/`)
       })
   })
 
