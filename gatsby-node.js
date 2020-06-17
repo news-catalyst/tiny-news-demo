@@ -43,7 +43,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       let tags = []
       result.data.allGoogleDocs.nodes.forEach(({document}, index) => {
         tags = tags.concat(document.tags);
-        console.log("creating page for google doc at ", document.path)
+        console.log("creating page for article at ", document.path)
         actions.createPage({
             path: document.path,
             component: path.resolve(`./src/templates/article.js`),
@@ -52,7 +52,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             }
         })
 
-        console.log("creating amp page for google doc at ", `${document.path}/amp/`)
+        console.log("creating AMP page for article at ", `${document.path}/amp/`)
         actions.createPage({
           path: `${document.path}/amp/`,
           component: path.resolve('./src/templates/article.amp.js'),
@@ -82,7 +82,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             tag,
           },
         })
-        console.log(" - created ", tagPath)
+        console.log("creating tag page at ", tagPath)
 
         actions.createPage({
           path: tagPath,
@@ -92,8 +92,22 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             tag,
           },
         })
-        console.log(" - created ", `${tagPath}amp/`)
+        console.log("creating tag page for AMP at ", `${tagPath}amp/`)
       })
+
+      // create topics index page
+      actions.createPage({
+        path: "/topics/",
+        component: path.resolve(`./src/templates/topics.js`),
+      })
+      console.log("creating topics index page at /topics/")
+
+      // create topics index page - AMP
+      actions.createPage({
+        path: "/topics/amp/",
+        component: path.resolve(`./src/templates/topics.amp.js`),
+      })
+      console.log("creating topics index page for AMP at /topics/amp/")
   })
 
 }
