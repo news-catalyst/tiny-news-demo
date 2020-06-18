@@ -1,11 +1,13 @@
 
 import React from "react"
+import Coral from "./Coral"
 import Pico from "./Pico"
 
 class ArticleFooter extends React.Component {
   render () {
     return (
         <footer className="footer">
+          <Coral post_id={this.props.document.id} />
           <Pico post_id={this.props.document.id} post_type="article" tags={this.props.document.tags} article={true} />
           <div className="content has-text-centered">
             <p>
