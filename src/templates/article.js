@@ -121,6 +121,7 @@ export default class Article extends React.Component {
   }
 
   render () {
+    let sections = this.props.pageContext.sections;
     let data = this.props.data;
     let doc = data.googleDocs.document;
     let parsedDate = parseISO(doc.createdTime)
@@ -133,7 +134,7 @@ export default class Article extends React.Component {
     }
     return (
       <div id="article-container">
-        <ArticleNav metadata={data.site.siteMetadata} />
+        <ArticleNav metadata={data.site.siteMetadata} sections={sections} />
         <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} {...doc}>
           <article>
             <section className="hero is-bold">
