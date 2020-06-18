@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { gapi, loadAuth2 } from 'gapi-script' 
+import { gapi, loadAuth2 } from 'gapi-script'
 import queryString from 'query-string';
 import Layout from "../components/Layout"
 import "../pages/styles.scss"
@@ -10,7 +10,7 @@ class GoogleEdit extends Component {
 
         this.state = {
           id: '',
-          categories: props.settingsData.sections,
+          sections: props.settingsData.sections,
           doc: { },
           newField: '',
           message: '',
@@ -47,7 +47,7 @@ class GoogleEdit extends Component {
       if (typeof(docData.tags) === "string") {
         docData.tags = docData.tags.split(',')
       }
-      let bodyForGoogle = { 
+      let bodyForGoogle = {
         description: JSON.stringify(docData)
       }
 
@@ -103,7 +103,7 @@ class GoogleEdit extends Component {
       if ( (!description || /^\s*$/.test(description)) ) {
         docData = {
           "author": "",
-          "category": "",
+          "section": "",
           "featured": false,
           "og_type":"website",
           "og_title":"",
@@ -125,8 +125,8 @@ class GoogleEdit extends Component {
       if (!Object.keys(docData).includes("featured")) {
         docData["featured"] = false;
       }
-      if (!Object.keys(docData).includes("category")) {
-        docData["category"] = "";
+      if (!Object.keys(docData).includes("section")) {
+        docData["section"] = "";
       }
       return docData;
     }
@@ -226,7 +226,7 @@ class GoogleEdit extends Component {
         if (idx !== fidx) return field;
         return { ...field, name: evt.target.value };
       });
-  
+
       this.setState({ fields: newFields });
     };
 
@@ -258,8 +258,8 @@ class GoogleEdit extends Component {
     }
 
     render() {
-      let categoryOptions = this.state.categories.map((category, index) => (
-        <option value={category.label} key={`section-option-${index}`}>{category.label}</option>
+      let sectionOptions = this.state.sections.map((section, index) => (
+        <option value={section.label} key={`section-option-${index}`}>{section.label}</option>
       ));
 
         if(this.state.user) {
@@ -274,18 +274,18 @@ class GoogleEdit extends Component {
                 <div className="field-body">
                   <div className="field">
                     <div className="control">
-                      {(key === "featured") && 
+                      {(key === "featured") &&
                         <input aria-label={key} name={key} type="checkbox" checked={this.state.doc[key] || false} onChange={this.handleChangeDoc} />
                       }
-                      {(key === "category") && 
+                      {(key === "section") &&
                         <div className="select">
-                          <select name="category" value={this.state.doc["category"]} onChange={this.handleChangeDoc}>
+                          <select name="section" value={this.state.doc["section"]} onChange={this.handleChangeDoc}>
                             <option>Please select...</option>
-                            {categoryOptions}
+                            {sectionOptions}
                           </select>
                         </div>
                       }
-                      {(key !== "featured" && key !== "category") && 
+                      {(key !== "featured" && key !== "section") &&
                         <input aria-label={key} name={key} className="input" type="text" value={this.state.doc[key] || ''} onChange={this.handleChangeDoc} />
                       }
                     </div>
@@ -328,16 +328,16 @@ class GoogleEdit extends Component {
                     <div className="navbar-end">
                       <div className="navbar-item">
                         <div className="buttons">
-                          {this.state.user && 
+                          {this.state.user &&
                             <button id="" className="button logout" onClick={this.signOut}>
                               Log out
                             </button>
                           }
-                          {!this.state.user && 
+                          {!this.state.user &&
                             <button id="customBtn" className="button is-light">
                               Log in
                             </button>
-                          }   
+                          }
                         </div>
                       </div>
                     </div>
@@ -367,7 +367,7 @@ class GoogleEdit extends Component {
                       </div>
                   </div>}
 
-                { this.state.docLoaded && 
+                { this.state.docLoaded &&
                   <section className="section">
 
                     <form onSubmit={this.handleSubmit}>
@@ -419,16 +419,16 @@ class GoogleEdit extends Component {
                     <div className="navbar-end">
                       <div className="navbar-item">
                         <div className="buttons">
-                          {this.state.user && 
+                          {this.state.user &&
                             <button id="" className="button logout" onClick={this.signOut}>
                               Log out
                             </button>
                           }
-                          {!this.state.user && 
+                          {!this.state.user &&
                             <button id="customBtn" className="button is-light">
                               Log in
                             </button>
-                          }   
+                          }
                         </div>
                       </div>
                     </div>
