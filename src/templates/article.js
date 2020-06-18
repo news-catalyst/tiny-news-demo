@@ -106,7 +106,7 @@ const processingInstructions = [
   }
 ];
 
-export default class Posttest extends React.Component {
+export default class Article extends React.Component {
   state = {
     articleHtml: null,
   }
@@ -125,6 +125,7 @@ export default class Posttest extends React.Component {
     let data = this.props.data;
     let doc = data.googleDocs.document;
     let parsedDate = parseISO(doc.createdTime)
+
     let tagLinks;
     if (doc.tags) {
       tagLinks = doc.tags.map((tag, index) => (
@@ -149,7 +150,7 @@ export default class Posttest extends React.Component {
               </div>
             </section>
             {doc.cover &&
-              <img src={doc.cover.image} alt={doc.cover.title} className="image" />
+             <img src={doc.cover.image} alt={doc.cover.title} className="image" />
             }
             <section className="section">
               <div className="content">

@@ -1,0 +1,85 @@
+import React, { useEffect, useState } from "react"
+import { Helmet } from 'react-helmet'
+import _ from 'lodash'
+import { Link, graphql } from "gatsby"
+import ArticleNav from "../components/ArticleNav"
+import Layout from "../components/Layout"
+import Footer from "../components/Footer"
+import "../pages/styles.scss"
+
+export default function TopicsIndexAMP({ data }) {
+  const [canonicalUrl, setCanonicalUrl] = useState('')
+  useEffect(() => {
+    setCanonicalUrl(window.location.href.replace("/amp/", ""));
+  }, []);
+
+  let tags = [];
+  data.allGoogleDocs.nodes.forEach(({document}, index) => {
+    tags = tags.concat(document.tags);
+  })
+  // remove any null tags
+  tags = tags.filter(function (el) {
+    return el != null;
+  });
+  tags = _.uniq(tags).sort();
+  const tagLinks = tags.map( (tag, index) => (
+    <li key={index}><Link to={`/topics/${_.kebabCase(tag)}`}>{_.startCase(tag)}</Link></li>
+  ));
+
+  return(
+    <div>
+        <Helmet
+          htmlAttributes={{ amp: true, lang: 'en' }}
+        >
+          <meta charset="utf-8" />
+          <script async src="https://cdn.ampproject.org/v0.js"></script>
+          <link rel="canonical" href={canonicalUrl} /> // ⚡ Add canonical
+        </Helmet>
+      <ArticleNav metadata={data.site.siteMetadata} />
+      <Layout>
+        <section className="section">
+          <h3 className="title is-size-4 is-bold-light">Topics</h3>
+          <aside className="menu">
+            <ul className="menu-list">
+              {tagLinks}
+            </ul>
+          </aside>
+        </section>
+      </Layout>
+      <Footer post_type="tag" metadata={data.site.siteMetadata} />
+    </div>
+  )
+}
+
+export const query = graphql`
+  query {
+    site {
+      siteMetadata {
+        title
+        shortName
+        description
+        siteUrl
+        footerTitle
+        footerBylineName
+        footerBylineLink
+        labels {
+          latestNews
+          search
+          topics
+        }
+        nav {
+          articles
+          topics
+          cms
+        }
+      }
+    }
+    allGoogleDocs(filter: {document: {breadcrumb: {nin: "Drafts"}}}) {
+      nodes {
+        document {
+          name
+          tags
+        }
+      }
+    }
+  }`

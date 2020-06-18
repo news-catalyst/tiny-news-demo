@@ -60,22 +60,23 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       let tags = []
       result.data.allGoogleDocs.nodes.forEach(({document}, index) => {
         tags = tags.concat(document.tags);
-        console.log("creating page for google doc at ", document.path)
+        console.log("creating page for article at ", document.path)
         actions.createPage({
             path: document.path,
-            component: path.resolve(`./src/templates/post.js`),
+            component: path.resolve(`./src/templates/article.js`),
             context: {
               slug: document.path,
               sections: sections,
             }
         })
 
-        console.log("creating amp page for google doc at ", `${document.path}/amp/`)
+        console.log("creating AMP page for article at ", `${document.path}/amp/`)
         actions.createPage({
           path: `${document.path}/amp/`,
-          component: path.resolve('./src/templates/post.js'),
+          component: path.resolve('./src/templates/article.amp.js'),
           context: {
             slug: document.path,
+            amp: true,
             sections: sections,
           }
         })
@@ -92,7 +93,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       console.log("Making", tags.length, "tag pages...")
       tags.forEach(tag => {
         const tagPath = `/topics/${_.kebabCase(tag)}/`
-  
+
         actions.createPage({
           path: tagPath,
           component: path.resolve(`./src/templates/tag.js`),
@@ -101,8 +102,46 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             sections,
           },
         })
-        console.log(" - created ", tagPath)
+        console.log("creating tag page at ", tagPath)
+
+        actions.createPage({
+          path: tagPath,
+          path: `${tagPath}amp/`,
+          component: path.resolve(`./src/templates/tag.amp.js`),
+          context: {
+            tag,
+          },
+        })
+        console.log("creating tag page for AMP at ", `${tagPath}amp/`)
       })
+
+      // create topics index page
+      actions.createPage({
+        path: "/topics/",
+        component: path.resolve(`./src/templates/topics.js`),
+      })
+      console.log("creating topics index page at /topics/")
+
+      // create topics index page - AMP
+      actions.createPage({
+        path: "/topics/amp/",
+        component: path.resolve(`./src/templates/topics.amp.js`),
+      })
+      console.log("creating topics index page for AMP at /topics/amp/")
+
+      // create subscribe page
+      actions.createPage({
+        path: "/subscribe/",
+        component: path.resolve(`./src/templates/subscribe.js`),
+      })
+      console.log("creating newsletter subscribe page at /subscribe/")
+
+      // create subscribe page - AMP
+      actions.createPage({
+        path: "/subscribe/amp/",
+        component: path.resolve(`./src/templates/subscribe.amp.js`),
+      })
+      console.log("creating newsletter subscribe page for AMP at /subscribe/amp/")
   })
 
 }
