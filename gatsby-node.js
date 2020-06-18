@@ -76,11 +76,8 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
           component: path.resolve('./src/templates/article.amp.js'),
           context: {
             slug: document.path,
-<<<<<<< HEAD
             amp: true,
-=======
             sections: sections,
->>>>>>> develop
           }
         })
       })
@@ -96,7 +93,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       console.log("Making", tags.length, "tag pages...")
       tags.forEach(tag => {
         const tagPath = `/topics/${_.kebabCase(tag)}/`
-  
+
         actions.createPage({
           path: tagPath,
           component: path.resolve(`./src/templates/tag.js`),
