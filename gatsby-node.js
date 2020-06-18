@@ -25,7 +25,24 @@ exports.createSchemaCustomization = ({ actions }) => {
   createTypes(typeDefs)
 }
 
+let sections = [];
 exports.createPages = async ({ actions, graphql, reporter }) => {
+  graphql(
+    `{
+      allGoogleDocs(filter: {document: {name: {eq: "settings"}}}) {
+        nodes {
+          childMarkdownRemark {
+            rawMarkdownBody
+          }
+        }
+      }
+    }`
+  ).then(result => {
+    let settingsJson = result.data.allGoogleDocs.nodes[0].childMarkdownRemark.rawMarkdownBody;
+    let settings = JSON.parse(settingsJson);
+    sections = settings.sections;
+  });
+
   graphql(
     `
         {
@@ -49,6 +66,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             component: path.resolve(`./src/templates/post.js`),
             context: {
               slug: document.path,
+              sections: sections,
             }
         })
 
@@ -58,6 +76,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
           component: path.resolve('./src/templates/post.js'),
           context: {
             slug: document.path,
+            sections: sections,
           }
         })
       })
@@ -69,7 +88,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       });
 
       tags = _.uniq(tags)
-      console.log(tags);
+
       console.log("Making", tags.length, "tag pages...")
       tags.forEach(tag => {
         const tagPath = `/topics/${_.kebabCase(tag)}/`
@@ -79,6 +98,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
           component: path.resolve(`./src/templates/tag.js`),
           context: {
             tag,
+            sections,
           },
         })
         console.log(" - created ", tagPath)
