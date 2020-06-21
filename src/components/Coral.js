@@ -10,6 +10,8 @@ class Coral extends Component {
 
     document.getElementById("loadCoral").addEventListener('load', () => {
       console.log("Coral is loaded");
+      console.log("storyUrl: ", this.props.storyURL);
+      const storyURL = this.props.storyURL;
     });
   }
   

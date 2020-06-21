@@ -7,7 +7,7 @@ class ArticleFooter extends React.Component {
   render () {
     return (
         <footer className="footer">
-          <Coral post_id={this.props.document.id} />
+          <Coral post_id={this.props.document.id} storyURL={this.props.canonical} />
           <Pico post_id={this.props.document.id} post_type="article" tags={this.props.document.tags} article={true} />
           <div className="content has-text-centered">
             <p>

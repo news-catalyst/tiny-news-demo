@@ -180,7 +180,7 @@ export default class Posttest extends React.Component {
             </div>
           </section>
         </Layout>
-        <ArticleFooter metadata={data.site.siteMetadata} document={doc} />
+        <ArticleFooter metadata={data.site.siteMetadata} document={doc} canonical={this.state.canonical} />
       </div>
     )
   }
