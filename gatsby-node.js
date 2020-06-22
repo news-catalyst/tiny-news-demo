@@ -156,6 +156,20 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         component: path.resolve(`./src/templates/subscribe.amp.js`),
       })
       console.log("creating newsletter subscribe page for AMP at /subscribe/amp/")
+
+      // finally, create homepage
+      actions.createPage({
+        path: "/",
+        component: path.resolve(`./src/templates/homepage.js`),
+      })
+      console.log("creating homepage at /")
+      
+      // and, create the AMP version of the homepage
+      actions.createPage({
+        path: "/amp/",
+        component: path.resolve(`./src/templates/homepage.amp.js`),
+      })
+      console.log("creating homepage at /amp/")
   })
 
 }
