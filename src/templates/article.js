@@ -107,7 +107,7 @@ const processingInstructions = [
   }
 ];
 
-export default class Posttest extends React.Component {
+export default class Article extends React.Component {
   state = {
     articleHtml: null,
     canonical: '',
@@ -126,9 +126,11 @@ export default class Posttest extends React.Component {
   }
 
   render () {
+    let sections = this.props.pageContext.sections;
     let data = this.props.data;
     let doc = data.googleDocs.document;
     let parsedDate = parseISO(doc.createdTime)
+
     let tagLinks;
     if (doc.tags) {
       tagLinks = doc.tags.map((tag, index) => (
@@ -137,7 +139,7 @@ export default class Posttest extends React.Component {
     }
     return (
       <div id="article-container">
-        <ArticleNav metadata={data.site.siteMetadata} />
+        <ArticleNav metadata={data.site.siteMetadata} sections={sections} />
         <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} canonical={this.state.canonical} {...doc}>
           <article>
             <section className="hero is-bold">
@@ -153,7 +155,7 @@ export default class Posttest extends React.Component {
               </div>
             </section>
             {doc.cover &&
-              <img src={doc.cover.image} alt={doc.cover.title} className="image" />
+             <img src={doc.cover.image} alt={doc.cover.title} className="image" />
             }
             <section className="section">
               <div className="content">
