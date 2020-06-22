@@ -9,10 +9,9 @@ import FeaturedArticleLink from "../components/FeaturedArticleLink"
 import ArticleNav from "../components/ArticleNav"
 import HomepageSearchPanel from "../components/HomepageSearchPanel"
 import sendToGoogleAnalytics from "../utils/vitals"
+import "../pages/styles.scss"
 
-import "./styles.scss"
-
-export default function HomePage({ data }) {
+export default function HomePage({ data, pageContext }) {
   const [query, setQuery] = useState('')
   useEffect(() => {
     getCLS(sendToGoogleAnalytics);
@@ -20,6 +19,7 @@ export default function HomePage({ data }) {
     getLCP(sendToGoogleAnalytics);
   }, []);
 
+  let sections = pageContext.sections;
   let allArticles = data.allGoogleDocs.nodes;
   let featuredArticles = allArticles.filter(node => node.document.featured);
   let unfeaturedArticles = allArticles.filter(node => !node.document.featured);
@@ -43,7 +43,7 @@ export default function HomePage({ data }) {
 
   return(
     <div>
-      <ArticleNav metadata={data.site.siteMetadata} tags={tags} />
+      <ArticleNav metadata={data.site.siteMetadata} tags={tags} sections={sections} />
       <Layout title={data.site.siteMetadata.title} description={data.site.siteMetadata.description}>
         <section className="hero is-dark is-bold">
           <div className="hero-body">
