@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import _ from 'lodash'
+import { Helmet } from 'react-helmet'
 import { Link, graphql } from "gatsby"
 import {getCLS, getFID, getLCP} from 'web-vitals';
 import Layout from "../components/Layout"
@@ -11,9 +12,12 @@ import HomepageSearchPanel from "../components/HomepageSearchPanel"
 import sendToGoogleAnalytics from "../utils/vitals"
 import "../pages/styles.scss"
 
+
 export default function HomePageAMP({ data, pageContext }) {
   const [query, setQuery] = useState('')
+  let canonicalURL;
   useEffect(() => {
+    canonicalURL = window.location.href.replace("/amp/", "");
     getCLS(sendToGoogleAnalytics);
     getFID(sendToGoogleAnalytics);
     getLCP(sendToGoogleAnalytics);
@@ -43,6 +47,13 @@ export default function HomePageAMP({ data, pageContext }) {
 
   return(
     <div>
+        <Helmet
+          htmlAttributes={{ amp: true, lang: 'en' }}
+        >
+          <meta charset="utf-8" />
+          <script async src="https://cdn.ampproject.org/v0.js"></script>
+          <link rel="canonical" href={canonicalURL} /> // ⚡ Add canonical
+        </Helmet>
       <ArticleNav metadata={data.site.siteMetadata} tags={tags} sections={sections} />
       <Layout title={data.site.siteMetadata.title} description={data.site.siteMetadata.description}>
         <section className="hero is-dark is-bold">
