@@ -1,4 +1,5 @@
 import React from "react"
+import { Helmet } from 'react-helmet'
 import _ from 'lodash'
 import { graphql, Link } from "gatsby"
 import { parseISO, formatRelative } from 'date-fns'
@@ -109,11 +110,15 @@ const processingInstructions = [
 export default class Article extends React.Component {
   state = {
     articleHtml: null,
+    canonical: '',
   }
   componentDidMount() {
+    let canonical = window.location.href; // this must be set correctly for Coral to load, also for SEO
+
     let updatedHtml = htmlParser.parseWithInstructions(this.props.data.googleDocs.childMarkdownRemark.html, isValidNode, processingInstructions);
     this.setState({
       articleHtml: updatedHtml,
+      canonical: canonical,
     })
     getCLS(sendToGoogleAnalytics);
     getFID(sendToGoogleAnalytics);
@@ -135,7 +140,7 @@ export default class Article extends React.Component {
     return (
       <div id="article-container">
         <ArticleNav metadata={data.site.siteMetadata} sections={sections} />
-        <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} {...doc}>
+        <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} canonical={this.state.canonical} {...doc}>
           <article>
             <section className="hero is-bold">
               <div className="hero-body">
@@ -177,7 +182,7 @@ export default class Article extends React.Component {
             </div>
           </section>
         </Layout>
-        <ArticleFooter metadata={data.site.siteMetadata} document={doc} />
+        <ArticleFooter metadata={data.site.siteMetadata} document={doc} canonical={this.state.canonical} />
       </div>
     )
   }
@@ -216,6 +221,7 @@ export const pageQuery = graphql`
           createdTime
           id
           name
+          path
           tags
           og_locale
           og_title

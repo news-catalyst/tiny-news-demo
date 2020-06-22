@@ -7,6 +7,7 @@ export default function Layout(props) {
       <GatsbySeo
       title={props.og_title}
       description={props.og_description}
+      canonical={props.canonical}
       openGraph={{
         title: props.og_title,
         description: props.og_description,
