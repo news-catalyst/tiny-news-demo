@@ -161,6 +161,9 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       actions.createPage({
         path: "/",
         component: path.resolve(`./src/templates/homepage.js`),
+        context: {
+          sections,
+        }
       })
       console.log("creating homepage at /")
       
@@ -168,8 +171,11 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       actions.createPage({
         path: "/amp/",
         component: path.resolve(`./src/templates/homepage.amp.js`),
+        context: {
+          sections,
+        }
       })
-      console.log("creating homepage at /amp/")
+      console.log("creating homepage for AMP at /amp/")
   })
 
 }
