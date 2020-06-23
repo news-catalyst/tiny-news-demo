@@ -1,4 +1,4 @@
-import React from "react"
+import React, { createElement } from "react"
 import _ from 'lodash'
 import { graphql, Link } from "gatsby"
 import { parseISO, formatRelative } from 'date-fns'
@@ -10,6 +10,7 @@ import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
 import SignUp from "../components/SignUp"
 import sendToGoogleAnalytics from "../utils/vitals"
+import ImageWithTextAd from "../components/ImageWithTextAd"
 import "../pages/styles.scss"
 
 // Look for URLs in the article copy for embedding social media
@@ -58,6 +59,9 @@ const canEmbedSoundcloud = url => MATCH_URL_SOUNDCLOUD.test(url);
 const MATCH_URL_STREAMABLE = /streamable\.com\/([a-z0-9]+)$/;
 const canEmbedStreamable = (url) => MATCH_URL_STREAMABLE.test(url);
 
+window.paragraph_counter = 0; //global variable
+window.is_ad_inserted = 'false'; //global variable
+
 function isValidUrl(url) {
   let validUrl = urlRegex.test(url);
   console.log(url, "is it valid? ", validUrl);
@@ -88,6 +92,28 @@ function isValidNode(){
     return true;
 }
 const processingInstructions = [
+  // Ad insertion processing
+  {
+    shouldProcessNode: function (node) {
+      if (node.name && node.name === 'p' && node.nodeType === Node.ELEMENT_NODE){
+        if (window.paragraph_counter < 5 && window.is_ad_inserted == 'false' ) {
+          window.paragraph_counter += 1;
+        }
+        else {
+          window.is_ad_inserted = 'true';
+          return true;
+        }
+      }
+    },
+    processNode: function (node, children) {
+      console.log('Test');
+      console.log(node);
+      var newDiv = document.createElement('div');
+      var newContent = document.createTextNode("Hi there and greetings!"); 
+      newDiv.appendChild(newContent);  
+      return node.insertAdjacentElement('afterend', newDiv);
+    }
+  },
   // first, should this block become an embed? try matching against URL regex
   {
       shouldProcessNode: (node) => {
@@ -153,7 +179,7 @@ export default class Posttest extends React.Component {
               <img src={doc.cover.image} alt={doc.cover.title} className="image" />
             }
             <section className="section">
-              <div className="content">
+              <div id="articleText" className="content">
                 {this.state.articleHtml}
               </div>
             </section>
