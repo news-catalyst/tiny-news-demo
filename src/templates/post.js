@@ -13,6 +13,8 @@ import sendToGoogleAnalytics from "../utils/vitals"
 import ImageWithTextAd from "../components/ImageWithTextAd"
 import "../pages/styles.scss"
 
+let ad_placement = 5; // Number of paragraphs before ad is inserted into article text
+
 // Look for URLs in the article copy for embedding social media
 let urlRegex = /(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/i;
 
@@ -59,8 +61,8 @@ const canEmbedSoundcloud = url => MATCH_URL_SOUNDCLOUD.test(url);
 const MATCH_URL_STREAMABLE = /streamable\.com\/([a-z0-9]+)$/;
 const canEmbedStreamable = (url) => MATCH_URL_STREAMABLE.test(url);
 
-window.paragraph_counter = 0; //global variable
-window.is_ad_inserted = 'false'; //global variable
+var paragraph_counter = 0; //global variable
+var is_ad_inserted = 'false'; //global variable
 
 function isValidUrl(url) {
   let validUrl = urlRegex.test(url);
@@ -96,11 +98,11 @@ const processingInstructions = [
   {
     shouldProcessNode: function (node) {
       if (node.name && node.name === 'p' && node.nodeType === Node.ELEMENT_NODE){
-        if (window.paragraph_counter < 5 && window.is_ad_inserted == 'false' ) {
-          window.paragraph_counter += 1;
+        if (paragraph_counter < ad_placement && is_ad_inserted == 'false' ) {
+          paragraph_counter += 1;
         }
         else {
-          window.is_ad_inserted = 'true';
+          is_ad_inserted = 'true';
           return true;
         }
       }
