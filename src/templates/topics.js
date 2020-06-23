@@ -4,9 +4,9 @@ import { Link, graphql } from "gatsby"
 import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
 import Footer from "../components/Footer"
-import "./styles.scss"
+import "../pages/styles.scss"
 
-export default function HomePage({ data }) {
+export default function TopicsIndex({ data }) {
   let tags = [];
   data.allGoogleDocs.nodes.forEach(({document}, index) => {
     tags = tags.concat(document.tags);

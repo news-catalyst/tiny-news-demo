@@ -1,4 +1,6 @@
-import React, { createElement } from "react"
+
+import React from "react"
+import { Helmet } from 'react-helmet'
 import _ from 'lodash'
 import { graphql, Link } from "gatsby"
 import { parseISO, formatRelative } from 'date-fns'
@@ -66,7 +68,6 @@ var is_ad_inserted = 'false'; //global variable
 
 function isValidUrl(url) {
   let validUrl = urlRegex.test(url);
-  console.log(url, "is it valid? ", validUrl);
   if (!validUrl) {
     return false; // don't bother processing further
   }
@@ -84,7 +85,6 @@ function isValidUrl(url) {
     canEmbedYoutube(url) ||
     canEmbedVimeo(url) );
 
-  console.log(url, "is it supported? ", supportedPlatform);
   return validUrl && supportedPlatform;
 }
 
@@ -145,14 +145,18 @@ const processingInstructions = [
   }
 ];
 
-export default class Posttest extends React.Component {
+export default class Article extends React.Component {
   state = {
     articleHtml: null,
+    canonical: '',
   }
   componentDidMount() {
+    let canonical = window.location.href; // this must be set correctly for Coral to load, also for SEO
+
     let updatedHtml = htmlParser.parseWithInstructions(this.props.data.googleDocs.childMarkdownRemark.html, isValidNode, processingInstructions);
     this.setState({
       articleHtml: updatedHtml,
+      canonical: canonical,
     })
     getCLS(sendToGoogleAnalytics);
     getFID(sendToGoogleAnalytics);
@@ -160,9 +164,11 @@ export default class Posttest extends React.Component {
   }
 
   render () {
+    let sections = this.props.pageContext.sections;
     let data = this.props.data;
     let doc = data.googleDocs.document;
     let parsedDate = parseISO(doc.createdTime)
+
     let tagLinks;
     if (doc.tags) {
       tagLinks = doc.tags.map((tag, index) => (
@@ -171,8 +177,8 @@ export default class Posttest extends React.Component {
     }
     return (
       <div id="article-container">
-        <ArticleNav metadata={data.site.siteMetadata} />
-        <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} {...doc}>
+        <ArticleNav metadata={data.site.siteMetadata} sections={sections} />
+        <Layout title={doc.name} description={data.googleDocs.childMarkdownRemark.excerpt} canonical={this.state.canonical} {...doc}>
           <article>
             <section className="hero is-bold">
               <div className="hero-body">
@@ -187,7 +193,7 @@ export default class Posttest extends React.Component {
               </div>
             </section>
             {doc.cover &&
-              <img src={doc.cover.image} alt={doc.cover.title} className="image" />
+             <img src={doc.cover.image} alt={doc.cover.title} className="image" />
             }
             <section className="section">
               <div id="articleText" className="content">
@@ -214,7 +220,7 @@ export default class Posttest extends React.Component {
             </div>
           </section>
         </Layout>
-        <ArticleFooter metadata={data.site.siteMetadata} document={doc} />
+        <ArticleFooter metadata={data.site.siteMetadata} document={doc} canonical={this.state.canonical} />
       </div>
     )
   }
@@ -253,6 +259,7 @@ export const pageQuery = graphql`
           createdTime
           id
           name
+          path
           tags
           og_locale
           og_title

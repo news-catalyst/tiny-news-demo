@@ -1,14 +1,29 @@
 
 import React from "react"
+import { graphql } from 'gatsby'
 import Layout from "../../components/Layout"
-import GoogleLogin from "../../components/GoogleLogin"
+import GoogleEdit from "../../components/GoogleEdit"
 
-const TinyEdit = () => {
+const TinyEdit = ({data}) => {
+  let settingsJson = data.allGoogleDocs.nodes[0].childMarkdownRemark.rawMarkdownBody;
+  let settings = JSON.parse(settingsJson);
+
   return (
     <Layout>
-      <GoogleLogin />
+      <GoogleEdit settingsData={settings} />
     </Layout>
   )
 }
 
 export default TinyEdit
+
+export const settingsQuery = graphql`
+  query {
+      allGoogleDocs(filter: {document: {name: {eq: "settings"}}}) {
+        nodes {
+          childMarkdownRemark {
+            rawMarkdownBody
+          }
+        }
+      }
+    }`

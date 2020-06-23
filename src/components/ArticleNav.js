@@ -4,6 +4,15 @@ import { Link } from "gatsby"
 
 export default function ArticleNav(props) {
   let tagLinks;
+  let sectionLinks;
+
+  if (props.sections) {
+    sectionLinks = props.sections.slice(0,4).map(section => (
+      <Link key={`navbar-${_.kebabCase(section.label)}`} to={section.link} className="navbar-item">
+        {_.startCase(section.label)}
+      </Link>
+    ));
+  }
 
   if (props.tags) {
     tagLinks = props.tags.slice(0,4).map(tag => (
@@ -29,7 +38,7 @@ export default function ArticleNav(props) {
       <div className="navbar-menu">
         <div className="navbar-start">
           
-          {tagLinks}
+          {sectionLinks}
 
           <a className="navbar-item" href="/topics">
             {props.metadata.nav.topics}

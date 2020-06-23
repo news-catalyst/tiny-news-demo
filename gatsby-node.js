@@ -25,7 +25,24 @@ exports.createSchemaCustomization = ({ actions }) => {
   createTypes(typeDefs)
 }
 
+let sections = [];
 exports.createPages = async ({ actions, graphql, reporter }) => {
+  graphql(
+    `{
+      allGoogleDocs(filter: {document: {name: {eq: "settings"}}}) {
+        nodes {
+          childMarkdownRemark {
+            rawMarkdownBody
+          }
+        }
+      }
+    }`
+  ).then(result => {
+    let settingsJson = result.data.allGoogleDocs.nodes[0].childMarkdownRemark.rawMarkdownBody;
+    let settings = JSON.parse(settingsJson);
+    sections = settings.sections;
+  });
+
   graphql(
     `
         {
@@ -43,25 +60,42 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       let tags = []
       result.data.allGoogleDocs.nodes.forEach(({document}, index) => {
         tags = tags.concat(document.tags);
-        console.log("creating page for google doc at ", document.path)
+        console.log("creating page for article at ", document.path)
         actions.createPage({
             path: document.path,
-            component: path.resolve(`./src/templates/post.js`),
+            component: path.resolve(`./src/templates/article.js`),
             context: {
               slug: document.path,
+              sections: sections,
             }
         })
 
-        console.log("creating amp page for google doc at ", `${document.path}/amp/`)
+        console.log("creating AMP page for article at ", `${document.path}/amp/`)
         actions.createPage({
           path: `${document.path}/amp/`,
-          component: path.resolve('./src/templates/post.js'),
+          component: path.resolve('./src/templates/article.amp.js'),
           context: {
             slug: document.path,
+            amp: true,
+            sections: sections,
           }
         })
       })
 
+      console.log("Making ", sections.length, " section pages...")
+      sections.forEach(section => {
+  
+        actions.createPage({
+          path: section.link,
+          component: path.resolve(`./src/templates/section.js`),
+          context: {
+            category: section.label,
+            section: section,
+            sections: sections,
+          },
+        })
+        console.log(" - created ", section.link)
+      })
 
       // remove any null tags
       tags = tags.filter(function (el) {
@@ -69,20 +103,79 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       });
 
       tags = _.uniq(tags)
-      console.log(tags);
+
       console.log("Making", tags.length, "tag pages...")
       tags.forEach(tag => {
         const tagPath = `/topics/${_.kebabCase(tag)}/`
-  
+
         actions.createPage({
           path: tagPath,
           component: path.resolve(`./src/templates/tag.js`),
           context: {
             tag,
+            sections,
           },
         })
-        console.log(" - created ", tagPath)
+        console.log("creating tag page at ", tagPath)
+
+        actions.createPage({
+          path: tagPath,
+          path: `${tagPath}amp/`,
+          component: path.resolve(`./src/templates/tag.amp.js`),
+          context: {
+            tag,
+          },
+        })
+        console.log("creating tag page for AMP at ", `${tagPath}amp/`)
       })
+
+      // create topics index page
+      actions.createPage({
+        path: "/topics/",
+        component: path.resolve(`./src/templates/topics.js`),
+      })
+      console.log("creating topics index page at /topics/")
+
+      // create topics index page - AMP
+      actions.createPage({
+        path: "/topics/amp/",
+        component: path.resolve(`./src/templates/topics.amp.js`),
+      })
+      console.log("creating topics index page for AMP at /topics/amp/")
+
+      // create subscribe page
+      actions.createPage({
+        path: "/subscribe/",
+        component: path.resolve(`./src/templates/subscribe.js`),
+      })
+      console.log("creating newsletter subscribe page at /subscribe/")
+
+      // create subscribe page - AMP
+      actions.createPage({
+        path: "/subscribe/amp/",
+        component: path.resolve(`./src/templates/subscribe.amp.js`),
+      })
+      console.log("creating newsletter subscribe page for AMP at /subscribe/amp/")
+
+      // finally, create homepage
+      actions.createPage({
+        path: "/",
+        component: path.resolve(`./src/templates/homepage.js`),
+        context: {
+          sections,
+        }
+      })
+      console.log("creating homepage at /")
+      
+      // and, create the AMP version of the homepage
+      actions.createPage({
+        path: "/amp/",
+        component: path.resolve(`./src/templates/homepage.amp.js`),
+        context: {
+          sections,
+        }
+      })
+      console.log("creating homepage for AMP at /amp/")
   })
 
 }
