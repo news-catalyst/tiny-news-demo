@@ -1,4 +1,4 @@
-import React from "react"
+import React, { createElement } from "react"
 import _ from 'lodash'
 import { graphql, Link } from "gatsby"
 import { parseISO, formatRelative } from 'date-fns'
@@ -10,10 +10,13 @@ import ArticleNav from "../components/ArticleNav"
 import Layout from "../components/Layout"
 import SignUp from "../components/SignUp"
 import sendToGoogleAnalytics from "../utils/vitals"
+import ImageWithTextAd from "../components/ImageWithTextAd"
 import "../pages/styles.scss"
 
+let ad_placement = 5; // Number of paragraphs before ad is inserted into article text
+
 // Look for URLs in the article copy for embedding social media
-let urlRegex = /(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/i; 
+let urlRegex = /(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/i;
 
 const MATCH_URL_DAILY_MOTION = /^(?:(?:https?):)?(?:\/\/)?(?:www\.)?(?:(?:dailymotion\.com(?:\/embed)?\/video)|dai\.ly)\/([a-zA-Z0-9]+)(?:_[\w_-]+)?$/;
 const canEmbedDailyMotion = (url) => MATCH_URL_DAILY_MOTION.test(url);
@@ -58,24 +61,27 @@ const canEmbedSoundcloud = url => MATCH_URL_SOUNDCLOUD.test(url);
 const MATCH_URL_STREAMABLE = /streamable\.com\/([a-z0-9]+)$/;
 const canEmbedStreamable = (url) => MATCH_URL_STREAMABLE.test(url);
 
+var paragraph_counter = 0; //global variable
+var is_ad_inserted = 'false'; //global variable
+
 function isValidUrl(url) {
   let validUrl = urlRegex.test(url);
   console.log(url, "is it valid? ", validUrl);
   if (!validUrl) {
     return false; // don't bother processing further
   }
-  let supportedPlatform = ( 
-    canEmbedDailyMotion(url) || 
+  let supportedPlatform = (
+    canEmbedDailyMotion(url) ||
     canEmbedFacebook(url) ||
-    canEmbedGoogle(url) || 
-    canEmbedImgur(url) || 
+    canEmbedGoogle(url) ||
+    canEmbedImgur(url) ||
     canEmbedInstagram(url) ||
-    canEmbedMixcloud(url) || 
-    canEmbedSoundcloud(url) || 
-    canEmbedStreamable(url) || 
+    canEmbedMixcloud(url) ||
+    canEmbedSoundcloud(url) ||
+    canEmbedStreamable(url) ||
     canEmbedTwitch(url) ||
-    canEmbedTwitter(url) || 
-    canEmbedYoutube(url) || 
+    canEmbedTwitter(url) ||
+    canEmbedYoutube(url) ||
     canEmbedVimeo(url) );
 
   console.log(url, "is it supported? ", supportedPlatform);
@@ -88,6 +94,37 @@ function isValidNode(){
     return true;
 }
 const processingInstructions = [
+  // Ad insertion processing
+  {
+    shouldProcessNode: function (node) {
+      if (node.name && node.name === 'p' && node.nodeType === Node.ELEMENT_NODE){
+        if (paragraph_counter < ad_placement && is_ad_inserted == 'false' ) {
+          paragraph_counter += 1;
+        }
+        else {
+          is_ad_inserted = 'true';
+          return true;
+        }
+      }
+    },
+    processNode: function (node, children) {
+      return (
+        <>
+          <p>
+            {children}
+          </p>
+          <ImageWithTextAd ad={{
+            brand: "test",
+            image: {
+              url: "https://image.com",
+              alt: "Alt text"
+            },
+            header: "test header",
+          }} />
+        </>
+      )
+    }
+  },
   // first, should this block become an embed? try matching against URL regex
   {
       shouldProcessNode: (node) => {
@@ -153,7 +190,7 @@ export default class Posttest extends React.Component {
               <img src={doc.cover.image} alt={doc.cover.title} className="image" />
             }
             <section className="section">
-              <div className="content">
+              <div id="articleText" className="content">
                 {this.state.articleHtml}
               </div>
             </section>

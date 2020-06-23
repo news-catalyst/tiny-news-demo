@@ -75,3 +75,30 @@ em {
 .small-margin-left {
   margin-left: 1rem;
 }
+
+.ad-container {
+  margin: 0 auto; 
+  max-width: 600px;
+}
+
+.ad-brand {
+  text-align: center; 
+  padding-bottom: 8px; 
+  font-size: 85%;
+}
+
+.ad-banner {
+  max-width: 100%
+}
+
+.ad-img-container {
+  max-width: 35%;
+}
+
+.ad-img {
+  max-width: 95%;
+}
+
+.ad-text-container {
+  max-width: 65%;
+}
