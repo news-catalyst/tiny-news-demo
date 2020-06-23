@@ -14,7 +14,7 @@ import ImageWithTextAd from "../components/ImageWithTextAd"
 import "../pages/styles.scss"
 
 // Look for URLs in the article copy for embedding social media
-let urlRegex = /(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/i; 
+let urlRegex = /(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/i;
 
 const MATCH_URL_DAILY_MOTION = /^(?:(?:https?):)?(?:\/\/)?(?:www\.)?(?:(?:dailymotion\.com(?:\/embed)?\/video)|dai\.ly)\/([a-zA-Z0-9]+)(?:_[\w_-]+)?$/;
 const canEmbedDailyMotion = (url) => MATCH_URL_DAILY_MOTION.test(url);
@@ -68,18 +68,18 @@ function isValidUrl(url) {
   if (!validUrl) {
     return false; // don't bother processing further
   }
-  let supportedPlatform = ( 
-    canEmbedDailyMotion(url) || 
+  let supportedPlatform = (
+    canEmbedDailyMotion(url) ||
     canEmbedFacebook(url) ||
-    canEmbedGoogle(url) || 
-    canEmbedImgur(url) || 
+    canEmbedGoogle(url) ||
+    canEmbedImgur(url) ||
     canEmbedInstagram(url) ||
-    canEmbedMixcloud(url) || 
-    canEmbedSoundcloud(url) || 
-    canEmbedStreamable(url) || 
+    canEmbedMixcloud(url) ||
+    canEmbedSoundcloud(url) ||
+    canEmbedStreamable(url) ||
     canEmbedTwitch(url) ||
-    canEmbedTwitter(url) || 
-    canEmbedYoutube(url) || 
+    canEmbedTwitter(url) ||
+    canEmbedYoutube(url) ||
     canEmbedVimeo(url) );
 
   console.log(url, "is it supported? ", supportedPlatform);
@@ -106,12 +106,21 @@ const processingInstructions = [
       }
     },
     processNode: function (node, children) {
-      console.log('Test');
-      console.log(node);
-      var newDiv = document.createElement('div');
-      var newContent = document.createTextNode("Hi there and greetings!"); 
-      newDiv.appendChild(newContent);  
-      return node.insertAdjacentElement('afterend', newDiv);
+      return (
+        <>
+          <p>
+            {children}
+          </p>
+          <ImageWithTextAd ad={{
+            brand: "test",
+            image: {
+              url: "https://image.com",
+              alt: "Alt text"
+            },
+            header: "test header",
+          }} />
+        </>
+      )
     }
   },
   // first, should this block become an embed? try matching against URL regex
