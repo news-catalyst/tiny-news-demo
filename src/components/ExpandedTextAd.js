@@ -3,7 +3,7 @@ import React from "react"
 export default function ExpandedTextAd(props) {
 
     return (
-        <section className="ad-container">
+        <section className="ad-container text-ad-container">
             <div className="ad-brand">
                 <p>Advertisement from {props.ad.brand}</p>
             </div>
