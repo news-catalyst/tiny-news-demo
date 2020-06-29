@@ -77,13 +77,19 @@ em {
 }
 
 .ad-container {
-  margin: 0 auto; 
+  margin: 30px auto; 
   max-width: 600px;
+}
+
+.text-ad-container {
+  margin: 30px auto; 
+  border-bottom: 1px solid lightgray;
+  border-top: 1px solid lightgray;
 }
 
 .ad-brand {
   text-align: center; 
-  padding-bottom: 8px; 
+  padding-bottom: 20px; 
   font-size: 85%;
 }
 

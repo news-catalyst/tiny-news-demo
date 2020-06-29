@@ -15,8 +15,6 @@ import sendToGoogleAnalytics from "../utils/vitals"
 import ImageWithTextAd from "../components/ImageWithTextAd"
 import "../pages/styles.scss"
 
-let ad_placement = 5; // Number of paragraphs before ad is inserted into article text
-
 // Look for URLs in the article copy for embedding social media
 let urlRegex = /(https?:\/\/)?([\w\-])+\.{1}([a-zA-Z]{2,63})([\/\w-]*)*\/?\??([^#\n\r]*)?#?([^\n\r]*)/i;
 
@@ -63,9 +61,6 @@ const canEmbedSoundcloud = url => MATCH_URL_SOUNDCLOUD.test(url);
 const MATCH_URL_STREAMABLE = /streamable\.com\/([a-z0-9]+)$/;
 const canEmbedStreamable = (url) => MATCH_URL_STREAMABLE.test(url);
 
-var paragraph_counter = 0; //global variable
-var is_ad_inserted = 'false'; //global variable
-
 function isValidUrl(url) {
   let validUrl = urlRegex.test(url);
   if (!validUrl) {
@@ -96,33 +91,41 @@ function isValidNode(){
 const processingInstructions = [
   // Ad insertion processing
   {
-    shouldProcessNode: function (node) {
+    shouldProcessNode: (node) => {
       if (node.name && node.name === 'p' && node.nodeType === Node.ELEMENT_NODE){
-        if (paragraph_counter < ad_placement && is_ad_inserted == 'false' ) {
-          paragraph_counter += 1;
-        }
-        else {
-          is_ad_inserted = 'true';
-          return true;
-        }
+        return node;
       }
     },
-    processNode: function (node, children) {
-      return (
-        <>
-          <p>
-            {children}
-          </p>
-          <ImageWithTextAd ad={{
-            brand: "test",
-            image: {
-              url: "https://image.com",
-              alt: "Alt text"
-            },
-            header: "test header",
-          }} />
-        </>
-      )
+    processNode: function (node, children, index) {
+      if (index == 6) {
+        return (
+          <>
+            <p>
+              {children}
+            </p>
+            <ImageWithTextAd ad={{
+              brand: "test",
+              image: {
+                url: "https://placehold.it/300x300",
+                alt: "Alt text"
+              },
+              header: "test header",
+              body: "This is the body text of an advertisement.",
+              call: "Call to action",
+              url: "https://www.w3schools.com/"
+            }} />
+          </>
+        )
+      }
+      else {
+        return (
+          <>
+            <p>
+              {children}
+            </p>
+          </>
+        )
+      }
     }
   },
   // first, should this block become an embed? try matching against URL regex
@@ -146,17 +149,19 @@ const processingInstructions = [
 ];
 
 export default class Article extends React.Component {
-  state = {
-    articleHtml: null,
-    canonical: '',
-  }
+
+    state = {
+      articleHtml: null,
+      canonical: ''
+    }
+
   componentDidMount() {
     let canonical = window.location.href; // this must be set correctly for Coral to load, also for SEO
 
     let updatedHtml = htmlParser.parseWithInstructions(this.props.data.googleDocs.childMarkdownRemark.html, isValidNode, processingInstructions);
     this.setState({
       articleHtml: updatedHtml,
-      canonical: canonical,
+      canonical: canonical
     })
     getCLS(sendToGoogleAnalytics);
     getFID(sendToGoogleAnalytics);
